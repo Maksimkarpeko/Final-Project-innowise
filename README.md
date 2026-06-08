@@ -1,3 +1,4 @@
+need add in the .env file VITE_GRAPHQL_URL="http://localhost:3001/api/graphql"
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

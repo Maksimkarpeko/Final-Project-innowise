@@ -21,3 +21,5 @@ export const PATH = {
     CVS: "/cvs",
   },
 } as const;
+
+export type AuthPath = typeof PATH.AUTH;

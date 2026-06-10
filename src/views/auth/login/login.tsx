@@ -1,21 +1,20 @@
 "use client";
 
-import { AuthHeader } from "@/src/widgets/Auth/AuthHeader";
-import { AuthPanel } from "@/src/widgets/Auth/AuthPanel";
-import { PATH } from "@/src/shared/config/path.config";
+import { AuthPanel } from "@/src/widgets";
+import { APP_TEXT, PATH } from "@/src/shared";
 
 export const LoginPage = () => {
-    return (
-        <main className="min-h-dvh w-full bg-[#f5f5f7]">
-            <AuthHeader />
-
-            <AuthPanel
-                title="С возвращением"
-                subtitle="Рады вас видеть! Войдите, чтобы продолжить"
-                primaryButtonText="Войти"
-                secondaryButtonText="Забыли пароль"
-                secondaryLinkHref={PATH.AUTH.FORGOT_PASSWORD}
-            />
-        </main>
-    );
+  const { title, subtitle, primaryButtonText, secondaryButtonText } =
+    APP_TEXT.login;
+  return (
+    <main className="min-h-dvh w-full bg-[#f5f5f7]">
+      <AuthPanel
+        title={title}
+        subtitle={subtitle}
+        primaryButtonText={primaryButtonText}
+        secondaryButtonText={secondaryButtonText}
+        secondaryLinkHref={PATH.AUTH.FORGOT_PASSWORD}
+      />
+    </main>
+  );
 };

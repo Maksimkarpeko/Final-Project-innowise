@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ConfigProvider } from "antd";
 import { WrapperApollo } from "./apollo/apollo-client";
+import { AppGuard } from "./guard/appGuard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,19 +32,21 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen flex flex-col" suppressHydrationWarning>
-        <WrapperApollo>
-          <ConfigProvider
-            theme={{
-              token: {
-                colorPrimary: "#db1c1c",
-                colorPrimaryHover: "#ff4d4d",
-                colorPrimaryActive: "#a61212",
-              },
-            }}
-          >
-            {children}
-          </ConfigProvider>
-        </WrapperApollo>
+        <AppGuard>
+          <WrapperApollo>
+            <ConfigProvider
+              theme={{
+                token: {
+                  colorPrimary: "#db1c1c",
+                  colorPrimaryHover: "#ff4d4d",
+                  colorPrimaryActive: "#a61212",
+                },
+              }}
+            >
+              {children}
+            </ConfigProvider>
+          </WrapperApollo>
+        </AppGuard>
       </body>
     </html>
   );

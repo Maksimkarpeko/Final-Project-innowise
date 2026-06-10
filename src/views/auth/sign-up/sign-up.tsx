@@ -1,21 +1,21 @@
 "use client";
 
-import { AuthHeader } from "@/src/widgets/Auth/AuthHeader";
-import { AuthPanel } from "@/src/widgets/Auth/AuthPanel";
-import { PATH } from "@/src/shared/config/path.config";
+import {AuthPanel } from "@/src/widgets";
+import { PATH } from "@/src/shared";
+import { APP_TEXT } from "@/src/shared";
 
 export const SignUpPage = () => {
-    return (
-        <main className="min-h-dvh w-full bg-[#f5f5f7]">
-            <AuthHeader />
-
-            <AuthPanel
-                title="Зарегистрируйтесь"
-                subtitle="Добро пожаловать! Создайте аккаунт, чтобы продолжить"
-                primaryButtonText="Создать аккаунт"
-                secondaryButtonText="У меня есть аккаунт"
-                secondaryLinkHref={PATH.AUTH.LOGIN}
-            />
-        </main>
-    );
+  const { title, subtitle, primaryButtonText, secondaryButtonText } =
+    APP_TEXT.signUp;
+  return (
+    <main className="min-h-dvh w-full bg-[#f5f5f7]">
+      <AuthPanel
+        title={title}
+        subtitle={subtitle}
+        primaryButtonText={primaryButtonText}
+        secondaryButtonText={secondaryButtonText}
+        secondaryLinkHref={PATH.AUTH.LOGIN}
+      />
+    </main>
+  );
 };

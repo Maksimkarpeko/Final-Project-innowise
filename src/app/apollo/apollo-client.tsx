@@ -1,5 +1,4 @@
 "use client";
-
 import { ApolloLink, HttpLink, from } from "@apollo/client";
 import {
   ApolloNextAppProvider,
@@ -14,11 +13,9 @@ const httpLink = new HttpLink({
   uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
 });
 
-const link = ApolloLink.from([authLink, httpLink, errorLink]);
-
 export const apolloClient = new ApolloClient({
+  link: from([authLink, errorLink, httpLink]),
   cache: new InMemoryCache(),
-  link,
 });
 
 export const WrapperApollo: FC<{ children: React.ReactNode }> = ({

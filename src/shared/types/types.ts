@@ -121,8 +121,8 @@ export type Project = {
   environment: string[];
 };
 
-export type AuthResponse<T> = {
-  user?: T;
+export type AuthResponse = {
+  user: User;
   access_token: string;
   refresh_token: string;
 };

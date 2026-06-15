@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import { ConfigProvider } from "antd";
-import { WrapperApollo } from "./apollo/apollo-client";
-import { AppGuard } from "./guard/appGuard";
+import { WrapperApollo } from "../apollo/apollo-client";
+import { AppGuard } from "../guard/appGuard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

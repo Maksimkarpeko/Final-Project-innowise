@@ -1,20 +1,34 @@
+import { onError } from "@apollo/client/link/error";
+import { Observable } from "@apollo/client";
 import { getRefreshToken } from "@/src/shared/api/getRefreshToken";
-import { ErrorLink } from "@apollo/client/link/error";
-import { apolloClient } from "./apollo-client";
-import { Observable } from 'rxjs';
+import { CombinedGraphQLErrors } from "@apollo/client";
 
-export const errorLink = new ErrorLink(({ error, operation, forward }) => {
+export const errorLink = onError(({ error, operation, forward }) => {
   if (
-    error instanceof Error &&
-    "statusCode" in error &&
-    error.statusCode === 401
+    CombinedGraphQLErrors.is(error) &&
+    error.errors.some((err) => err.message === "Unauthorized")
   ) {
     return new Observable((observer) => {
-      getRefreshToken(apolloClient)
-        .then(() => {
-          forward(operation).subscribe(observer);
+      getRefreshToken()
+        .then((newToken) => {
+          console.log(newToken);
+          operation.setContext(({ headers = {} }) => ({
+            headers: {
+              ...headers,
+              Authorization: `Bearer ${newToken}`,
+            },
+          }));
+
+          forward(operation).subscribe({
+            next: observer.next.bind(observer),
+            error: observer.error.bind(observer),
+            complete: observer.complete.bind(observer),
+          });
         })
         .catch((err) => {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+
           observer.error(err);
         });
     });

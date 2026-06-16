@@ -10,11 +10,11 @@ export const PATH = {
     SKILLS: "/skills",
   },
   USER: {
-    PROFILE: "/profile",
+    PROFILE: (userId: string) => `/users/${userId}/profile`,
     LIST: "/list",
     CVS: "/user-cvs",
-    LANGUAGES: "/user-languages",
-    SKILLS: "/user-skills",
+    SKILLS: (userId: string) => `/users/${userId}/skills`,
+    LANGUAGES: (userId: string) => `/users/${userId}/languages`,
     SETTINGS: "/settings",
   },
   COMMON: {

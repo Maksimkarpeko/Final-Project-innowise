@@ -21,10 +21,13 @@ export const getToken = (token: "accessToken" | "refreshToken") => {
   }
 };
 
-export const getUserId = () => {
+export const getUserId = (): string | null => {
   try {
+    if (typeof window === "undefined") return null;
+
     return localStorage.getItem("userId");
   } catch (error) {
     console.error("Error getting id from localStorage:", error);
+    return null;
   }
 };

@@ -1,1 +1,1 @@
-export { safeRefreshAccessToken, getToken } from "./workOnLocalStorage";
+export { safeRefreshAccessToken, getToken, getUserId } from "./workOnLocalStorage";

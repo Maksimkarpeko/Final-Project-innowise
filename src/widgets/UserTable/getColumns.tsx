@@ -1,5 +1,5 @@
 "use client";
-import { User } from "@/src/shared";
+import { PATH, User } from "@/src/shared";
 import { Avatar, Button, Dropdown } from "antd";
 import { ChevronRight, EllipsisVertical, User as UserIcon } from "lucide-react";
 import Link from "next/link";

@@ -1,14 +1,18 @@
 export const APP_TEXT = {
+  auth_header: {
+    login: "Log in",
+    register: "Sign in",
+  },
   login: {
-    title: "С возвращением",
-    subtitle: "Рады вас видеть! Войдите, чтобы продолжить",
-    primaryButtonText: "Войти",
-    secondaryButtonText: "Забыли пароль",
+    title: "Welcome back",
+    subtitle: "Welcome! Please sign in to continue.",
+    primaryButtonText: "Login",
+    secondaryButtonText: "Forgot your password?",
   },
   signUp: {
-    title: "Зарегистрируйтесь",
-    subtitle: "Добро пожаловать! Создайте аккаунт, чтобы продолжить",
-    primaryButtonText: "Создать аккаунт",
-    secondaryButtonText: "У меня есть аккаунт",
+    title: "Register now",
+    subtitle: "Welcome! Create an account to continue.",
+    primaryButtonText: "Create an account",
+    secondaryButtonText: "I have an account",
   },
 };

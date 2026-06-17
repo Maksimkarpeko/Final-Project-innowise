@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { PATH } from "@/src/shared";
+import { APP_TEXT, PATH } from "@/src/shared";
 
 const TAB_BASE_CLASS_NAME = `
   flex
@@ -59,7 +59,7 @@ export const AuthHeader = () => {
                 ${isLoginActive ? ACTIVE_TAB_CLASS_NAME : INACTIVE_TAB_CLASS_NAME}
             `}
             >
-              Войти
+              {APP_TEXT.auth_header.login}
             </Link>
 
             <Link
@@ -70,7 +70,7 @@ export const AuthHeader = () => {
                 ${isSignUpActive ? ACTIVE_TAB_CLASS_NAME : INACTIVE_TAB_CLASS_NAME}
               `}
             >
-              Создать
+              {APP_TEXT.auth_header.register}
             </Link>
           </div>
 

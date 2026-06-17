@@ -1,5 +1,3 @@
-"use client";
-
 import { PATH } from "@/src/shared";
 import { NavHeader } from "@/src/widgets";
 

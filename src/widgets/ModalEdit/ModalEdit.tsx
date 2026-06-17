@@ -16,13 +16,17 @@ import { ModalSchemaValues } from "./modalSchema";
 type ModalProps = {
   isOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  userId?: string | null;
 };
 
-export const ModalEdit: FC<ModalProps> = ({ isOpen, setIsModalOpen }) => {
+export const ModalEdit: FC<ModalProps> = ({
+  isOpen,
+  setIsModalOpen,
+  userId,
+}) => {
   const { control, handleSubmit, reset } = useForm<ModalSchemaValues>({
     mode: "onChange",
   });
-  const userId = getUserId();
   const { data, loading: userLoading } = useQuery<UserResponse>(getUserById, {
     variables: {
       id: userId,

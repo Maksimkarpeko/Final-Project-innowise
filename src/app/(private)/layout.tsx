@@ -48,9 +48,14 @@ export default function RootLayout({
                 },
               }}
             >
-              <div className="flex h-screen w-screen">
-                <SideBar />
-                {children}
+              <div className="flex min-h-screen w-screen">
+                <div className="w-[200px] shrink-0">
+                  <SideBar />
+                </div>
+
+                <main className="flex-1 overflow-auto bg-white">
+                  {children}
+                </main>
               </div>
             </ConfigProvider>
           </WrapperApollo>

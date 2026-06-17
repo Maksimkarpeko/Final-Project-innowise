@@ -1,3 +1,9 @@
+"use client";
+
+import { useParams} from "next/navigation";
+
 export const UserProfilePage = () => {
-  return <div>User Profile</div>;
+  const params = useParams();
+  const id = params.id;
+  return <div>User Profile: {id}</div>;
 };

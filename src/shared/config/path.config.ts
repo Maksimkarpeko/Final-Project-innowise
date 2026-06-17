@@ -10,7 +10,6 @@ export const PATH = {
     SKILLS: "/skills",
   },
   USER: {
-    PROFILE: "/profile",
     LIST: "/list",
     CVS: "/user-cvs",
     LANGUAGES: "/user-languages",

@@ -1,7 +1,5 @@
 import { UserProfilePage } from "@/src/views";
 
-const Page = () => {
+export default function Page() {
   return <UserProfilePage />;
-};
-
-export default Page;
+}

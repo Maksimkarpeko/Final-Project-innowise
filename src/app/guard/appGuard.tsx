@@ -1,4 +1,5 @@
 "use client";
+
 import { getToken, PATH } from "@/src/shared";
 import { useRouter } from "next/navigation";
 import { FC, PropsWithChildren, useEffect } from "react";
@@ -9,9 +10,7 @@ export const AppGuard: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     const token = getToken("accessToken");
 
-    if (token) {
-      router.push(PATH.USER.LIST);
-    } else {
+    if (!token) {
       router.push(PATH.AUTH.LOGIN);
     }
   }, [router]);

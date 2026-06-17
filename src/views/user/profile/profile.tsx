@@ -1,9 +1,37 @@
-"use client";
+import { PATH } from "@/src/shared";
+import { NavHeader } from "@/src/widgets";
 
-import { useParams} from "next/navigation";
+type UserProfilePageProps = {
+    userId: string;
+};
 
-export const UserProfilePage = () => {
-  const params = useParams();
-  const id = params.id;
-  return <div>User Profile: {id}</div>;
+const currentUserId = "611";
+
+export const UserProfilePage = ({ userId }: UserProfilePageProps) => {
+    const canEdit = currentUserId === userId;
+
+    const navItems = [
+        {
+            content: "Profile",
+            href: PATH.USER.PROFILE(userId),
+        },
+        {
+            content: "Skills",
+            href: PATH.USER.SKILLS(userId),
+        },
+        {
+            content: "Languages",
+            href: PATH.USER.LANGUAGES(userId),
+        },
+    ];
+
+    return (
+        <div className="w-full px-6">
+            <NavHeader items={navItems} />
+
+            <section className="mt-6 w-full">
+                Profile content
+            </section>
+        </div>
+    );
 };

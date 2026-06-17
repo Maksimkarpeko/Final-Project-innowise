@@ -21,6 +21,7 @@ export const SideBar = () => {
       <div className="block md:hidden flex-1">
         <Menu
           defaultSelectedKeys={[path]}
+          selectedKeys={[path]}
           mode="horizontal"
           items={items}
           className="border-0! flex-1 [&_.ant-menu-item]:mt-0!"
@@ -31,6 +32,7 @@ export const SideBar = () => {
         <Menu
           style={{ width: 200 }}
           defaultSelectedKeys={[path]}
+          selectedKeys={[path]}
           defaultOpenKeys={["employees"]}
           mode="inline"
           items={items}

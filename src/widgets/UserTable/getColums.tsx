@@ -5,7 +5,7 @@ import { ChevronRight, EllipsisVertical, User as UserIcon } from "lucide-react";
 import Link from "next/link";
 export const getColumns = (
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  id?: string | null,
+  id: string,
 ) => [
   {
     dataIndex: ["profile", "avatar"],
@@ -62,7 +62,7 @@ export const getColumns = (
         },
         {
           key: "profile",
-          label: <Link href={`/${id}`}>Профиль</Link>,
+          label: <Link href={PATH.USER.PROFILE(id)}>Профиль</Link>,
         },
       ];
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { Avatar, Menu } from "antd";
-import { items } from "./menuItem";
+import { getItems } from "./menuItem";
 import { useQuery } from "@apollo/client/react";
 import { getProfile } from "@/src/entities";
 import { getUserId, ProfileResponse } from "@/src/shared";
@@ -11,16 +11,17 @@ import { User } from "lucide-react";
 export const SideBar = () => {
   const userId = getUserId();
   const path = usePathname();
+
   const { data, loading } = useQuery<ProfileResponse>(getProfile, {
     variables: { userId: userId },
     skip: !userId,
   });
-
+  const items = getItems(userId);
   return (
-    <div className="flex flex-col justify-between">
+    <div className="flex flex-col justify-between h-screen">
       <Menu
         style={{ width: 200 }}
-        defaultSelectedKeys={[path]}
+        selectedKeys={[path]}
         defaultOpenKeys={["employees"]}
         mode="inline"
         items={items}

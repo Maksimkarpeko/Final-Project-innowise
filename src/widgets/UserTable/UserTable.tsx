@@ -1,5 +1,4 @@
 "use client";
-
 import { Table } from "antd";
 import { getColumns } from "./getColums";
 import { FC } from "react";
@@ -7,7 +6,7 @@ import { User } from "@/src/shared";
 
 type UserTableProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  userId?: string | null;
+  userId: string;
   filterData: User[];
 };
 

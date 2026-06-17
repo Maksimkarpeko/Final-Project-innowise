@@ -1,3 +1,4 @@
+"use client";
 import { ConfigProvider, Input } from "antd";
 import { FC, useState } from "react";
 

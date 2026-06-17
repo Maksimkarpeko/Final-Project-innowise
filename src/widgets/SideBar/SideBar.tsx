@@ -1,5 +1,4 @@
 "use client";
-
 import { Avatar, Menu } from "antd";
 import { getItems } from "./menuItem";
 import { useQuery } from "@apollo/client/react";
@@ -18,32 +17,53 @@ export const SideBar = () => {
   });
   const items = getItems(userId);
   return (
-    <div className="flex flex-col justify-between h-screen">
-      <Menu
-        style={{ width: 200 }}
-        selectedKeys={[path]}
-        defaultOpenKeys={["employees"]}
-        mode="inline"
-        items={items}
-        className="border-0! pt-5! [&_.ant-menu-item]:mt-2! [&_.ant-menu-item]:rounded-r-3xl!"
-      />
+    <div className="fixed bottom-0 left-0 z-50 flex w-full flex-row items-center justify-between border-t border-gray-200 bg-white px-4 py-2 md:relative md:bottom-auto md:left-auto md:z-0 md:h-full md:w-50 md:flex-col md:border-t-0 md:bg-transparent md:p-0">
+      <div className="block md:hidden flex-1">
+        <Menu
+          defaultSelectedKeys={[path]}
+          mode="horizontal"
+          items={items}
+          className="border-0! flex-1 [&_.ant-menu-item]:mt-0!"
+        />
+      </div>
 
-      <div className="flex pl-3 pb-15">
+      <div className="hidden md:block">
+        <Menu
+          style={{ width: 200 }}
+          defaultSelectedKeys={[path]}
+          defaultOpenKeys={["employees"]}
+          mode="inline"
+          items={items}
+          className="border-0! pt-5! [&_.ant-menu-item]:mt-2! [&_.ant-menu-item]:rounded-r-3xl!"
+        />
+      </div>
+
+      <div className="flex items-center pl-0 md:pl-3 pb-0 md:pb-15">
         {loading ? (
-          <>Loading...</>
+          <span className="text-gray-400 text-sm">Loading...</span>
         ) : (
-          <div className="flex gap-2">
-            <Avatar size="large" icon={!data?.profile.avatar && <User />} />
-            {!data?.profile.full_name ? (
-              <div className="flex flex-col">
-                <span className="text-[16px]">Noname</span>
-                <span className="text-[14px]">
-                  You need to fill in the details
+          <div className="flex items-center gap-2">
+            <Avatar
+              size="large"
+              src={data?.profile?.avatar}
+              icon={!data?.profile?.avatar && <User />}
+            />
+            <div className="md:flex md:flex-col">
+              {!data?.profile?.full_name ? (
+                <>
+                  <span className="text-[16px] font-medium text-gray-700">
+                    Noname
+                  </span>
+                  <span className="text-[14px] text-gray-400 leading-tight">
+                    You need to fill in the details
+                  </span>
+                </>
+              ) : (
+                <span className="text-[15px] font-medium text-gray-700">
+                  {data?.profile.full_name}
                 </span>
-              </div>
-            ) : (
-              <span>{data?.profile.full_name}</span>
-            )}
+              )}
+            </div>
           </div>
         )}
       </div>

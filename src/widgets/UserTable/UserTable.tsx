@@ -1,6 +1,6 @@
 "use client";
 import { Table } from "antd";
-import { getColumns } from "./getColums";
+import { getColumns } from "./getColumns";
 import { FC } from "react";
 import { User } from "@/src/shared";
 
@@ -16,11 +16,19 @@ export const UserTable: FC<UserTableProps> = ({
   filterData,
 }) => {
   const columns = getColumns(setIsOpen, userId);
+  
   return (
     <Table
       columns={columns}
       dataSource={filterData}
-      className="w-[98%] [&_.ant-table-thead_th]:bg-transparent!"
+      rowKey="id"
+      scroll={{ x: "max-content" }} 
+      className="w-full md:w-[98%] pb-20 md:pb-0 [&_.ant-table-thead_th]:bg-transparent!"
+      pagination={{
+        pageSize: 10,
+        responsive: true,
+        size: "small",
+      }}
     />
   );
 };

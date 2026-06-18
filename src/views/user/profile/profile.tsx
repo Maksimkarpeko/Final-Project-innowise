@@ -2,6 +2,7 @@
 
 import { PATH } from "@/src/shared";
 import { NavHeader } from "@/src/widgets";
+import { UserProfile } from "@/src/features";
 
 type UserProfilePageProps = {
     userId: string;
@@ -32,7 +33,7 @@ export const UserProfilePage = ({ userId }: UserProfilePageProps) => {
             <NavHeader items={navItems} />
 
             <section className="mt-6 w-full">
-                Profile content
+                <UserProfile userId={userId} canEdit={canEdit} />
             </section>
         </div>
     );

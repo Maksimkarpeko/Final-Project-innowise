@@ -73,7 +73,7 @@ export const getColumns = (
               <Button type="text" shape="circle" icon={<EllipsisVertical />} />
             </Dropdown>
           ) : (
-            <Link href={`/${record.id}`}>
+            <Link href={PATH.USER.PROFILE(record.id)}>
               <ChevronRight />
             </Link>
           )}

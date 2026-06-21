@@ -1,17 +1,19 @@
 "use client";
-import { getUserById, updateProfileUser } from "@/src/entities";
+import { getUserById, updateProfileUser, updateUser } from "@/src/entities";
 import {
+  DepartmentsResponse,
   FloatingInput,
   FloatingSelect,
-  getUserId,
+  PositionsResponse,
   UserResponse,
 } from "@/src/shared";
 import { useMutation, useQuery } from "@apollo/client/react";
-import { ConfigProvider, Select } from "antd";
+import { ConfigProvider } from "antd";
 import Modal from "antd/es/modal/Modal";
 import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { ModalSchemaValues } from "./modalSchema";
+import { getDepartments, getPositions } from "@/src/entities";
 
 type ModalProps = {
   isOpen: boolean;
@@ -27,14 +29,17 @@ export const ModalEdit: FC<ModalProps> = ({
   const { control, handleSubmit, reset } = useForm<ModalSchemaValues>({
     mode: "onChange",
   });
+
+  const { data: departments } = useQuery<DepartmentsResponse>(getDepartments);
+  const { data: positions } = useQuery<PositionsResponse>(getPositions);
   const { data, loading: userLoading } = useQuery<UserResponse>(getUserById, {
     variables: {
       id: userId,
     },
     skip: !userId,
   });
-  const [update, { error, loading }] = useMutation(updateProfileUser);
-
+  const [updateProfile, { error }] = useMutation(updateProfileUser);
+  const [updateUserFN, { error }] = useMutation(updateUser);
   useEffect(() => {
     if (data?.user) {
       reset({
@@ -48,10 +53,9 @@ export const ModalEdit: FC<ModalProps> = ({
     if (!userId) {
       console.error("Id not found");
     }
-    console.log(userId);
 
     try {
-      await update({
+      await updateProfile({
         variables: {
           profile: {
             userId: String(userId),
@@ -69,10 +73,6 @@ export const ModalEdit: FC<ModalProps> = ({
 
   const handleCancel = () => {
     setIsModalOpen(false);
-  };
-
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
   };
 
   return (
@@ -123,31 +123,62 @@ export const ModalEdit: FC<ModalProps> = ({
           />
 
           <div>
-            <FloatingSelect
-              label="Department"
-              defaultValue=""
-              onChange={handleChange}
-              options={[]}
+            <Controller
+              name="department"
+              control={control}
+              render={({ field }) => (
+                <FloatingSelect
+                  label="Department"
+                  defaultValue=""
+                  options={
+                    departments?.departments.map((d) => ({
+                      value: d.name,
+                      label: d.name,
+                    })) ?? []
+                  }
+                  {...field}
+                />
+              )}
             />
           </div>
           <div>
-            <FloatingSelect
-              label="Position"
-              defaultValue=""
-              onChange={handleChange}
-              options={[]}
+            <Controller
+              name="position"
+              control={control}
+              render={({ field }) => (
+                <FloatingSelect
+                  label="Position"
+                  defaultValue=""
+                  options={
+                    positions?.positions.map((p) => ({
+                      value: p.name,
+                      label: p.name,
+                    })) ?? []
+                  }
+                  {...field}
+                />
+              )}
             />
           </div>
 
           <div>
-            <FloatingSelect
-              label="Position"
-              defaultValue="Employee"
-              onChange={handleChange}
-              options={[
-                { value: `${data?.user.role}`, label: `${data?.user.role}` },
-              ]}
-              disabled
+            <Controller
+              name="role"
+              control={control}
+              render={({ field }) => (
+                <FloatingSelect
+                  label="Role"
+                  defaultValue="Employee"
+                  options={[
+                    {
+                      value: `${data?.user.role}`,
+                      label: `${data?.user.role}`,
+                    },
+                  ]}
+                  disabled
+                  {...field}
+                />
+              )}
             />
           </div>
           {error && <span className="text-red-500">{error.message}</span>}

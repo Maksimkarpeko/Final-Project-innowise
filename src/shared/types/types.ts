@@ -39,6 +39,12 @@ type Position = {
   name: string;
 };
 
+type Skill = {
+  id: string;
+  created_at: string;
+  name: string;
+};
+
 export type Cv = {
   id: string;
   created_at: string;
@@ -138,3 +144,15 @@ export type UsersResponse = {
 export type UserResponse = {
   user: User;
 };
+
+export type DepartmentsResponse = {
+  departments: Department[];
+};
+
+export type SkillsResponse = {
+  skills: Skill[];
+};
+
+export type PositionsResponse = {
+  positions: Position[]
+}

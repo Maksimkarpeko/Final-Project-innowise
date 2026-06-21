@@ -32,7 +32,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen flex flex-col bg" suppressHydrationWarning>
+      <body className="min-h-screen" suppressHydrationWarning>
         <AppGuard>
           <WrapperApollo>
             <ConfigProvider
@@ -49,7 +49,7 @@ export default function RootLayout({
               }}
             >
               <div className="flex min-h-screen w-screen">
-                <div className="w-[200px] shrink-0">
+                <div className="shrink-0">
                   <SideBar />
                 </div>
 

@@ -1,3 +1,5 @@
+"use client"
+
 import { getUserId, PATH } from "@/src/shared";
 import { NavHeader } from "@/src/widgets";
 import { UserProfile } from "@/src/features";

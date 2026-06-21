@@ -126,3 +126,15 @@ export type AuthResponse = {
   access_token: string;
   refresh_token: string;
 };
+
+export type ProfileResponse = {
+  profile: Profile;
+};
+
+export type UsersResponse = {
+  users: User[];
+};
+
+export type UserResponse = {
+  user: User;
+};

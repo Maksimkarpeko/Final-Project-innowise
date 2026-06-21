@@ -12,6 +12,8 @@ export const AppGuard: FC<PropsWithChildren> = ({ children }) => {
 
     if (!token) {
       router.push(PATH.AUTH.LOGIN);
+    } else {
+      router.push(PATH.USER.LIST);
     }
   }, [router]);
 

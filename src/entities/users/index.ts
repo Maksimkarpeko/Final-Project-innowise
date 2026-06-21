@@ -1,1 +1,1 @@
-export { getProfile } from "./api/users.api";
+export * from "./api/users.api";

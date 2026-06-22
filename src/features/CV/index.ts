@@ -1,0 +1,1 @@
+export { CVDetailsForm } from "./ui/CvDetailsForm"

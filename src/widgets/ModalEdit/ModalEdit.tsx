@@ -12,8 +12,9 @@ import { ConfigProvider } from "antd";
 import Modal from "antd/es/modal/Modal";
 import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { ModalSchemaValues } from "./modalSchema";
+import { modalSchema, ModalSchemaValues } from "./modalSchema";
 import { getDepartments, getPositions } from "@/src/entities";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type ModalProps = {
   isOpen: boolean;
@@ -26,7 +27,13 @@ export const ModalEdit: FC<ModalProps> = ({
   setIsModalOpen,
   userId,
 }) => {
-  const { control, handleSubmit, reset } = useForm<ModalSchemaValues>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isValid },
+  } = useForm<ModalSchemaValues>({
+    resolver: zodResolver(modalSchema),
     mode: "onChange",
   });
 
@@ -39,7 +46,7 @@ export const ModalEdit: FC<ModalProps> = ({
     skip: !userId,
   });
   const [updateProfile, { error }] = useMutation(updateProfileUser);
-  const [updateUserFN, { error }] = useMutation(updateUser);
+  const [updateUserFN, { error: errorUpdateUser }] = useMutation(updateUser);
   useEffect(() => {
     if (data?.user) {
       reset({
@@ -53,18 +60,27 @@ export const ModalEdit: FC<ModalProps> = ({
     if (!userId) {
       console.error("Id not found");
     }
-
-    try {
-      await updateProfile({
-        variables: {
-          profile: {
-            userId: String(userId),
-            first_name: data.first_name,
-            last_name: data.last_name,
-          },
+    const profileFunc = updateProfile({
+      variables: {
+        profile: {
+          userId: String(userId),
+          first_name: data.first_name,
+          last_name: data.last_name,
         },
-        refetchQueries: [{ query: getUserById, variables: { id: userId } }],
-      });
+      },
+      refetchQueries: [{ query: getUserById, variables: { id: userId } }],
+    });
+    const userFunc = updateUserFN({
+      variables: {
+        user: {
+          userId: String(userId),
+          departmentId: data.department,
+          positionId: data.position,
+        },
+      },
+    });
+    try {
+      await Promise.all([profileFunc, userFunc]);
       setIsModalOpen(false);
     } catch (error) {
       console.error(error);
@@ -82,6 +98,7 @@ export const ModalEdit: FC<ModalProps> = ({
         closable={{ "aria-label": "Custom Close Button" }}
         open={isOpen}
         onOk={handleSubmit(handleOk)}
+        okButtonProps={{ disabled: !isValid }}
         onCancel={handleCancel}
         loading={userLoading}
         okText={"Submit"}
@@ -129,10 +146,10 @@ export const ModalEdit: FC<ModalProps> = ({
               render={({ field }) => (
                 <FloatingSelect
                   label="Department"
-                  defaultValue=""
+                  defaultValue={`${data?.user.department.name}`}
                   options={
                     departments?.departments.map((d) => ({
-                      value: d.name,
+                      value: d.id,
                       label: d.name,
                     })) ?? []
                   }
@@ -148,10 +165,10 @@ export const ModalEdit: FC<ModalProps> = ({
               render={({ field }) => (
                 <FloatingSelect
                   label="Position"
-                  defaultValue=""
+                  defaultValue={`${data?.user.position.name}`}
                   options={
                     positions?.positions.map((p) => ({
-                      value: p.name,
+                      value: p.id,
                       label: p.name,
                     })) ?? []
                   }
@@ -182,6 +199,9 @@ export const ModalEdit: FC<ModalProps> = ({
             />
           </div>
           {error && <span className="text-red-500">{error.message}</span>}
+          {errorUpdateUser && (
+            <span className="text-red-500">{errorUpdateUser.message}</span>
+          )}
         </form>
       </Modal>
     </ConfigProvider>

@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { Alert, Form, Spin } from "antd";
 
-import { useCVDetails } from "../hooks/useCVDetails";
-import type { CVDetails, CVDetailsFormValues } from "../model/types";
+import { useCVDetails } from "../../hooks/useCVDetails";
+import type { CVDetails, CVDetailsFormValues } from "../../model/types";
 
 import { CvFormField } from "./CvFormFiled";
 

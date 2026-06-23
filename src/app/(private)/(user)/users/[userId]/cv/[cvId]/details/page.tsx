@@ -1,5 +1,5 @@
 import {UserCvIdPageProps} from "@/src/shared";
-import {CVSDetailsPage} from "@/src/views/user/cvs/details/CVSDetails";
+import { CVSDetailsPage } from "@/src/views";
 
 const Page = async ({ params }: UserCvIdPageProps) => {
   const { userId } = await params;

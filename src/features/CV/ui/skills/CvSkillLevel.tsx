@@ -1,4 +1,4 @@
-import type { Mastery } from "../../model/types.skills";
+import type { Mastery } from "../../model/skills/types.skills";
 
 type CvSkillLevelProps = {
     mastery: Mastery;

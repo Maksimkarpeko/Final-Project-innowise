@@ -5,8 +5,8 @@ import { Alert, Empty, Form, Modal, Select, Spin } from "antd";
 import { Plus, Trash2 } from "lucide-react";
 
 import { useCVSkills } from "../../hooks/useCVSkills";
-import { groupCVSkillsByCategory } from "../../model/groupCVSkillsByCategory";
-import type { CVSkill, Mastery } from "../../model/types.skills";
+import { groupCVSkillsByCategory } from "../../model/skills/groupCVSkillsByCategory";
+import type { CVSkill, Mastery } from "../../model/skills/types.skills";
 
 import { CvSkillItem } from "./CvSkillItem";
 

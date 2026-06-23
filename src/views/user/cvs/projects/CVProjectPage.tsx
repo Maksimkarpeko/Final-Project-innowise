@@ -1,13 +1,13 @@
-import { CVDetailsForm } from "@/src/features";
+import { CvProjectsSection } from "@/src/features";
 import { NavHeader } from "@/src/widgets";
 import {PATH} from "@/src/shared";
 
-type UserIdPage = {
+type CVProjectsPageProps = {
     userId: string;
     cvId: string;
 };
 
-export const CVSDetailsPage = ({ userId, cvId }: UserIdPage) => {
+export const CVProjectsPage = ({ userId, cvId }: CVProjectsPageProps) => {
 
     const navItems = [
         {
@@ -29,11 +29,11 @@ export const CVSDetailsPage = ({ userId, cvId }: UserIdPage) => {
     ];
 
     return (
-        <div className="w-full">
+        <div className="w-full bg-white">
             <NavHeader items={navItems} />
 
-            <div className="w-full px-4 pt-[56px] md:px-8 lg:px-0 lg:pt-[64px]">
-                <CVDetailsForm key={cvId} cvId={cvId} />
+            <div className="w-full px-4 pt-[44px] md:px-8 lg:px-0">
+                <CvProjectsSection cvId={cvId} />
             </div>
         </div>
     );

@@ -3,4 +3,5 @@ export * from "./SideBar";
 export * from "./HeaderSearch";
 export * from "./UserTable";
 export * from "./ModalEdit";
-export * from "./NavHeader"
+export * from "./NavHeader";
+export * from "./ModalSkill";

@@ -3,3 +3,10 @@ export type UserIdPageProps = {
         userId: string;
     }>;
 };
+
+export type UserCvIdPageProps = {
+    params: Promise<{
+        userId: string;
+        cvId: string;
+    }>;
+}

@@ -21,7 +21,7 @@ import type {
     SkillCategoriesResponse,
     SkillsCatalogResponse,
     UpdateCVSkillVariables,
-} from "../model/types.skills";
+} from "../model/skills/types.skills";
 
 type UseCVSkillsParams = {
     cvId: string;

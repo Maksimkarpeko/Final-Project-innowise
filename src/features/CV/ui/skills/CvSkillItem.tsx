@@ -1,6 +1,6 @@
 import { Checkbox } from "antd";
 
-import type { CVSkill } from "../../model/types.skills";
+import type { CVSkill } from "../../model/skills/types.skills";
 
 import { CvSkillLevel } from "./CvSkillLevel";
 

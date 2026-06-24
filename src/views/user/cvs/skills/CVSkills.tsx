@@ -1,4 +1,4 @@
-import { CvSkillsSection } from "@/src/features/CV";
+import { CvSkillsSection } from "@/src/features";
 import { PATH } from "@/src/shared";
 import { NavHeader } from "@/src/widgets";
 

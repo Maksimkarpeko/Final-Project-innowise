@@ -8,6 +8,15 @@ export const getProfile = gql`
       last_name
       full_name
       avatar
+      skills {
+        name
+        categoryId
+        mastery 
+      }
+      languages {
+        name
+        proficiency
+      }
     }
   }
 `;
@@ -36,6 +45,7 @@ export const getUserById = gql`
       profile {
         first_name
         last_name
+        full_name
         avatar
       }
       department {
@@ -55,6 +65,14 @@ export const updateProfileUser = gql`
       id
       first_name
       last_name
+    }
+  }
+`;
+
+export const updateUser = gql`
+  mutation UpdateUser($user: UpdateUserInput!) {
+    updateUser(user: $user) {
+      id
     }
   }
 `;

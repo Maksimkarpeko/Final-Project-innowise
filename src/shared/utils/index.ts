@@ -4,3 +4,4 @@ export {
   getUserId,
 } from "./workOnLocalStorage";
 
+export { getNavItems } from "./getNavItem";

@@ -55,14 +55,14 @@ export const getColumns = (
       const menuItems = [
         {
           key: "edit",
-          label: "Редактировать",
+          label: "Update",
           onClick: () => {
             setIsOpen(true);
           },
         },
         {
           key: "profile",
-          label: <Link href={PATH.USER.PROFILE(id)}>Профиль</Link>,
+          label: <Link href={PATH.USER.PROFILE(id)}>Profile</Link>,
         },
       ];
 
@@ -73,7 +73,7 @@ export const getColumns = (
               <Button type="text" shape="circle" icon={<EllipsisVertical />} />
             </Dropdown>
           ) : (
-            <Link href={`/${record.id}`}>
+            <Link href={PATH.USER.PROFILE(record.id)}>
               <ChevronRight />
             </Link>
           )}

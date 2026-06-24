@@ -39,6 +39,19 @@ type Position = {
   name: string;
 };
 
+type Category = {
+  id: string;
+  name: string;
+  order: number;
+};
+
+type Skill = {
+  id: string;
+  created_at: string;
+  name: string;
+  category: Category;
+};
+
 export type Cv = {
   id: string;
   created_at: string;
@@ -75,6 +88,14 @@ export const MasteryObject = {
   Proficient: "Proficient",
   Expert: "Expert",
 } as const;
+
+export const MasteryNumeric = {
+  Novice: 20,
+  Advanced: 40,
+  Competent: 60,
+  Proficient: 80,
+  Expert: 100,
+};
 
 export type Mastery = (typeof MasteryObject)[keyof typeof MasteryObject];
 
@@ -137,4 +158,20 @@ export type UsersResponse = {
 
 export type UserResponse = {
   user: User;
+};
+
+export type DepartmentsResponse = {
+  departments: Department[];
+};
+
+export type SkillsResponse = {
+  skills: Skill[];
+};
+
+export type PositionsResponse = {
+  positions: Position[];
+};
+
+export type SkillCategories = {
+  skillCategories: Category[];
 };

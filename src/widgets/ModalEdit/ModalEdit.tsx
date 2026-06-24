@@ -1,17 +1,20 @@
 "use client";
-import { getUserById, updateProfileUser } from "@/src/entities";
+import { getUserById, updateProfileUser, updateUser } from "@/src/entities";
 import {
+  DepartmentsResponse,
   FloatingInput,
   FloatingSelect,
-  getUserId,
+  PositionsResponse,
   UserResponse,
 } from "@/src/shared";
 import { useMutation, useQuery } from "@apollo/client/react";
-import { ConfigProvider, Select } from "antd";
+import { ConfigProvider } from "antd";
 import Modal from "antd/es/modal/Modal";
 import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { ModalSchemaValues } from "./modalSchema";
+import { modalSchema, ModalSchemaValues } from "./modalSchema";
+import { getDepartments, getPositions } from "@/src/entities";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type ModalProps = {
   isOpen: boolean;
@@ -24,17 +27,26 @@ export const ModalEdit: FC<ModalProps> = ({
   setIsModalOpen,
   userId,
 }) => {
-  const { control, handleSubmit, reset } = useForm<ModalSchemaValues>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isValid },
+  } = useForm<ModalSchemaValues>({
+    resolver: zodResolver(modalSchema),
     mode: "onChange",
   });
+
+  const { data: departments } = useQuery<DepartmentsResponse>(getDepartments);
+  const { data: positions } = useQuery<PositionsResponse>(getPositions);
   const { data, loading: userLoading } = useQuery<UserResponse>(getUserById, {
     variables: {
       id: userId,
     },
     skip: !userId,
   });
-  const [update, { error, loading }] = useMutation(updateProfileUser);
-
+  const [updateProfile, { error }] = useMutation(updateProfileUser);
+  const [updateUserFN, { error: errorUpdateUser }] = useMutation(updateUser);
   useEffect(() => {
     if (data?.user) {
       reset({
@@ -48,19 +60,27 @@ export const ModalEdit: FC<ModalProps> = ({
     if (!userId) {
       console.error("Id not found");
     }
-    console.log(userId);
-
-    try {
-      await update({
-        variables: {
-          profile: {
-            userId: String(userId),
-            first_name: data.first_name,
-            last_name: data.last_name,
-          },
+    const profileFunc = updateProfile({
+      variables: {
+        profile: {
+          userId: String(userId),
+          first_name: data.first_name,
+          last_name: data.last_name,
         },
-        refetchQueries: [{ query: getUserById, variables: { id: userId } }],
-      });
+      },
+      refetchQueries: [{ query: getUserById, variables: { id: userId } }],
+    });
+    const userFunc = updateUserFN({
+      variables: {
+        user: {
+          userId: String(userId),
+          departmentId: data.department,
+          positionId: data.position,
+        },
+      },
+    });
+    try {
+      await Promise.all([profileFunc, userFunc]);
       setIsModalOpen(false);
     } catch (error) {
       console.error(error);
@@ -71,10 +91,6 @@ export const ModalEdit: FC<ModalProps> = ({
     setIsModalOpen(false);
   };
 
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
-
   return (
     <ConfigProvider>
       <Modal
@@ -82,6 +98,7 @@ export const ModalEdit: FC<ModalProps> = ({
         closable={{ "aria-label": "Custom Close Button" }}
         open={isOpen}
         onOk={handleSubmit(handleOk)}
+        okButtonProps={{ disabled: !isValid }}
         onCancel={handleCancel}
         loading={userLoading}
         okText={"Submit"}
@@ -123,34 +140,68 @@ export const ModalEdit: FC<ModalProps> = ({
           />
 
           <div>
-            <FloatingSelect
-              label="Department"
-              defaultValue=""
-              onChange={handleChange}
-              options={[]}
+            <Controller
+              name="department"
+              control={control}
+              render={({ field }) => (
+                <FloatingSelect
+                  label="Department"
+                  defaultValue={`${data?.user.department.name}`}
+                  options={
+                    departments?.departments.map((d) => ({
+                      value: d.id,
+                      label: d.name,
+                    })) ?? []
+                  }
+                  {...field}
+                />
+              )}
             />
           </div>
           <div>
-            <FloatingSelect
-              label="Position"
-              defaultValue=""
-              onChange={handleChange}
-              options={[]}
+            <Controller
+              name="position"
+              control={control}
+              render={({ field }) => (
+                <FloatingSelect
+                  label="Position"
+                  defaultValue={`${data?.user.position.name}`}
+                  options={
+                    positions?.positions.map((p) => ({
+                      value: p.id,
+                      label: p.name,
+                    })) ?? []
+                  }
+                  {...field}
+                />
+              )}
             />
           </div>
 
           <div>
-            <FloatingSelect
-              label="Position"
-              defaultValue="Employee"
-              onChange={handleChange}
-              options={[
-                { value: `${data?.user.role}`, label: `${data?.user.role}` },
-              ]}
-              disabled
+            <Controller
+              name="role"
+              control={control}
+              render={({ field }) => (
+                <FloatingSelect
+                  label="Role"
+                  defaultValue="Employee"
+                  options={[
+                    {
+                      value: `${data?.user.role}`,
+                      label: `${data?.user.role}`,
+                    },
+                  ]}
+                  disabled
+                  {...field}
+                />
+              )}
             />
           </div>
           {error && <span className="text-red-500">{error.message}</span>}
+          {errorUpdateUser && (
+            <span className="text-red-500">{errorUpdateUser.message}</span>
+          )}
         </form>
       </Modal>
     </ConfigProvider>

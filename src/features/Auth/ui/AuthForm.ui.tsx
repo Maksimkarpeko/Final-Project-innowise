@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link";
 import { Button, Form } from "antd";
 import { Controller, useForm } from "react-hook-form";

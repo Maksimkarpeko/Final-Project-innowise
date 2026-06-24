@@ -1,6 +1,6 @@
 import { Form, Input } from "antd";
 
-import type { CVDetailsFormValues } from "../model/types";
+import type { CVDetailsFormValues } from "../../model/types";
 
 type CvFormFieldProps = {
     label: string;

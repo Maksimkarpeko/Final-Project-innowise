@@ -18,6 +18,8 @@ export const PATH = {
       DETAILS: (userId: string, cvId: string) =>
           `/users/${userId}/cv/${cvId}/details`,
 
+      SKILLS: (userId: string, cvId: string) => `/users/${userId}/cv/${cvId}/skills`,
+
       PROJECTS: (userId: string, cvId: string) =>
           `/users/${userId}/cv/${cvId}/projects`,
 

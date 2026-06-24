@@ -36,3 +36,89 @@ export const UPDATE_CV_DETAILS = gql`
     }
   }
 `;
+
+export const GET_CV_SKILLS = gql`
+  query GetCVSkills($cvId: ID!) {
+    cv(cvId: $cvId) {
+      id
+      skills {
+        name
+        categoryId
+        mastery
+      }
+    }
+  }
+`;
+
+export const GET_SKILL_CATEGORIES = gql`
+  query GetSkillCategories {
+    skillCategories {
+      id
+      name
+      order
+      parent {
+        id
+        name
+      }
+      children {
+        id
+        name
+        order
+      }
+    }
+  }
+`;
+
+export const ADD_CV_SKILL = gql`
+  mutation AddCVSkill($skill: AddCvSkillInput!) {
+    addCvSkill(skill: $skill) {
+      id
+      skills {
+        name
+        categoryId
+        mastery
+      }
+    }
+  }
+`;
+
+export const UPDATE_CV_SKILL = gql`
+  mutation UpdateCVSkill($skill: UpdateCvSkillInput!) {
+    updateCvSkill(skill: $skill) {
+      id
+      skills {
+        name
+        categoryId
+        mastery
+      }
+    }
+  }
+`;
+
+export const DELETE_CV_SKILL = gql`
+  mutation DeleteCVSkill($skill: DeleteCvSkillInput!) {
+    deleteCvSkill(skill: $skill) {
+      id
+      skills {
+        name
+        categoryId
+        mastery
+      }
+    }
+  }
+`;
+
+export const GET_SKILLS = gql`
+  query GetSkills {
+    skills {
+      id
+      name
+      category {
+        id
+        name
+      }
+      category_name
+      category_parent_name
+    }
+  }
+`;

@@ -4,6 +4,7 @@ export const GET_USER_CVS = gql`
   query GetUserCVS($userId: ID!) {
     user(userId: $userId) {
       id
+      email
       cvs {
         id
         created_at

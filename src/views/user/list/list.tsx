@@ -1,8 +1,8 @@
 "use client";
 
 import { getUsers } from "@/src/entities";
-import { getUserId, UsersResponse } from "@/src/shared";
-import { HeaderSearch, ModalEdit, UserTable } from "@/src/widgets";
+import { getUserId, HeaderSearch, UsersResponse } from "@/src/shared";
+import { ModalEdit, UserTable } from "@/src/widgets";
 import { useQuery } from "@apollo/client/react";
 import { useState, useEffect } from "react";
 
@@ -17,7 +17,7 @@ export const UserListPage = () => {
 
   useEffect(() => {
     refetch();
-  }, [refetch]);
+  }, [refetch, isOpen]);
 
   const dataWithId = data?.users.filter((user) => user.id === userId) || [];
   const dataWithoutId = data?.users.filter((user) => user.id !== userId) || [];
@@ -34,34 +34,31 @@ export const UserListPage = () => {
     const secondName = user?.profile?.last_name?.toLowerCase() || "";
     const email = user?.email?.toLowerCase() || "";
     return (
-        firstName.includes(lowerSearchValue) ||
-        secondName.includes(lowerSearchValue) ||
-        email.includes(lowerSearchValue)
+      firstName.includes(lowerSearchValue) ||
+      secondName.includes(lowerSearchValue) ||
+      email.includes(lowerSearchValue)
     );
   });
 
   return (
-      <div className="w-full h-screen flex flex-col overflow-hidden p-4">
-        <div className="w-[320px]">
-          <HeaderSearch
-              searchValue={searchValue}
-              setSearchValue={setSearchValue}
-          />
-        </div>
-        <div className="flex-1 overflow-y-auto min-h-0 scrollbar-none [&::-webkit-scrollbar]:hidden">
-          <UserTable
-              setIsOpen={setIsOpen}
-              filterData={filterData}
-              userId={userId}
-          />
-        </div>
-        {isOpen && (
-            <ModalEdit
-                isOpen={isOpen}
-                setIsModalOpen={setIsOpen}
-                userId={userId}
-            />
-        )}
+    <div className="w-full h-screen flex flex-col overflow-hidden p-4">
+      <span className="text-black/60">list</span>
+      <div className="w-[320px]">
+        <HeaderSearch
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+        />
       </div>
+      <div className="flex-1 overflow-y-auto min-h-0 scrollbar-none [&::-webkit-scrollbar]:hidden">
+        <UserTable
+          setIsOpen={setIsOpen}
+          filterData={filterData}
+          userId={userId}
+        />
+      </div>
+      {isOpen && (
+        <ModalEdit isOpen={isOpen} setIsModalOpen={setIsOpen} userId={userId} />
+      )}
+    </div>
   );
 };

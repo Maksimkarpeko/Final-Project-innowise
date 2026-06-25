@@ -2,24 +2,21 @@
 import { ConfigProvider, Input } from "antd";
 import { FC, useState } from "react";
 
+const { TextArea } = Input;
+
 interface FloatingInputProps {
   label: string;
   type?: string;
   disabled?: boolean;
-  isPassword?: boolean;
   defaultValue?: string;
 }
 
-export const FloatingInput: FC<FloatingInputProps> = ({
+export const FloatingTextArea: FC<FloatingInputProps> = ({
   label,
-  type = "text",
   disabled = false,
-  isPassword = false,
   defaultValue = "",
   ...rest
 }) => {
-  const InputComponent = isPassword ? Input.Password : Input;
-
   return (
     <ConfigProvider
       theme={{
@@ -39,13 +36,7 @@ export const FloatingInput: FC<FloatingInputProps> = ({
       }}
     >
       <div className="relative w-full" style={{ backgroundColor: "#ffffff" }}>
-        <InputComponent
-          type={type}
-          disabled={disabled}
-          defaultValue={defaultValue}
-          style={{ boxShadow: "none" }}
-          {...rest}
-        />
+        <TextArea rows={4} {...rest} defaultValue={defaultValue} />
 
         <label
           style={{

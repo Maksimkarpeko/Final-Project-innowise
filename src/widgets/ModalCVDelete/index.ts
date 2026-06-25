@@ -1,0 +1,1 @@
+export { ModalCVDelete } from "./ModalCVDelete";

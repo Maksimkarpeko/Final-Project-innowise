@@ -15,4 +15,7 @@ export const APP_TEXT = {
     primaryButtonText: "Create an account",
     secondaryButtonText: "I have an account",
   },
+  cv: {
+    deleteText: "Are you sure want to delete CV ",
+  },
 };

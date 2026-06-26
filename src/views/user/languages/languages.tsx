@@ -3,10 +3,17 @@ import {PATH} from "@/src/shared";
 import {NavHeader} from "@/src/widgets";
 
 type UserProfilePageProps = {
-  userId: string;
+  userId?: string;
 };
 
 export const UserLanguagesPage = ({ userId }: UserProfilePageProps) => {
+
+  if (!userId) {
+    return <section className="px-6 w-full">
+      <span className="text-black/60">Languages</span>
+      <LanguagesPage/>
+    </section>;
+  }
 
   const navItems = [
     {

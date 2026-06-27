@@ -5,12 +5,18 @@ import { Plus, Trash2 } from "lucide-react";
 import { useLanguages } from "../hooks/useLanguages";
 import { LanguageItems } from "./LanguageItems";
 import { LanguageFormModal } from "./LanguageFormModal";
+import {getUserId} from "@/src/shared";
 
 type LanguagesPageProps = {
-    userId: string;
+    userId?: string;
 };
 
 export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
+
+    if (!userId) {
+        userId = getUserId();
+    }
+    
     const {
         canEdit,
 

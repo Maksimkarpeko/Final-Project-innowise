@@ -23,14 +23,14 @@ export const getItems = (id?: string | null): MenuProps["items"] => {
   return [
     ...items,
     {
-      key: PATH.USER.SKILLS(id),
+      key: PATH.USER.SIDE_SKILLS,
       icon: <Image src={SkillsIcon} alt="Skills" />,
-      label: <Link href={PATH.USER.SKILLS(id)}>Skills</Link>,
+      label: <Link href={PATH.USER.SIDE_SKILLS}>Skills</Link>,
     },
     {
-      key: PATH.USER.LANGUAGES(id),
+      key: PATH.USER.SIDE_LANGUAGES,
       icon: <Languages size={24} className="pr-1" color="#7a7a7a" />,
-      label: <Link href={PATH.USER.LANGUAGES(id)}>Languages</Link>,
+      label: <Link href={PATH.USER.SIDE_LANGUAGES}>Languages</Link>,
     },
     {
       key: PATH.USER.CV.LIST(id),

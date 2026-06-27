@@ -12,6 +12,8 @@ export const PATH = {
   USER: {
     PROFILE: (userId: string) => `/users/${userId}/profile`,
     LIST: "/list",
+    SIDE_SKILLS: "/skills",
+    SIDE_LANGUAGES: "/languages",
     CV: {
       LIST: (userId: string) => `/users/${userId}/cv`,
 

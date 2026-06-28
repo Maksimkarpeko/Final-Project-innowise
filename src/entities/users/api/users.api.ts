@@ -11,7 +11,7 @@ export const getProfile = gql`
       skills {
         name
         categoryId
-        mastery 
+        mastery
       }
       languages {
         name
@@ -27,6 +27,7 @@ export const getUsers = gql`
       id
       email
       profile {
+        id
         first_name
         last_name
         avatar
@@ -43,6 +44,7 @@ export const getUserById = gql`
       id
       email
       profile {
+        id
         first_name
         last_name
         full_name

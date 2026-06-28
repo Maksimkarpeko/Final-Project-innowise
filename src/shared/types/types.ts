@@ -176,6 +176,3 @@ export type SkillCategories = {
   skillCategories: Category[];
 };
 
-// export type CVResponse = {
-
-// }

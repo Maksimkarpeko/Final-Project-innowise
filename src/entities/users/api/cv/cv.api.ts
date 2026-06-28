@@ -5,12 +5,47 @@ export const GET_USER_CVS = gql`
     user(userId: $userId) {
       id
       email
+      profile {
+        id
+        full_name
+      }
       cvs {
         id
         created_at
         name
         education
         description
+        projects {
+          id
+          name
+          internal_name
+          domain
+          start_date
+          end_date
+          description
+          environment
+          roles
+          responsibilities
+          project {
+            id
+            name
+            internal_name
+            domain
+            start_date
+            end_date
+            description
+            environment
+          }
+        }
+        skills {
+          name
+          categoryId
+          mastery
+        }
+        languages {
+          name
+          proficiency
+        }
       }
     }
   }

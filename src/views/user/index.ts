@@ -7,3 +7,4 @@ export { UserSkillsPage } from "./skills/skills";
 export { CVSDetailsPage } from "./cvs/details/CVSDetails";
 export { CVSkillsPage } from "./cvs/skills/CVSkills";
 export { CVProjectsPage } from "./cvs/projects/CVProjectPage";
+export { CVPreview } from "./cvs/preview/CVPreview";

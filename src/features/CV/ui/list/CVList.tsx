@@ -1,7 +1,5 @@
 "use client";
-import { GET_CV_SKILLS, GET_USER_CVS } from "@/src/entities";
-import { Cv, getUserId, UserResponse } from "@/src/shared";
-import { useQuery } from "@apollo/client/react";
+import { getUserId, UserResponse } from "@/src/shared";
 import { Table } from "antd";
 import { getColumns } from "./columCv";
 import { Dispatch, FC, SetStateAction } from "react";

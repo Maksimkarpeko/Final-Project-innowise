@@ -15,6 +15,7 @@ export const useAuthForm = () => {
         if (data) {
           safeRefreshAccessToken(
             data.signup.user.id,
+            data.signup.user.role,
             data.signup.refresh_token,
             data.signup.access_token,
           );
@@ -41,6 +42,7 @@ export const useAuthForm = () => {
     if (loginData) {
       safeRefreshAccessToken(
         loginData.login.user.id,
+        loginData.login.user.role,
         loginData.login.refresh_token,
         loginData.login.access_token,
       );

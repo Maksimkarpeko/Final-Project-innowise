@@ -1,10 +1,12 @@
 export const safeRefreshAccessToken = (
   userId: string,
+  role: string,
   refreshToken: string,
   accessToken: string,
 ) => {
   try {
     localStorage.setItem("userId", userId);
+    localStorage.setItem("role", role);
     localStorage.setItem("refreshToken", refreshToken);
     localStorage.setItem("accessToken", accessToken);
   } catch (error) {
@@ -26,6 +28,17 @@ export const getUserId = (): string => {
     if (typeof window === "undefined") return "";
 
     return localStorage.getItem("userId") || "";
+  } catch (error) {
+    console.error("Error getting id from localStorage:", error);
+    return "";
+  }
+};
+
+export const getUserRole = (): string => {
+  try {
+    if (typeof window === "undefined") return "";
+
+    return localStorage.getItem("role") || "";
   } catch (error) {
     console.error("Error getting id from localStorage:", error);
     return "";

@@ -1,10 +1,10 @@
 "use client";
-
 import { ConfigProvider } from "antd";
 import { WrapperApollo } from "../apollo/apollo-client";
 import { AppGuard } from "../guard/appGuard";
 import { FC, PropsWithChildren } from "react";
 import dynamic from "next/dynamic";
+import { getUserRole } from "@/src/shared";
 
 const SideBar = dynamic(
   () => import("@/src/widgets/SideBar/SideBar").then((mod) => mod.SideBar),
@@ -12,6 +12,7 @@ const SideBar = dynamic(
 );
 
 export const Providers: FC<PropsWithChildren> = ({ children }) => {
+  const role = getUserRole();
   return (
     <AppGuard>
       <WrapperApollo>
@@ -30,7 +31,7 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
         >
           <div className="flex min-h-screen w-screen">
             <div className="shrink-0">
-              <SideBar />
+              {role === "Employee" ? <SideBar /> : <SideBar />}
             </div>
 
             <main className="flex-1 overflow-auto bg-white">{children}</main>

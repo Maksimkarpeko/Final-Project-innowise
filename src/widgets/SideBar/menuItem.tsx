@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { PATH, SkillsIcon } from "@/src/shared";
 
-export const getItems = (id?: string | null): MenuProps["items"] => {
+export const getItems = (id?: string | null,): MenuProps["items"] => {
   const items: MenuProps["items"] = [
     {
       key: PATH.USER.LIST,

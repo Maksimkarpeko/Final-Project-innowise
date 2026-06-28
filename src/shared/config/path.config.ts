@@ -5,9 +5,10 @@ export const PATH = {
     FORGOT_PASSWORD: "/forgot-password",
   },
   ADMIN: {
-    PROJECTS: "/projects",
-    USERS: "/users",
-    SKILLS: "/skills",
+    PROJECTS: "/admin_projects",
+    LANGUAGES: "/admin_languages",
+    POSITIONS: "/admin_positions",
+    SKILLS: "/admin_skills",
   },
   USER: {
     PROFILE: (userId: string) => `/users/${userId}/profile`,
@@ -18,15 +19,16 @@ export const PATH = {
       LIST: (userId: string) => `/users/${userId}/cv`,
 
       DETAILS: (userId: string, cvId: string) =>
-          `/users/${userId}/cv/${cvId}/details`,
+        `/users/${userId}/cv/${cvId}/details`,
 
-      SKILLS: (userId: string, cvId: string) => `/users/${userId}/cv/${cvId}/skills`,
+      SKILLS: (userId: string, cvId: string) =>
+        `/users/${userId}/cv/${cvId}/skills`,
 
       PROJECTS: (userId: string, cvId: string) =>
-          `/users/${userId}/cv/${cvId}/projects`,
+        `/users/${userId}/cv/${cvId}/projects`,
 
       PREVIEW: (userId: string, cvId: string) =>
-          `/users/${userId}/cv/${cvId}/preview`,
+        `/users/${userId}/cv/${cvId}/preview`,
     },
     SKILLS: (userId: string) => `/users/${userId}/skills`,
     LANGUAGES: (userId: string) => `/users/${userId}/languages`,

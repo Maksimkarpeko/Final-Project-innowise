@@ -98,8 +98,24 @@ export const ModalEdit: FC<ModalProps> = ({
         closable={{ "aria-label": "Custom Close Button" }}
         open={isOpen}
         onOk={handleSubmit(handleOk)}
-        okButtonProps={{ disabled: !isValid }}
+        okButtonProps={{
+          disabled: !isValid,
+          style: isValid
+            ? {
+                backgroundColor: "#d32f2f",
+                borderColor: "#d32f2f",
+                color: "#ffffff",
+                opacity: 1,
+                padding: "0 30px",
+              }
+            : {
+                padding: "0 30px",
+              },
+        }}
         onCancel={handleCancel}
+        cancelButtonProps={{
+          style: { color: "#7d7d7d", padding: "0 30px" },
+        }}
         loading={userLoading}
         okText={"Submit"}
         cancelText="Cancel"

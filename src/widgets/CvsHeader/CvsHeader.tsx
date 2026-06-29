@@ -6,13 +6,18 @@ import { FC, SetStateAction, useState } from "react";
 type CvsHeaderProps = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<SetStateAction<boolean>>;
+  searchValue: string;
+  setSearchValue: React.Dispatch<SetStateAction<string>>;
 };
 
-export const CvsHeader: FC<CvsHeaderProps> = ({ isOpen, setIsOpen }) => {
-  const [searchValue, setSearchValue] = useState<string>("");
+export const CvsHeader: FC<CvsHeaderProps> = ({
+  isOpen,
+  setIsOpen,
+  searchValue,
+  setSearchValue,
+}) => {
   return (
     <>
-      <span className="text-black/60 ml-5">CVs</span>
       <div className="flex justify-between w-[95%]">
         <div className="w-[320px]">
           <HeaderSearch

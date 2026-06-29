@@ -46,7 +46,12 @@ export const ModalSkill: FC<ModalSkillProps> = ({
 
   const [updateSkills, { error: errorUpdate }] =
     useMutation(updateProfileSkills);
-  const { control, handleSubmit, reset } = useForm<SchemaSkillValues>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isValid },
+  } = useForm<SchemaSkillValues>({
     resolver: zodResolver(schemaSkill),
     mode: "onChange",
   });
@@ -70,7 +75,7 @@ export const ModalSkill: FC<ModalSkillProps> = ({
       }
     }
   }, [isOpen, version, currentSkill, data, reset]);
-  
+
   const selectOptions = useMemo(() => {
     if (!data?.skills || !Array.isArray(data.skills)) return [];
 
@@ -182,9 +187,23 @@ export const ModalSkill: FC<ModalSkillProps> = ({
       onCancel={handleCancel}
       okText={"Submit"}
       onOk={handleSubmit(handleSkills)}
-      okButtonProps={{ loading }}
       cancelText="Cancel"
       width={650}
+      okButtonProps={{
+        loading,
+        disabled: !isValid,
+        style: isValid
+          ? {
+              backgroundColor: "#d32f2f",
+              borderColor: "#d32f2f",
+              color: "#ffffff",
+              opacity: 1,
+              padding: "0 30px",
+            }
+          : {
+              padding: "0 30px",
+            },
+      }}
     >
       <form action="" onSubmit={handleSubmit(handleSkills)}>
         <div className="mt-6">

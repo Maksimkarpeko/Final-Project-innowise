@@ -7,7 +7,7 @@ import { schemaCV, SchemaCVValue } from "./schemaCV";
 import { FloatingInput, FloatingTextArea, getUserId } from "@/src/shared";
 import { useMutation } from "@apollo/client/react";
 import { CREATE_CV } from "@/src/entities/cv";
-import { GET_USER_CVS, getUserById } from "@/src/entities";
+import { GET_USER_CVS } from "@/src/entities";
 
 type ModalCVProps = {
   setIsOpenModal: Dispatch<SetStateAction<boolean>>;
@@ -56,7 +56,21 @@ export const ModalCV: FC<ModalCVProps> = ({ setIsOpenModal, isOpenModal }) => {
       onCancel={handleCancel}
       okText={"Submit"}
       onOk={handleSubmit(handleOk)}
-      okButtonProps={{ disabled: !isValid, loading }}
+      okButtonProps={{
+        disabled: !isValid,
+        loading,
+        style: isValid
+          ? {
+              backgroundColor: "#d32f2f",
+              borderColor: "#d32f2f",
+              color: "#ffffff",
+              opacity: 1,
+              padding: "0 30px",
+            }
+          : {
+              padding: "0 30px",
+            },
+      }}
       cancelText="Cancel"
       width={650}
     >

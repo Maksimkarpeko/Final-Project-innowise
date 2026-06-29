@@ -44,12 +44,21 @@ export const ModalCVDelete: FC<ModalCVDelete> = ({
       title={"Delete CV"}
       closable={{ "aria-label": "Custom Close Button" }}
       open={isOpenModalDelete}
-      okButtonProps={{ loading }}
       onCancel={handleCancel}
       okText={"Submit"}
       onOk={handleOk}
       cancelText="Cancel"
       width={650}
+      okButtonProps={{
+        loading,
+        style: {
+          backgroundColor: "#d32f2f",
+          borderColor: "#d32f2f",
+          color: "#ffffff",
+          opacity: 1,
+          padding: "0 30px",
+        },
+      }}
     >
       <p>
         {APP_TEXT.cv.deleteText} {activeCv.name}

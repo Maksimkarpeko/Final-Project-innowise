@@ -42,7 +42,6 @@ export const UserListPage = () => {
 
   return (
     <div className="w-full h-screen flex flex-col overflow-hidden p-4">
-      <span className="text-black/60">list</span>
       <div className="w-[320px]">
         <HeaderSearch
           searchValue={searchValue}

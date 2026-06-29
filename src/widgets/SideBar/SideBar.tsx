@@ -4,7 +4,7 @@ import { Avatar, Menu, Button, Dropdown, MenuProps } from "antd";
 import { getItems } from "./menuItem";
 import { useQuery } from "@apollo/client/react";
 import { getUserById } from "@/src/entities";
-import { getUserId, PATH, UserResponse } from "@/src/shared";
+import { getUserId, logOut, PATH, UserResponse } from "@/src/shared";
 import { usePathname } from "next/navigation";
 import {
   User,
@@ -45,7 +45,11 @@ export const SideBar = () => {
     },
     {
       key: "logout",
-      label: "Logout",
+      label: (
+        <Link href={PATH.AUTH.LOGIN} onClick={() => logOut()}>
+          Logout
+        </Link>
+      ),
       icon: <LogOut size={16} />,
       danger: true,
     },

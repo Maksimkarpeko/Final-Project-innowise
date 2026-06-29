@@ -6,7 +6,7 @@ import { ModalCV } from "@/src/widgets";
 import { CvsHeader } from "@/src/widgets/CvsHeader/CvsHeader";
 import { ModalCVDelete } from "@/src/widgets/ModalCVDelete";
 import { useQuery } from "@apollo/client/react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ActiveCv } from "./type/type";
 
 type UserProfilePageProps = {
@@ -16,27 +16,40 @@ type UserProfilePageProps = {
 export const UserCVSPage = ({ userId }: UserProfilePageProps) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isOpenModalDelete, setIsOpenModalDelete] = useState<boolean>(false);
-  const [activeCv, setActiveCv] = useState<ActiveCv>({
-    id: "",
-    name: "",
-  });
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [activeCv, setActiveCv] = useState<ActiveCv>({ id: "", name: "" });
+
   const { data: CV, loading } = useQuery<UserResponse>(GET_USER_CVS, {
-    variables: {
-      userId,
-    },
+    variables: { userId },
   });
-  if (loading) {
-    return <>Loading...</>;
-  }
+
+  const filteredCvs = useMemo(() => {
+    if (!CV?.user?.cvs) return [];
+    if (!searchValue.trim()) return CV.user.cvs;
+
+    const lowerSearchValue = searchValue.toLowerCase();
+    return CV.user.cvs.filter((cv) => 
+      cv?.name?.toLowerCase().includes(lowerSearchValue)
+    );
+  }, [CV, searchValue]);
+
   return (
     <div className="h-screen">
-      <CvsHeader isOpen={isOpenModal} setIsOpen={setIsOpenModal} />
+      <CvsHeader
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+        isOpen={isOpenModal}
+        setIsOpen={setIsOpenModal}
+      />
+      
       <CVList
-        CV={CV}
+        cvs={filteredCvs}
+        userEmail={CV?.user?.email}
         loading={loading}
         setIsOpenModalDelete={setIsOpenModalDelete}
         setActiveCv={setActiveCv}
       />
+
       {isOpenModal && (
         <ModalCV isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal} />
       )}

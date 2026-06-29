@@ -25,6 +25,7 @@ type SkillsMenuProps = {
   isOpenUpdate: boolean;
   setIsOpenUpdate: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrentSkill: React.Dispatch<React.SetStateAction<CurrentSkill>>;
+  isCanEdit: boolean;
 };
 
 export const SkillsMenu: FC<SkillsMenuProps> = ({
@@ -33,6 +34,7 @@ export const SkillsMenu: FC<SkillsMenuProps> = ({
   isOpenUpdate,
   setIsOpenUpdate,
   setCurrentSkill,
+  isCanEdit,
 }) => {
   const userId = getUserId();
   const [isDelete, setIsDelete] = useState<boolean>(false);
@@ -109,7 +111,7 @@ export const SkillsMenu: FC<SkillsMenuProps> = ({
             <div key={category.id} className="mb-5">
               <Typography.Title
                 level={5}
-                style={{ color: "#000000", marginBottom: "16px" }}
+                style={{ color: "#929292", marginBottom: "16px" }}
               >
                 {category.name}
               </Typography.Title>
@@ -138,7 +140,7 @@ export const SkillsMenu: FC<SkillsMenuProps> = ({
                       showInfo={false}
                       style={{ width: "80px", margin: 0 }}
                     />
-                    <Text style={{ color: "#000000", fontSize: "20px" }}>
+                    <Text style={{ color: "#929292", fontSize: "20px" }}>
                       {skill.name}
                     </Text>
                   </Button>
@@ -149,57 +151,64 @@ export const SkillsMenu: FC<SkillsMenuProps> = ({
       </div>
       {error && <span className="text-red-500">{error.message}</span>}
       <div className="flex  md:flex-row justify-end items-center gap-3 md:gap-6 w-full md:w-[80%] p-4">
-        {isDelete ? (
+        {isCanEdit && (
           <>
-            <Button
-              type="text"
-              className="group! flex! items-center! text-[14px]! md:text-[16px]! border! border-gray-300! text-[#888888]! font-medium! tracking-wide! hover:bg-gray-100! hover:text-black! px-6! md:px-15! py-4! md:py-7! rounded-4xl!"
-              onClick={() => {
-                setIsDelete(false);
-                setDeleteItem([]);
-              }}
-            >
-              CLOSE
-            </Button>
-            <Button
-              type="text"
-              icon={<Trash2 size={16} />}
-              className={clsx(
-                "flex! items-center! font-medium! tracking-wide! text-[14px]! md:text-[16px]! hover:text-white! px-6! md:px-15! py-4! md:py-7! rounded-4xl!",
-                counterLengthDeleteItem >= 1
-                  ? "bg-red-500! text-white! hover:bg-[#df0703]!"
-                  : "bg-gray-200! text-gray-600! hover:bg-[#696969]!",
-              )}
-              onClick={handleDelete}
-            >
-              REMOVE SKILLS{" "}
-              {counterLengthDeleteItem >= 1 && (
-                <span className="bg-white  rounded-full w-10 text-xl text-black">
-                  {counterLengthDeleteItem}
-                </span>
-              )}
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button
-              type="text"
-              icon={
-                <Plus size={16} className="text-[#666666] transition-colors" />
-              }
-              className="group! flex! items-center! text-[14px]! md:text-[16px]! text-[#888888]! font-medium! tracking-wide! hover:bg-gray-100! hover:text-black! px-6! md:px-15! py-4! md:py-7! rounded-4xl!"
-              onClick={() => setIsOpenAdd(!isOpenAdd)}
-            >
-              ADD SKILL
-            </Button>
-            <Button
-              type="text"
-              icon={<Trash2 size={16} />}
-              className="flex! items-center! text-[14px]! md:text-[16px]! text-[#fd0004]! font-medium! tracking-wide! hover:bg-[#fa2c28]! hover:text-white! px-6! md:px-15! py-4! md:py-7! rounded-4xl!"
-              onClick={() => setIsDelete(!isDelete)}
-            >
-              REMOVE SKILLS
-            </Button>
+            {isDelete ? (
+              <>
+                <Button
+                  type="text"
+                  className="group! flex! items-center! text-[14px]! md:text-[16px]! border! border-gray-300! text-[#888888]! font-medium! tracking-wide! hover:bg-gray-100! hover:text-black! px-6! md:px-15! py-4! md:py-7! rounded-4xl!"
+                  onClick={() => {
+                    setIsDelete(false);
+                    setDeleteItem([]);
+                  }}
+                >
+                  CLOSE
+                </Button>
+                <Button
+                  type="text"
+                  icon={<Trash2 size={16} />}
+                  className={clsx(
+                    "flex! items-center! font-medium! tracking-wide! text-[14px]! md:text-[16px]! hover:text-white! px-6! md:px-15! py-4! md:py-7! rounded-4xl!",
+                    counterLengthDeleteItem >= 1
+                      ? "bg-red-500! text-white! hover:bg-[#df0703]!"
+                      : "bg-gray-200! text-gray-600! hover:bg-[#696969]!",
+                  )}
+                  onClick={handleDelete}
+                >
+                  REMOVE SKILLS{" "}
+                  {counterLengthDeleteItem >= 1 && (
+                    <span className="bg-white  rounded-full w-10 text-xl text-black">
+                      {counterLengthDeleteItem}
+                    </span>
+                  )}
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  type="text"
+                  icon={
+                    <Plus
+                      size={16}
+                      className="text-[#666666] transition-colors"
+                    />
+                  }
+                  className="group! flex! items-center! text-[14px]! md:text-[16px]! text-[#888888]! font-medium! tracking-wide! hover:bg-gray-100! hover:text-black! px-6! md:px-15! py-4! md:py-7! rounded-4xl!"
+                  onClick={() => setIsOpenAdd(!isOpenAdd)}
+                >
+                  ADD SKILL
+                </Button>
+                <Button
+                  type="text"
+                  icon={<Trash2 size={16} />}
+                  className="flex! items-center! text-[14px]! md:text-[16px]! text-[#fd0004]! font-medium! tracking-wide! hover:bg-[#fa2c28]! hover:text-white! px-6! md:px-15! py-4! md:py-7! rounded-4xl!"
+                  onClick={() => setIsDelete(!isDelete)}
+                >
+                  REMOVE SKILLS
+                </Button>
+              </>
+            )}
           </>
         )}
       </div>

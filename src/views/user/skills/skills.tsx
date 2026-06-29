@@ -15,6 +15,12 @@ type UserProfilePageProps = {
 
 export const UserSkillsPage = ({ currentUserId }: UserProfilePageProps) => {
   const userId = getUserId();
+  let isCanEdit;
+  if (currentUserId) {
+    isCanEdit = userId === currentUserId;
+  } else {
+    isCanEdit = true;
+  }
   const [currentSkill, setCurrentSkill] = useState<CurrentSkill>({
     id: "",
     name: "",
@@ -32,28 +38,25 @@ export const UserSkillsPage = ({ currentUserId }: UserProfilePageProps) => {
   const navItems = [
     {
       content: "Profile",
-      href: PATH.USER.PROFILE(userId),
+      href: PATH.USER.PROFILE(currentUserId || userId),
     },
     {
       content: "Skills",
-      href: PATH.USER.SKILLS(userId),
+      href: PATH.USER.SKILLS(currentUserId || userId),
     },
     {
       content: "Languages",
-      href: PATH.USER.LANGUAGES(userId),
+      href: PATH.USER.LANGUAGES(currentUserId || userId),
     },
   ];
 
   return (
     <>
       <div className="w-full px-6">
-        {currentUserId ? (
-          <NavHeader items={navItems} />
-        ) : (
-          <span className="text-black/60">Skills</span>
-        )}
+        {currentUserId && <NavHeader items={navItems} />}
         {!!data?.profile.skills.length ? (
           <SkillsMenu
+            isCanEdit={isCanEdit}
             isOpenAdd={isOpenAdd}
             setIsOpenAdd={setIsOpenAdd}
             isOpenUpdate={isOpenUpdate}
@@ -62,16 +65,18 @@ export const UserSkillsPage = ({ currentUserId }: UserProfilePageProps) => {
           />
         ) : (
           <div className="flex justify-center w-full">
-            <Button
-              size="large"
-              type="text"
-              className="bg-white! text-gray-500! hover:text-gray-700! hover:bg-gray-100! font-medium! uppercase! tracking-wider! h-12! px-50! rounded-3xl!"
-              onClick={() => {
-                setIsOpenAdd(!isOpenAdd);
-              }}
-            >
-              + Add new skill
-            </Button>
+            {isCanEdit && (
+              <Button
+                size="large"
+                type="text"
+                className="bg-white! text-gray-500! hover:text-gray-700! hover:bg-gray-100! font-medium! uppercase! tracking-wider! h-12! px-50! rounded-3xl!"
+                onClick={() => {
+                  setIsOpenAdd(!isOpenAdd);
+                }}
+              >
+                + Add new skill
+              </Button>
+            )}
           </div>
         )}
         {isOpenAdd && (

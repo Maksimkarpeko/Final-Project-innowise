@@ -130,7 +130,7 @@ export const ModalEdit: FC<ModalProps> = ({
             label="Email"
             type="email"
             disabled
-            defaultValue={`${data?.user.email}`}
+            defaultValue={data?.user?.email || ""}
           />
           <FloatingInput
             label="Password"
@@ -162,7 +162,7 @@ export const ModalEdit: FC<ModalProps> = ({
               render={({ field }) => (
                 <FloatingSelect
                   label="Department"
-                  defaultValue={`${data?.user.department.name}`}
+                  defaultValue={data?.user?.department?.name || ""}
                   options={
                     departments?.departments.map((d) => ({
                       value: d.id,
@@ -181,7 +181,7 @@ export const ModalEdit: FC<ModalProps> = ({
               render={({ field }) => (
                 <FloatingSelect
                   label="Position"
-                  defaultValue={`${data?.user.position.name}`}
+                  defaultValue={data?.user?.position?.name || ""}
                   options={
                     positions?.positions.map((p) => ({
                       value: p.id,

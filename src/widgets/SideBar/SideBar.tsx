@@ -85,7 +85,7 @@ export const SideBar = () => {
       </div>
 
       <div
-        className={`flex items-center pb-0 md:pb-15 transition-all ${isCollapsed ? "pl-0 justify-center w-full" : ""}`}
+        className={`flex md:pl-5 md:w-full items-center pb-0 md:pb-15 transition-all ${isCollapsed ? "pl-0  w-full" : ""}`}
       >
         {loading ? (
           <span className="text-gray-400 text-sm">Loading...</span>

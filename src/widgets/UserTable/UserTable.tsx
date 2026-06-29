@@ -16,16 +16,17 @@ export const UserTable: FC<UserTableProps> = ({
   filterData,
 }) => {
   const columns = getColumns(setIsOpen, userId);
-  
+
   return (
     <Table
       columns={columns}
       dataSource={filterData}
       rowKey="id"
-      scroll={{ x: "max-content" }} 
+      scroll={{ x: "max-content" }}
       className="w-full md:w-[98%] pb-20 md:pb-0 [&_.ant-table-thead_th]:bg-transparent!"
       pagination={{
-        pageSize: 10,
+        pageSize: 10, 
+        showSizeChanger: false,
         responsive: true,
         size: "small",
       }}

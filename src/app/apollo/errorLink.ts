@@ -11,7 +11,6 @@ export const errorLink = onError(({ error, operation, forward }) => {
     return new Observable((observer) => {
       getRefreshToken()
         .then((newToken) => {
-          console.log(newToken);
           operation.setContext(({ headers = {} }) => ({
             headers: {
               ...headers,

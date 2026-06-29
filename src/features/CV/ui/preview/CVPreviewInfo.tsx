@@ -17,10 +17,10 @@ export const CVPreviewInfo: FC<CVPreviewInfoProps> = ({ cvId }) => {
     },
     skip: !userId,
   });
-
   if (loading) {
     return <>Loading...</>;
   }
+  console.log(data);
   const activeCV = data?.user.cvs.find((cv) => cv.id === cvId);
 
   const formatDate = (dateString?: string) => {

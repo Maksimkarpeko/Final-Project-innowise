@@ -9,6 +9,7 @@ export const PATH = {
     LANGUAGES: "/admin_languages",
     POSITIONS: "/admin_positions",
     SKILLS: "/admin_skills",
+    DEPARTMENTS: "/admin_departments",
   },
   USER: {
     PROFILE: (userId: string) => `/users/${userId}/profile`,

@@ -31,7 +31,11 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
         >
           <div className="flex min-h-screen w-screen">
             <div className="shrink-0">
-              {role === "Employee" ? <SideBar /> : <SideBar />}
+              {role === "Employee" ? (
+                <SideBar role="Employee" />
+              ) : (
+                <SideBar role="Admin" />
+              )}
             </div>
 
             <main className="flex-1 overflow-auto bg-white">{children}</main>

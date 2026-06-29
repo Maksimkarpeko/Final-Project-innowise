@@ -1,3 +1,5 @@
+import { UserRole } from "../types";
+
 export const safeRefreshAccessToken = (
   userId: string,
   role: string,
@@ -34,11 +36,11 @@ export const getUserId = (): string => {
   }
 };
 
-export const getUserRole = (): string => {
+export const getUserRole = (): UserRole | "" => {
   try {
     if (typeof window === "undefined") return "";
 
-    return localStorage.getItem("role") || "";
+    return (localStorage.getItem("role") as UserRole) || "";
   } catch (error) {
     console.error("Error getting id from localStorage:", error);
     return "";

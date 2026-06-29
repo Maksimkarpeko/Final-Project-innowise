@@ -23,9 +23,9 @@ export type User = {
 export const UserRole = {
   Employee: "Employee",
   Admin: "Admin",
-};
+} as const;
 
-type UserRole = (typeof UserRole)[keyof typeof UserRole];
+export type UserRole = (typeof UserRole)[keyof typeof UserRole];
 
 type Department = {
   id: string;
@@ -175,4 +175,3 @@ export type PositionsResponse = {
 export type SkillCategories = {
   skillCategories: Category[];
 };
-

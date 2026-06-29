@@ -1,10 +1,10 @@
 "use client";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Avatar, Menu, Button, Dropdown, MenuProps } from "antd";
 import { getItems } from "./menuItem";
 import { useQuery } from "@apollo/client/react";
 import { getUserById } from "@/src/entities";
-import { getUserId, PATH, UserResponse } from "@/src/shared";
+import { getUserId, PATH, UserResponse, UserRole } from "@/src/shared";
 import { usePathname } from "next/navigation";
 import {
   User,
@@ -15,7 +15,11 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-export const SideBar = () => {
+type SideBarProps = {
+  role: UserRole;
+};
+
+export const SideBar: FC<SideBarProps> = ({ role }) => {
   const userId = getUserId();
   const path = usePathname();
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
@@ -50,7 +54,7 @@ export const SideBar = () => {
       danger: true,
     },
   ];
-  const items = getItems(userId);
+  const items = getItems(role, userId);
 
   return (
     <div

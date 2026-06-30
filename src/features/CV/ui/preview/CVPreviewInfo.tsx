@@ -1,8 +1,16 @@
 "use client";
-import { GET_USER_CVS } from "@/src/entities";
-import { getProficiencyLabel, getUserId, UserResponse, useLocale } from "@/src/shared";
-import { useQuery } from "@apollo/client/react";
+
 import { FC } from "react";
+import { useQuery } from "@apollo/client/react";
+
+import { GET_USER_CVS } from "@/src/entities";
+import {
+  getProficiencyLabel,
+  getUserId,
+  UserResponse,
+  useLocale,
+} from "@/src/shared";
+
 import { ExportCV } from "./ExportCV";
 
 type CVPreviewInfoProps = {
@@ -12,6 +20,7 @@ type CVPreviewInfoProps = {
 export const CVPreviewInfo: FC<CVPreviewInfoProps> = ({ cvId }) => {
   const userId = getUserId();
   const { t, locale } = useLocale();
+
   const { data, loading } = useQuery<UserResponse>(GET_USER_CVS, {
     variables: {
       userId,
@@ -25,187 +34,196 @@ export const CVPreviewInfo: FC<CVPreviewInfoProps> = ({ cvId }) => {
 
   const activeCV = data?.user.cvs.find((cv) => cv.id === cvId);
 
-  const formatDate = (dateString?: string) => {
+  const formatDate = (dateString?: string | null) => {
     if (!dateString) return "";
     const date = new Date(dateString);
+
     return date.toLocaleDateString(locale === "ru" ? "ru-RU" : "en-US", {
-      month: "short",
+      day: "2-digit",
+      month: "2-digit",
       year: "numeric",
     });
   };
 
+  const domains = Array.from(
+      new Set(activeCV?.projects?.map((p) => p.domain || p.project?.domain) ?? []),
+  ).filter(Boolean);
+
   return (
-    <div
-      className="bg-white text-gray-900 p-8 font-sans"
-      id="pdf-target-content"
-    >
-      <div className="flex justify-between items-start border-b border-gray-200 pb-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-950 uppercase">
-            {data?.user.profile.full_name}
-          </h1>
-          <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mt-1">
-            {activeCV?.name || t.cv.preview.defaultRole}
-          </p>
-        </div>
-        <ExportCV elementId="pdf-target-content" />
-      </div>
+      <div className="px-8 pb-16 pt-8">
+        <div
+            id="pdf-target-content"
+            className="
+          mx-auto
+          max-w-[980px]
+          bg-white
+          p-8
+          font-sans
+          text-gray-900
+          transition-colors
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start py-4">
-        <div className="space-y-6 md:col-span-1">
-          {activeCV?.education && (
+          dark:bg-[#303030]
+          dark:text-white/90
+        "
+        >
+          <div className="mb-12 flex items-start justify-between">
             <div>
-              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
-                {t.cv.preview.sections.education}
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                {activeCV?.education}
-              </p>
-            </div>
-          )}
+              <h1 className="text-[36px] font-normal leading-[42px] tracking-[-0.5px] text-[#2E2E2E] transition-colors dark:text-white/90">
+                {data?.user.profile.full_name}
+              </h1>
 
-          {activeCV?.languages && activeCV?.languages.length > 0 && (
-            <div>
-              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
-                {t.cv.preview.sections.languageProficiency}
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                {activeCV.languages
-                  .map(
-                    (lang) =>
-                      `${lang.name} (${getProficiencyLabel(t, lang.proficiency)})`,
-                  )
-                  .join(", ")}
-              </p>
-            </div>
-          )}
-
-          {activeCV?.projects && activeCV?.projects.length > 0 && (
-            <div>
-              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
-                {t.cv.preview.sections.domains}
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                {Array.from(
-                  new Set(
-                    activeCV.projects.map((p) => p.domain || p.project?.domain),
-                  ),
-                )
-                  .filter(Boolean)
-                  .join(", ")}
-              </p>
-            </div>
-          )}
-        </div>
-
-        <div className="md:col-span-2 space-y-6 border-l-0 md:border-l border-red-500 md:border-red-500 md:pl-8">
-          {activeCV?.description && (
-            <div className="space-y-2">
-              <h2 className="text-base font-bold text-gray-900">
+              <p className="mt-1 text-[14px] font-medium uppercase tracking-[0.5px] text-[#2E2E2E] transition-colors dark:text-white/80">
                 {activeCV?.name || t.cv.preview.defaultRole}
-              </h2>
-              <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
-                {activeCV?.description}
               </p>
             </div>
-          )}
 
-          {activeCV?.skills && activeCV?.skills.length > 0 && (
-            <div className="space-y-4 pt-4 border-t border-gray-100">
-              <div className="space-y-3">
-                <div>
-                  <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
-                    {t.cv.preview.sections.skillsTechnologies}
-                  </h3>
-                  <p className="text-gray-800 text-sm font-medium">
-                    {activeCV?.skills.map((skill) => skill.name).join(", ")}
-                  </p>
+            <ExportCV elementId="pdf-target-content" />
+          </div>
+
+          <div className="grid grid-cols-[260px_1fr] gap-[32px]">
+            <aside className="space-y-6">
+              {activeCV?.education && (
+                  <div>
+                    <h3 className="mb-2 text-[16px] font-bold leading-[24px] text-[#2E2E2E] transition-colors dark:text-white/90">
+                      {t.cv.preview.sections.education}
+                    </h3>
+
+                    <p className="text-[16px] leading-[24px] text-[#2E2E2E] transition-colors dark:text-white/80">
+                      {activeCV.education}
+                    </p>
+                  </div>
+              )}
+
+              {activeCV?.languages && activeCV.languages.length > 0 && (
+                  <div>
+                    <h3 className="mb-2 text-[16px] font-bold leading-[24px] text-[#2E2E2E] transition-colors dark:text-white/90">
+                      {t.cv.preview.sections.languageProficiency}
+                    </h3>
+
+                    <p className="text-[16px] leading-[24px] text-[#2E2E2E] transition-colors dark:text-white/80">
+                      {activeCV.languages
+                          .map(
+                              (lang) =>
+                                  `${lang.name} (${getProficiencyLabel(t, lang.proficiency)})`,
+                          )
+                          .join(", ")}
+                    </p>
+                  </div>
+              )}
+
+              {domains.length > 0 && (
+                  <div>
+                    <h3 className="mb-2 text-[16px] font-bold leading-[24px] text-[#2E2E2E] transition-colors dark:text-white/90">
+                      {t.cv.preview.sections.domains}
+                    </h3>
+
+                    <p className="text-[16px] leading-[24px] text-[#2E2E2E] transition-colors dark:text-white/80">
+                      {domains.join(", ")}
+                    </p>
+                  </div>
+              )}
+            </aside>
+
+            <main className="border-l border-[#C63031] pl-[32px]">
+              {activeCV?.description && (
+                  <section className="mb-8">
+                    <h2 className="mb-4 text-[16px] font-bold leading-[24px] text-[#2E2E2E] transition-colors dark:text-white/90">
+                      {activeCV.name || t.cv.preview.defaultRole}
+                    </h2>
+
+                    <p className="whitespace-pre-line text-[16px] leading-[26px] text-[#2E2E2E] transition-colors dark:text-white/80">
+                      {activeCV.description}
+                    </p>
+                  </section>
+              )}
+
+              {activeCV?.skills && activeCV.skills.length > 0 && (
+                  <section className="space-y-6">
+                    <div>
+                      <h3 className="mb-2 text-[16px] font-bold leading-[24px] text-[#2E2E2E] transition-colors dark:text-white/90">
+                        {t.cv.preview.sections.skillsTechnologies}
+                      </h3>
+
+                      <p className="text-[16px] leading-[24px] text-[#2E2E2E] transition-colors dark:text-white/80">
+                        {activeCV.skills.map((skill) => skill.name).join(", ")}.
+                      </p>
+                    </div>
+                  </section>
+              )}
+            </main>
+          </div>
+
+          {activeCV?.projects && activeCV.projects.length > 0 && (
+              <section className="mt-16">
+                <h2 className="mb-8 text-[36px] font-normal leading-[42px] tracking-[-0.5px] text-[#2E2E2E] transition-colors dark:text-white/90">
+                  {t.cv.preview.sections.projects}
+                </h2>
+
+                <div className="space-y-10">
+                  {activeCV.projects.map((proj, idx) => {
+                    const projectName = proj.name || proj.project?.name;
+                    const projectDescription =
+                        proj.description || proj.project?.description;
+                    const projectEnvironment =
+                        proj.environment || proj.project?.environment;
+                    const startDate = proj.start_date || proj.project?.start_date;
+                    const endDate = proj.end_date || proj.project?.end_date;
+
+                    return (
+                        <article
+                            key={proj.id || idx}
+                            className="border-t border-[#E0E0E0] pt-8 transition-colors dark:border-white/10"
+                        >
+                          <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
+                            <h3 className="text-[20px] font-bold leading-[28px] text-[#2E2E2E] transition-colors dark:text-white/90">
+                              {projectName}
+                            </h3>
+
+                            <span className="text-[14px] font-medium text-[#767676] transition-colors dark:text-white/55">
+                        {formatDate(startDate)} —{" "}
+                              {endDate ? formatDate(endDate) : t.cv.preview.date.present}
+                      </span>
+                          </div>
+
+                          {projectEnvironment && projectEnvironment.length > 0 && (
+                              <div className="mb-3 text-[15px] leading-[24px]">
+                        <span className="font-semibold text-[#2E2E2E] transition-colors dark:text-white/90">
+                          {t.cv.preview.project.environment}{" "}
+                        </span>
+
+                                <span className="text-[#767676] transition-colors dark:text-white/70">
+                          {projectEnvironment.join(", ")}
+                        </span>
+                              </div>
+                          )}
+
+                          {projectDescription && (
+                              <p className="mb-4 whitespace-pre-line text-[15px] leading-[24px] text-[#767676] transition-colors dark:text-white/70">
+                                {projectDescription}
+                              </p>
+                          )}
+
+                          {proj.responsibilities &&
+                              proj.responsibilities.length > 0 && (
+                                  <div>
+                          <span className="text-[15px] font-semibold text-[#2E2E2E] transition-colors dark:text-white/90">
+                            {t.cv.preview.project.responsibilities}
+                          </span>
+
+                                    <ul className="mt-2 list-inside list-disc space-y-1 text-[15px] leading-[24px] text-[#767676] transition-colors dark:text-white/70">
+                                      {proj.responsibilities.map((resp, rIdx) => (
+                                          <li key={rIdx}>{resp}</li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                              )}
+                        </article>
+                    );
+                  })}
                 </div>
-              </div>
-            </div>
+              </section>
           )}
         </div>
       </div>
-
-      {activeCV?.projects && activeCV?.projects.length > 0 && (
-        <div className="border-t border-gray-200 pt-8 ">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-950">
-            {t.cv.preview.sections.projects}
-          </h2>
-
-          <div className="divide-y divide-gray-100">
-            {activeCV?.projects.map((proj, idx) => {
-              const projectName = proj.name || proj.project?.name;
-              const projectDescription =
-                proj.description || proj.project?.description;
-              const projectEnvironment =
-                proj.environment || proj.project?.environment;
-              const startDate = proj.start_date || proj.project?.start_date;
-              const endDate = proj.end_date || proj.project?.end_date;
-
-              return (
-                <div
-                  key={proj.id || idx}
-                  className={`${idx > 0 ? "pt-8" : ""} space-y-3`}
-                >
-                  <div className="flex flex-wrap justify-between items-baseline gap-2">
-                    <h3 className="text-lg font-bold text-gray-900">
-                      {projectName}
-                    </h3>
-                    <span className="text-sm text-gray-500 font-medium">
-                      {formatDate(startDate)} —{" "}
-                      {endDate
-                        ? formatDate(endDate)
-                        : t.cv.preview.date.present}
-                    </span>
-                  </div>
-
-                  {proj.roles && proj.roles.length > 0 && (
-                    <div className="text-sm">
-                      <span className="font-semibold text-gray-700">
-                        {t.cv.preview.project.role}{" "}
-                      </span>
-                      <span className="text-gray-600">
-                        {proj.roles.join(", ")}
-                      </span>
-                    </div>
-                  )}
-
-                  {projectEnvironment && projectEnvironment.length > 0 && (
-                    <div className="text-sm">
-                      <span className="font-semibold text-gray-700">
-                        {t.cv.preview.project.environment}{" "}
-                      </span>
-                      <span className="text-gray-600">
-                        {projectEnvironment.join(", ")}
-                      </span>
-                    </div>
-                  )}
-
-                  {projectDescription && (
-                    <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
-                      {projectDescription}
-                    </p>
-                  )}
-                  {proj.responsibilities &&
-                    proj.responsibilities.length > 0 && (
-                      <div className="space-y-1">
-                        <span className="text-sm font-semibold text-gray-700">
-                          {t.cv.preview.project.responsibilities}
-                        </span>
-                        <ul className="list-disc list-inside text-gray-600 text-sm space-y-0.5 pl-2">
-                          {proj.responsibilities.map((resp, rIdx) => (
-                            <li key={rIdx}>{resp}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-    </div>
   );
 };

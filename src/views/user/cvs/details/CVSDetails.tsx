@@ -5,20 +5,20 @@ import { useCvNavItems } from "@/src/shared";
 import { NavHeader } from "@/src/widgets";
 
 type UserIdPage = {
-  userId: string;
-  cvId: string;
+    userId: string;
+    cvId: string;
 };
 
 export const CVSDetailsPage = ({ userId, cvId }: UserIdPage) => {
-  const navItems = useCvNavItems(userId, cvId);
+    const navItems = useCvNavItems(userId, cvId);
 
-  return (
-    <div className="w-full">
-      <NavHeader items={navItems} />
+    return (
+        <div className="min-h-screen w-full bg-white text-[#2E2E2E] transition-colors dark:bg-[#303030] dark:text-white/90">
+            <NavHeader items={navItems} />
 
-      <div className="w-full px-4 pt-[56px] md:px-8 lg:px-0 lg:pt-[64px]">
-        <CVDetailsForm key={cvId} cvId={cvId} />
-      </div>
-    </div>
-  );
+            <div className="w-full px-4 pt-[56px] md:px-8 lg:px-0 lg:pt-[64px]">
+                <CVDetailsForm key={cvId} cvId={cvId} />
+            </div>
+        </div>
+    );
 };

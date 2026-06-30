@@ -19,17 +19,49 @@ export const CvProjectChips = ({
             {visibleItems.map((item) => (
                 <span
                     key={item}
-                    className="max-w-[260px] truncate rounded-[16px] bg-[#F0F0F0] px-3 py-[3px] font-roboto text-[13px] font-normal leading-[18px] text-[#767676]"
+                    className="
+            max-w-[260px]
+            truncate
+            rounded-[16px]
+            bg-[#F0F0F0]
+            px-3
+            py-[3px]
+            font-roboto
+            text-[13px]
+            font-normal
+            leading-[18px]
+            text-[#767676]
+            transition-colors
+
+            dark:bg-white/10
+            dark:text-white/75
+          "
                     title={item}
                 >
-                    {item}
-                </span>
+          {item}
+        </span>
             ))}
 
             {hiddenCount > 0 && (
-                <span className="rounded-[16px] bg-[#F0F0F0] px-3 py-[3px] font-roboto text-[13px] font-normal leading-[18px] text-[#767676]">
-                    +{hiddenCount}
-                </span>
+                <span
+                    className="
+            rounded-[16px]
+            bg-[#F0F0F0]
+            px-3
+            py-[3px]
+            font-roboto
+            text-[13px]
+            font-normal
+            leading-[18px]
+            text-[#767676]
+            transition-colors
+
+            dark:bg-white/10
+            dark:text-white/75
+          "
+                >
+          +{hiddenCount}
+        </span>
             )}
         </div>
     );

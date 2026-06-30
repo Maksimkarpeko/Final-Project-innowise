@@ -31,11 +31,29 @@ export const getItems = (
     ...items,
     {
       key: PATH.USER.SIDE_SKILLS,
-      icon: <Image src={SkillsIcon} alt="Skills" />,
+      icon: (
+          <Image
+              src={SkillsIcon}
+              alt="Skills"
+              width={24}
+              height={24}
+              className="
+                skills-menu-icon
+                h-6
+                w-6
+                shrink-0
+                object-contain
+                brightness-0
+                opacity-60
+                transition
+                dark:invert
+      "
+          />
+      ),
       label: (
-        <Link href={PATH.USER.SIDE_SKILLS}>
-          {t?.sidebar.menu.skills ?? "Skills"}
-        </Link>
+          <Link href={PATH.USER.SIDE_SKILLS}>
+            {t?.sidebar.menu.skills ?? "Skills"}
+          </Link>
       ),
     },
     {

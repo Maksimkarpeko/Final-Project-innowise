@@ -2,7 +2,13 @@
 
 import { getProfile } from "@/src/entities";
 import { SkillsMenu } from "@/src/features";
-import { getUserId, ProfileResponse, useLocale, useProfileNavItems } from "@/src/shared";
+import {
+  getUserId,
+  ProfileResponse,
+  useCvNavItems,
+  useLocale,
+  useProfileNavItems,
+} from "@/src/shared";
 import { ModalSkill } from "@/src/widgets/ModalSkill";
 import { useQuery } from "@apollo/client/react";
 import { Button } from "antd";
@@ -12,9 +18,13 @@ import { NavHeader } from "@/src/widgets";
 
 type UserProfilePageProps = {
   currentUserId?: string;
+  currentCvUserId?: string;
 };
 
-export const UserSkillsPage = ({ currentUserId }: UserProfilePageProps) => {
+export const UserSkillsPage = ({
+  currentUserId,
+  currentCvUserId,
+}: UserProfilePageProps) => {
   const userId = getUserId();
   const { t } = useLocale();
   let isCanEdit;
@@ -38,9 +48,13 @@ export const UserSkillsPage = ({ currentUserId }: UserProfilePageProps) => {
   });
 
   const navItems = useProfileNavItems(currentUserId || userId);
-
+  const navCvItems = useCvNavItems(
+    currentUserId || userId,
+    currentCvUserId || "",
+  );
   return (
     <>
+      {currentCvUserId && <NavHeader items={navCvItems} />}
       <div className="w-full px-6">
         {currentUserId && <NavHeader items={navItems} />}
         {!!data?.profile.skills.length ? (

@@ -1,3 +1,9 @@
+"use client";
+
+import { useLocale } from "@/src/shared";
+
 export const AdminSkillsPage = () => {
-  return <div>Skills</div>;
+  const { t } = useLocale();
+
+  return <div>{t.admin.skills.title}</div>;
 };

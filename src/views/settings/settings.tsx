@@ -1,3 +1,9 @@
+import { SelectSettings } from "@/src/features/Settings";
+
 export const SettingsPage = () => {
-  return <div>Settings</div>;
+  return (
+    <div className="flex justify-center">
+      <SelectSettings />
+    </div>
+  );
 };

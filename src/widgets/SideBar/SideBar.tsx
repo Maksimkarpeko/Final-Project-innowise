@@ -4,7 +4,7 @@ import { Avatar, Menu, Button, Dropdown, MenuProps } from "antd";
 import { getItems } from "./menuItem";
 import { useQuery } from "@apollo/client/react";
 import { getUserById } from "@/src/entities";
-import { getUserId, logOut, PATH, UserResponse } from "@/src/shared";
+import { getUserId, logOut, PATH, UserResponse, useLocale } from "@/src/shared";
 import { usePathname } from "next/navigation";
 import {
   User,
@@ -18,6 +18,7 @@ import Link from "next/link";
 export const SideBar = () => {
   const userId = getUserId();
   const path = usePathname();
+  const { t } = useLocale();
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
   const { data, loading } = useQuery<UserResponse>(getUserById, {
@@ -29,7 +30,7 @@ export const SideBar = () => {
   const profileMenuItems: MenuProps["items"] = [
     {
       key: "profile",
-      label: <Link href={PATH.USER.PROFILE(userId)}>Profile</Link>,
+      label: <Link href={PATH.USER.PROFILE(userId)}>{t.sidebar.profileMenu.profile}</Link>,
       icon: <User size={16} />,
     },
     {
@@ -37,7 +38,7 @@ export const SideBar = () => {
     },
     {
       key: "settings",
-      label: <Link href={PATH.USER.SETTINGS}>Settings</Link>,
+      label: <Link href={PATH.USER.SETTINGS}>{t.sidebar.profileMenu.settings}</Link>,
       icon: <Settings size={16} />,
     },
     {
@@ -47,14 +48,14 @@ export const SideBar = () => {
       key: "logout",
       label: (
         <Link href={PATH.AUTH.LOGIN} onClick={() => logOut()}>
-          Logout
+          {t.sidebar.profileMenu.logout}
         </Link>
       ),
       icon: <LogOut size={16} />,
       danger: true,
     },
   ];
-  const items = getItems(userId);
+  const items = getItems(userId, t);
 
   return (
     <div
@@ -88,7 +89,7 @@ export const SideBar = () => {
         className={`flex md:pl-5 md:w-full items-center pb-0 md:pb-15 transition-all ${isCollapsed ? "pl-0  w-full" : ""}`}
       >
         {loading ? (
-          <span className="text-gray-400 text-sm">Loading...</span>
+          <span className="text-gray-400 text-sm">{t.common.loading}</span>
         ) : (
           <div className="flex flex-col gap-2">
             <Dropdown menu={{ items: profileMenuItems }} trigger={["click"]}>
@@ -104,10 +105,10 @@ export const SideBar = () => {
                   {!data?.user?.profile?.full_name ? (
                     <>
                       <span className="text-[16px] font-medium text-gray-700 whitespace-nowrap">
-                        Noname
+                        {t.sidebar.userFallback.name}
                       </span>
                       <span className="text-[14px] text-gray-400 leading-tight whitespace-nowrap">
-                        You need to fill in the details
+                        {t.sidebar.userFallback.hint}
                       </span>
                     </>
                   ) : (

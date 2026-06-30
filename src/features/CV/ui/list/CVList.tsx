@@ -1,5 +1,5 @@
 "use client";
-import { getUserId, UserResponse } from "@/src/shared";
+import { getUserId, UserResponse, useLocale } from "@/src/shared";
 import { Table } from "antd";
 import { getColumns } from "./columCv";
 import { Dispatch, FC, SetStateAction, useMemo } from "react";
@@ -25,7 +25,8 @@ export const CVList: FC<CVListProps> = ({
   setActiveCv,
 }) => {
   const userId = getUserId();
-  const columns = getColumns(userId, setIsOpenModalDelete, setActiveCv);
+  const { t } = useLocale();
+  const columns = getColumns(userId, setIsOpenModalDelete, setActiveCv, t);
 
   const tableData: CvRowType[] = useMemo(() => {
     return cvs.map((cv) => ({
@@ -48,7 +49,7 @@ export const CVList: FC<CVListProps> = ({
         showExpandColumn: false,
         expandedRowRender: (record) => (
           <div className="text-gray-500 bg-none">
-            {record.description || "No description provided"}
+            {record.description || t.cv.table.noDescription}
           </div>
         ),
       }}

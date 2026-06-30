@@ -4,7 +4,7 @@ import { Modal } from "antd";
 import { Dispatch, FC, SetStateAction } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { schemaCV, SchemaCVValue } from "./schemaCV";
-import { FloatingInput, FloatingTextArea, getUserId } from "@/src/shared";
+import { FloatingInput, FloatingTextArea, getUserId, useLocale } from "@/src/shared";
 import { useMutation } from "@apollo/client/react";
 import { CREATE_CV } from "@/src/entities/cv";
 import { GET_USER_CVS } from "@/src/entities";
@@ -16,6 +16,7 @@ type ModalCVProps = {
 
 export const ModalCV: FC<ModalCVProps> = ({ setIsOpenModal, isOpenModal }) => {
   const userId = getUserId();
+  const { t } = useLocale();
   const {
     handleSubmit,
     control,
@@ -50,11 +51,11 @@ export const ModalCV: FC<ModalCVProps> = ({ setIsOpenModal, isOpenModal }) => {
   };
   return (
     <Modal
-      title={"Create CV"}
+      title={t.cv.modal.createTitle}
       closable={{ "aria-label": "Custom Close Button" }}
       open={isOpenModal}
       onCancel={handleCancel}
-      okText={"Submit"}
+      okText={t.common.submit}
       onOk={handleSubmit(handleOk)}
       okButtonProps={{
         disabled: !isValid,
@@ -71,7 +72,7 @@ export const ModalCV: FC<ModalCVProps> = ({ setIsOpenModal, isOpenModal }) => {
               padding: "0 30px",
             },
       }}
-      cancelText="Cancel"
+      cancelText={t.common.cancel}
       width={650}
     >
       <form action="" onSubmit={handleSubmit(handleOk)}>
@@ -81,7 +82,7 @@ export const ModalCV: FC<ModalCVProps> = ({ setIsOpenModal, isOpenModal }) => {
             control={control}
             render={({ field }) => (
               <FloatingInput
-                label="Name"
+                label={t.cv.form.name}
                 type="text"
                 defaultValue=""
                 {...field}
@@ -95,7 +96,7 @@ export const ModalCV: FC<ModalCVProps> = ({ setIsOpenModal, isOpenModal }) => {
             control={control}
             render={({ field }) => (
               <FloatingInput
-                label="Education"
+                label={t.cv.form.education}
                 type="text"
                 defaultValue=""
                 {...field}
@@ -109,7 +110,7 @@ export const ModalCV: FC<ModalCVProps> = ({ setIsOpenModal, isOpenModal }) => {
             control={control}
             render={({ field }) => (
               <FloatingTextArea
-                label="Description"
+                label={t.cv.form.description}
                 type="text"
                 defaultValue=""
                 {...field}

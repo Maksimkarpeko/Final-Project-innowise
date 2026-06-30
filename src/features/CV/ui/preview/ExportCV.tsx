@@ -3,6 +3,7 @@ import { EXPORT_PDF } from "@/src/entities/cv/api/cv.api";
 import { useMutation } from "@apollo/client/react";
 import { Button, message } from "antd";
 import { FC } from "react";
+import { useLocale } from "@/src/shared";
 
 type ExportCVProps = {
   elementId: string;
@@ -17,12 +18,13 @@ export const ExportCV: FC<ExportCVProps> = ({
   elementId,
   fileName = "document.pdf",
 }) => {
+  const { t } = useLocale();
   const [exportPdf, { loading }] = useMutation<ExportResponse>(EXPORT_PDF);
 
   const handleExport = async () => {
     const element = document.getElementById(elementId);
     if (!element) {
-      message.error("Element for PDF generation not found");
+      message.error(t.cv.preview.errors.elementNotFound);
       return;
     }
     try {
@@ -60,10 +62,10 @@ export const ExportCV: FC<ExportCVProps> = ({
         link.download = fileName;
         link.click();
       }
-      message.success("PDF exported successfully!");
+      message.success(t.cv.preview.success.exported);
     } catch (error) {
       console.error(error);
-      message.error("Failed to export PDF");
+      message.error(t.cv.preview.errors.exportFailed);
     }
   };
 
@@ -73,7 +75,7 @@ export const ExportCV: FC<ExportCVProps> = ({
       onClick={handleExport}
       className="border! border-red-500! text-red-500! font-medium! text-xs! px-4! py-2! rounded! uppercase! tracking-wider! hover:bg-red-50! hover:text-red-600! transition-colors!"
     >
-      Export PDF
+      {t.cv.preview.exportButton}
     </Button>
   );
 };

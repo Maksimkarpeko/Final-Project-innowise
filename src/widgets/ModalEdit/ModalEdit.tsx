@@ -6,6 +6,7 @@ import {
   FloatingSelect,
   PositionsResponse,
   UserResponse,
+  useLocale,
 } from "@/src/shared";
 import { useMutation, useQuery } from "@apollo/client/react";
 import { ConfigProvider } from "antd";
@@ -27,6 +28,7 @@ export const ModalEdit: FC<ModalProps> = ({
   setIsModalOpen,
   userId,
 }) => {
+  const { t } = useLocale();
   const {
     control,
     handleSubmit,
@@ -94,7 +96,7 @@ export const ModalEdit: FC<ModalProps> = ({
   return (
     <ConfigProvider>
       <Modal
-        title="Update user"
+        title={t.employees.modalEdit.title}
         closable={{ "aria-label": "Custom Close Button" }}
         open={isOpen}
         onOk={handleSubmit(handleOk)}
@@ -117,8 +119,8 @@ export const ModalEdit: FC<ModalProps> = ({
           style: { color: "#7d7d7d", padding: "0 30px" },
         }}
         loading={userLoading}
-        okText={"Submit"}
-        cancelText="Cancel"
+        okText={t.common.submit}
+        cancelText={t.common.cancel}
         width={650}
       >
         <form
@@ -127,13 +129,13 @@ export const ModalEdit: FC<ModalProps> = ({
           onSubmit={handleSubmit(handleOk)}
         >
           <FloatingInput
-            label="Email"
+            label={t.employees.modalEdit.email}
             type="email"
             disabled
             defaultValue={data?.user?.email || ""}
           />
           <FloatingInput
-            label="Password"
+            label={t.employees.modalEdit.password}
             isPassword
             disabled
             defaultValue={`secretPassword`}
@@ -143,7 +145,7 @@ export const ModalEdit: FC<ModalProps> = ({
             name="first_name"
             control={control}
             render={({ field }) => (
-              <FloatingInput label="First Name" type="text" {...field} />
+              <FloatingInput label={t.employees.modalEdit.firstName} type="text" {...field} />
             )}
           />
 
@@ -151,7 +153,7 @@ export const ModalEdit: FC<ModalProps> = ({
             name="last_name"
             control={control}
             render={({ field }) => (
-              <FloatingInput label="Last Name" type="text" {...field} />
+              <FloatingInput label={t.employees.modalEdit.lastName} type="text" {...field} />
             )}
           />
 
@@ -161,7 +163,7 @@ export const ModalEdit: FC<ModalProps> = ({
               control={control}
               render={({ field }) => (
                 <FloatingSelect
-                  label="Department"
+                  label={t.employees.modalEdit.department}
                   defaultValue={data?.user?.department?.name || ""}
                   options={
                     departments?.departments.map((d) => ({
@@ -180,7 +182,7 @@ export const ModalEdit: FC<ModalProps> = ({
               control={control}
               render={({ field }) => (
                 <FloatingSelect
-                  label="Position"
+                  label={t.employees.modalEdit.position}
                   defaultValue={data?.user?.position?.name || ""}
                   options={
                     positions?.positions.map((p) => ({
@@ -200,8 +202,8 @@ export const ModalEdit: FC<ModalProps> = ({
               control={control}
               render={({ field }) => (
                 <FloatingSelect
-                  label="Role"
-                  defaultValue="Employee"
+                  label={t.employees.modalEdit.role}
+                  defaultValue={t.employees.modalEdit.employee}
                   options={[
                     {
                       value: `${data?.user.role}`,

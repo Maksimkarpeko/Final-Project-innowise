@@ -1,16 +1,19 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import { Button, Form } from "antd";
 import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { usePathname } from "next/navigation";
+import { useMemo } from "react";
+
 import {
   AuthTextField,
   AuthPanelProps,
   PATH,
+  useLocale,
 } from "@/src/shared";
-import { authFormModel, AuthFormValues } from "../model/auth.model";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname } from "next/navigation";
+import { createAuthFormModel, AuthFormValues } from "../model/auth.model";
 import { useAuthForm } from "../hooks/useAuthForm";
 
 const primaryButtonClassName = `
@@ -58,6 +61,9 @@ export const AuthForm = ({
   secondaryLinkHref,
 }: AuthPanelProps) => {
   const pathname = usePathname();
+  const { t } = useLocale();
+  const authFormModel = useMemo(() => createAuthFormModel(t), [t]);
+
   const {
     control,
     formState: { errors },
@@ -97,7 +103,7 @@ export const AuthForm = ({
           control={control}
           render={({ field }) => (
             <AuthTextField
-              placeholder="Почта"
+              placeholder={t.auth.form.emailPlaceholder}
               type="email"
               required
               {...field}
@@ -112,7 +118,7 @@ export const AuthForm = ({
           control={control}
           render={({ field }) => (
             <AuthTextField
-              placeholder="Пароль"
+              placeholder={t.auth.form.passwordPlaceholder}
               type="password"
               required
               {...field}
@@ -139,7 +145,7 @@ export const AuthForm = ({
         </Link>
       </div>
       {(isSignUpLoading || isLoginLoading) && (
-        <span className="text-blue-500">Loading...</span>
+        <span className="text-blue-500">{t.common.loading}</span>
       )}
       {(signUpError || loginError) && (
         <span className="text-red-500">

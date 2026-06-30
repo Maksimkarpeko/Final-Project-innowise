@@ -4,6 +4,8 @@ import clsx from "clsx";
 import { Search } from "lucide-react";
 import { FC } from "react";
 
+import { useLocale } from "../i18n";
+
 type HeaderSearchProps = {
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
   searchValue: string;
@@ -15,6 +17,8 @@ export const HeaderSearch: FC<HeaderSearchProps> = ({
   setSearchValue,
   className,
 }) => {
+  const { t } = useLocale();
+
   return (
     <div className="ml-5">
       <div className="pt-3 pb-5 relative">
@@ -23,7 +27,7 @@ export const HeaderSearch: FC<HeaderSearchProps> = ({
           className={clsx("rounded-[40px]! pl-9!", className)}
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
-          placeholder="Search"
+          placeholder={t.common.search}
         />
       </div>
     </div>

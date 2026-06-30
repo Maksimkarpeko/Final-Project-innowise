@@ -5,13 +5,14 @@ import { Plus, Trash2 } from "lucide-react";
 import { useLanguages } from "../hooks/useLanguages";
 import { LanguageItems } from "./LanguageItems";
 import { LanguageFormModal } from "./LanguageFormModal";
-import {getUserId} from "@/src/shared";
+import { getUserId, useLocale } from "@/src/shared";
 
 type LanguagesPageProps = {
     userId?: string;
 };
 
 export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
+    const { t } = useLocale();
 
     if (!userId) {
         userId = getUserId();
@@ -87,7 +88,7 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
                             onClick={() => setIsAddModalOpen(true)}
                             className="!flex !h-10 !items-center !gap-3 !border-0 !bg-transparent !px-0 !text-[14px] !font-semibold !uppercase !tracking-[0.3px] !text-[#7a7a7a] hover:!text-[#222222]"
                         >
-                            Add language
+                            {t.languages.actions.add}
                         </Button>
 
                         <Button
@@ -97,7 +98,7 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
                             onClick={() => setIsRemoveMode(true)}
                             className="!flex !h-10 !items-center !gap-3 !border-0 !bg-transparent !px-0 !text-[14px] !font-semibold !uppercase !tracking-[0.3px] !text-[#d32f2f] hover:!text-[#b71c1c] disabled:!text-[#bdbdbd]"
                         >
-                            Remove languages
+                            {t.languages.actions.remove}
                         </Button>
                     </div>
                 )}
@@ -109,7 +110,7 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
                             onClick={cancelRemoveMode}
                             className="!h-11 !min-w-[220px] !rounded-[40px] !border !border-[#d1d5db] !bg-transparent !text-[14px] !font-semibold !uppercase !tracking-[0.3px] !text-[#7a7a7a] hover:!border-[#9ca3af] hover:!text-[#222222]"
                         >
-                            Cancel
+                            {t.common.cancel}
                         </Button>
 
                         <Button
@@ -121,7 +122,7 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
                             className="!h-11 !min-w-[220px] !rounded-[40px] !bg-[#d32f2f] !text-[14px] !font-semibold !uppercase !tracking-[0.3px] hover:!bg-[#b71c1c] disabled:!bg-[#d1d5db]"
                         >
               <span className="flex items-center justify-center gap-3">
-                Delete
+                {t.common.delete}
                   {selectedRemoveLanguages.length > 0 && (
                       <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-[13px] font-bold text-[#d32f2f]">
                     {selectedRemoveLanguages.length}
@@ -134,7 +135,7 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
             </div>
 
             <LanguageFormModal
-                title="Add language"
+                title={t.languages.modal.addTitle}
                 open={isAddModalOpen}
                 languageValue={selectedLanguage}
                 languageOptions={languageOptions}
@@ -149,7 +150,7 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
             />
 
             <LanguageFormModal
-                title="Update language"
+                title={t.languages.modal.updateTitle}
                 open={isUpdateModalOpen}
                 languageDisabled
                 languageValue={updatingLanguage?.name}

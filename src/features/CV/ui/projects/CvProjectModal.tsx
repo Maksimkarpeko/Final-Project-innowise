@@ -10,6 +10,7 @@ import type {
     CVProjectFormValues,
     ProjectCatalogItem,
 } from "../../model/projects/types";
+import { useLocale } from "@/src/shared";
 
 type CvProjectModalProps = {
     open: boolean;
@@ -73,6 +74,7 @@ export const CvProjectModal = ({
                                    onCancel,
                                    onSubmit,
                                }: CvProjectModalProps) => {
+    const { t } = useLocale();
     const [form] = Form.useForm<FormValues>();
 
     const isEdit = mode === "edit";
@@ -177,7 +179,7 @@ export const CvProjectModal = ({
 
     return (
         <Modal
-            title={isEdit ? "Update project" : "Add project"}
+            title={isEdit ? t.cv.projects.modal.updateTitle : t.cv.projects.modal.addTitle}
             open={open}
             onCancel={onCancel}
             confirmLoading={isLoading}
@@ -212,7 +214,7 @@ export const CvProjectModal = ({
                     disabled:opacity-50
                 "
                     >
-                        Cancel
+                        {t.common.cancel}
                     </button>
 
                     <button
@@ -239,7 +241,7 @@ export const CvProjectModal = ({
                     disabled:opacity-50
                 "
                     >
-                        {isLoading ? "Loading..." : isEdit ? "Update" : "Add"}
+                        {isLoading ? t.common.loading : isEdit ? t.common.update : t.common.add}
                     </button>
                 </div>
             }
@@ -261,40 +263,40 @@ export const CvProjectModal = ({
                 <div className="grid grid-cols-1 gap-x-6 md:grid-cols-2">
                     <Form.Item
                         name="projectId"
-                        label="Project"
+                        label={t.cv.projects.form.projectLabel}
                         rules={[
                             {
                                 required: true,
-                                message: "Select project",
+                                message: t.cv.projects.validation.selectProject,
                             },
                         ]}
                     >
                         <Select
                             showSearch
                             disabled={isEdit}
-                            placeholder="Select project"
+                            placeholder={t.cv.projects.form.projectPlaceholder}
                             options={projectOptions}
                             optionFilterProp="label"
                         />
                     </Form.Item>
 
-                    <Form.Item label="Domain">
+                    <Form.Item label={t.cv.projects.form.domainLabel}>
                         <Input
                             readOnly
                             value={domain}
-                            placeholder="Domain"
+                            placeholder={t.cv.projects.form.domainLabel}
                             className="!bg-white !text-[#767676]"
                         />
                     </Form.Item>
 
                     <Form.Item
                         name="start_date"
-                        label="Start Date"
+                        label={t.cv.projects.form.startDate}
                         dependencies={["end_date"]}
                         rules={[
                             {
                                 required: true,
-                                message: "Select start date",
+                                message: t.cv.projects.validation.selectStartDate,
                             },
                             {
                                 validator: (_, value: Dayjs | null) => {
@@ -305,14 +307,14 @@ export const CvProjectModal = ({
                                     if (projectStartDate && isBeforeDay(value, projectStartDate)) {
                                         return Promise.reject(
                                             new Error(
-                                                `Start date cannot be earlier than project start date ${projectStartDate.format(DATE_FORMAT)}`,
+                                                `${t.cv.projects.validation.startBeforeProjectStart} ${projectStartDate.format(DATE_FORMAT)}`,
                                             ),
                                         );
                                     }
 
                                     if (endDate && isAfterDay(value, endDate)) {
                                         return Promise.reject(
-                                            new Error("Start date cannot be later than end date"),
+                                            new Error(t.cv.projects.validation.startAfterEnd),
                                         );
                                     }
 
@@ -324,7 +326,7 @@ export const CvProjectModal = ({
                         <DatePicker
                             className="w-full"
                             format={DATE_FORMAT}
-                            placeholder="Select start date"
+                            placeholder={t.cv.projects.form.startDatePlaceholder}
                             onChange={() => {
                                 form.validateFields(["end_date"]);
                             }}
@@ -333,7 +335,7 @@ export const CvProjectModal = ({
 
                     <Form.Item
                         name="end_date"
-                        label="End Date"
+                        label={t.cv.projects.form.endDate}
                         dependencies={["start_date"]}
                         rules={[
                             {
@@ -344,21 +346,21 @@ export const CvProjectModal = ({
 
                                     if (isAfterDay(value, today)) {
                                         return Promise.reject(
-                                            new Error("End date cannot be later than today"),
+                                            new Error(t.cv.projects.validation.endAfterToday),
                                         );
                                     }
 
                                     if (projectEndDate && isAfterDay(value, projectEndDate)) {
                                         return Promise.reject(
                                             new Error(
-                                                `End date cannot be later than project end date ${projectEndDate.format(DATE_FORMAT)}`,
+                                                `${t.cv.projects.validation.endAfterProjectEnd} ${projectEndDate.format(DATE_FORMAT)}`,
                                             ),
                                         );
                                     }
 
                                     if (startDate && isBeforeDay(value, startDate)) {
                                         return Promise.reject(
-                                            new Error("End date cannot be earlier than start date"),
+                                            new Error(t.cv.projects.validation.endBeforeStart),
                                         );
                                     }
 
@@ -370,7 +372,7 @@ export const CvProjectModal = ({
                         <DatePicker
                             className="w-full"
                             format={DATE_FORMAT}
-                            placeholder="Select end date"
+                            placeholder={t.cv.projects.form.endDatePlaceholder}
                             onChange={() => {
                                 form.validateFields(["start_date"]);
                             }}
@@ -378,7 +380,7 @@ export const CvProjectModal = ({
                     </Form.Item>
                 </div>
 
-                <Form.Item label="Description">
+                <Form.Item label={t.cv.projects.form.descriptionLabel}>
                     <Input.TextArea
                         readOnly
                         rows={5}
@@ -391,7 +393,7 @@ export const CvProjectModal = ({
                     />
                 </Form.Item>
 
-                <Form.Item label="Environment">
+                <Form.Item label={t.cv.projects.form.environmentLabel}>
                     <Select
                         open={false}
                         mode="multiple"
@@ -412,19 +414,17 @@ export const CvProjectModal = ({
 
                 <Form.Item
                     name="responsibilities"
-                    label="Responsibilities"
+                    label={t.cv.projects.form.responsibilitiesLabel}
                     rules={[
                         {
                             required: true,
-                            message: "Enter responsibilities",
+                            message: t.cv.projects.validation.enterResponsibilities,
                         },
                     ]}
                 >
                     <Input.TextArea
                         rows={5}
-                        placeholder={
-                            "Developed UI components\nIntegrated API\nOptimized performance"
-                        }
+                        placeholder={t.cv.projects.form.responsibilitiesPlaceholder}
                         className={textareaClass}
                         style={{
                             resize: "none",

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { APP_TEXT, PATH } from "@/src/shared";
+import { PATH, useLocale } from "@/src/shared";
 
 const TAB_BASE_CLASS_NAME = `
   flex
@@ -39,6 +39,7 @@ const INACTIVE_TAB_CLASS_NAME = `
 
 export const AuthHeader = () => {
   const pathname = usePathname();
+  const { t } = useLocale();
 
   const isLoginActive = pathname === PATH.AUTH.LOGIN;
   const isSignUpActive = pathname === PATH.AUTH.REGISTER;
@@ -59,7 +60,7 @@ export const AuthHeader = () => {
                 ${isLoginActive ? ACTIVE_TAB_CLASS_NAME : INACTIVE_TAB_CLASS_NAME}
             `}
             >
-              {APP_TEXT.auth_header.login}
+              {t.auth.header.login}
             </Link>
 
             <Link
@@ -70,7 +71,7 @@ export const AuthHeader = () => {
                 ${isSignUpActive ? ACTIVE_TAB_CLASS_NAME : INACTIVE_TAB_CLASS_NAME}
               `}
             >
-              {APP_TEXT.auth_header.register}
+              {t.auth.header.register}
             </Link>
           </div>
 

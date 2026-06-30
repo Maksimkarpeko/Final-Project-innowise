@@ -3,9 +3,11 @@ import { getProfile, getSkills } from "@/src/entities";
 import {
   FloatingSelect,
   getUserId,
-  MasteryObject,
+  getMasteryOptions,
   ProfileResponse,
   SkillsResponse,
+  translateCategoryName,
+  useLocale,
 } from "@/src/shared";
 import { useMutation, useQuery } from "@apollo/client/react";
 import { Modal } from "antd";
@@ -35,6 +37,7 @@ export const ModalSkill: FC<ModalSkillProps> = ({
   setCurrentSkill,
 }) => {
   const userId = getUserId();
+  const { t } = useLocale();
   const { data } = useQuery<SkillsResponse>(getSkills);
   const [addSkills, { error, loading }] = useMutation(addProfileSkills);
   const { data: dataProfile } = useQuery<ProfileResponse>(getProfile, {
@@ -56,7 +59,8 @@ export const ModalSkill: FC<ModalSkillProps> = ({
     mode: "onChange",
   });
 
-  const title = version === "add" ? "Add skill" : "Update skill";
+  const title =
+    version === "add" ? t.skills.modal.addTitle : t.skills.modal.updateTitle;
   useEffect(() => {
     if (isOpen) {
       if (version === "update" && currentSkill.name) {
@@ -98,7 +102,10 @@ export const ModalSkill: FC<ModalSkillProps> = ({
       }
 
       const categoryId = Number(skill.category?.id ?? 999);
-      const categoryName = skill.category?.name || "Other";
+      const categoryName = translateCategoryName(
+        t,
+        skill.category?.name || "Other",
+      );
 
       if (!grouped[categoryId]) {
         grouped[categoryId] = {
@@ -185,9 +192,9 @@ export const ModalSkill: FC<ModalSkillProps> = ({
       closable={{ "aria-label": "Custom Close Button" }}
       open={isOpen}
       onCancel={handleCancel}
-      okText={"Submit"}
+      okText={t.common.submit}
       onOk={handleSubmit(handleSkills)}
-      cancelText="Cancel"
+      cancelText={t.common.cancel}
       width={650}
       okButtonProps={{
         loading,
@@ -212,7 +219,7 @@ export const ModalSkill: FC<ModalSkillProps> = ({
             control={control}
             render={({ field }) => (
               <FloatingSelect
-                label="Skill"
+                label={t.skills.modal.skillLabel}
                 options={selectOptions}
                 disabled={version === "update" ? true : false}
                 defaultValue={currentSkill.name}
@@ -227,11 +234,8 @@ export const ModalSkill: FC<ModalSkillProps> = ({
             control={control}
             render={({ field }) => (
               <FloatingSelect
-                label="Skill mastery"
-                options={Object.entries(MasteryObject).map(([key, value]) => ({
-                  value: value,
-                  label: key,
-                }))}
+                label={t.skills.modal.masteryLabel}
+                options={getMasteryOptions(t)}
                 defaultValue={currentSkill.mastery}
                 {...field}
               />

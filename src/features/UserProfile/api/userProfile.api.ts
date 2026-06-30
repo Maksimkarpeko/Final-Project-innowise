@@ -73,3 +73,9 @@ export const UpdateProfile = gql`
     }
   }
 `;
+
+export const UploadAvatar = gql`
+  mutation UploadAvatar($avatar: UploadAvatarInput!) {
+    uploadAvatar(avatar: $avatar)
+  }
+`;

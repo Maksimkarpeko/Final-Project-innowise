@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UploadAvatarIcon, useLocale } from "@/src/shared";
@@ -15,6 +15,16 @@ import {
     ProfileTextField,
 } from "./components/ProfileField";
 
+type AvatarFileValue = {
+    base64: string;
+    size: number;
+    type: string;
+};
+
+type UserProfileSubmitValues = UserProfileFormValues & {
+    avatarFile?: AvatarFileValue | null;
+};
+
 type UserProfileFormProps = {
     canEdit: boolean;
     isSubmitting: boolean;
@@ -25,7 +35,32 @@ type UserProfileFormProps = {
     memberSince: string;
     departments: UserProfileOption[];
     positions: UserProfileOption[];
-    onSubmit: (values: UserProfileFormValues) => Promise<void> | void;
+    onSubmit: (values: UserProfileSubmitValues) => Promise<void> | void;
+};
+
+const MAX_AVATAR_SIZE = 512 * 1024;
+
+const ALLOWED_AVATAR_TYPES = ["image/png", "image/jpeg", "image/gif"];
+
+const readFileAsDataUrl = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            if (typeof reader.result !== "string") {
+                reject(new Error("Failed to read file"));
+                return;
+            }
+
+            resolve(reader.result);
+        };
+
+        reader.onerror = () => {
+            reject(new Error("Failed to read file"));
+        };
+
+        reader.readAsDataURL(file);
+    });
 };
 
 export const UserProfileForm = ({
@@ -41,6 +76,12 @@ export const UserProfileForm = ({
                                     onSubmit,
                                 }: UserProfileFormProps) => {
     const { t } = useLocale();
+
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+    const [avatarUrl, setAvatarUrl] = useState<string | null>(avatar ?? null);
+    const [avatarFile, setAvatarFile] = useState<AvatarFileValue | null>(null);
+    const [avatarError, setAvatarError] = useState<string | null>(null);
 
     const userProfileFormModel = useMemo(
         () => createUserProfileFormModel(t),
@@ -62,6 +103,11 @@ export const UserProfileForm = ({
         reset(initialValues);
     }, [initialValues, reset]);
 
+    useEffect(() => {
+        setAvatarUrl(avatar ?? null);
+        setAvatarFile(null);
+    }, [avatar]);
+
     const firstLetter = fullName?.[0]?.toUpperCase() ?? "?";
 
     const selectedDepartmentName =
@@ -72,9 +118,60 @@ export const UserProfileForm = ({
         positions.find((position) => position.id === initialValues.positionId)
             ?.name ?? "";
 
+    const handleOpenFileDialog = () => {
+        if (!canEdit || isSubmitting) {
+            return;
+        }
+
+        fileInputRef.current?.click();
+    };
+
+    const handleAvatarChange = async (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+
+        event.target.value = "";
+
+        if (!file) {
+            return;
+        }
+
+        setAvatarError(null);
+
+        if (!ALLOWED_AVATAR_TYPES.includes(file.type)) {
+            setAvatarError("Only png, jpg and gif files are allowed");
+            return;
+        }
+
+        if (file.size > MAX_AVATAR_SIZE) {
+            setAvatarError("File must be no more than 0.5MB");
+            return;
+        }
+
+        try {
+            const dataUrl = await readFileAsDataUrl(file);
+
+            setAvatarUrl(dataUrl);
+            setAvatarFile({
+                base64: dataUrl,
+                size: file.size,
+                type: file.type,
+            });
+        } catch (error) {
+            const message =
+                error instanceof Error ? error.message : "Failed to read file";
+
+            setAvatarError(message);
+        }
+    };
+
     const handleFormSubmit = async (values: UserProfileFormValues) => {
-        await onSubmit(values);
+        await onSubmit({
+            ...values,
+            avatarFile,
+        });
+
         reset(values);
+        setAvatarFile(null);
     };
 
     const profileFields = canEdit ? (
@@ -138,7 +235,10 @@ export const UserProfileForm = ({
             <form className="w-full" onSubmit={handleSubmit(handleFormSubmit)}>
                 <div className="flex flex-col items-center">
                     <div className="flex items-center justify-center gap-[52px]">
-                        <div
+                        <button
+                            type="button"
+                            onClick={handleOpenFileDialog}
+                            disabled={!canEdit || isSubmitting}
                             className="
                 flex
                 h-[120px]
@@ -147,29 +247,60 @@ export const UserProfileForm = ({
                 justify-center
                 overflow-hidden
                 rounded-full
+                border-none
                 bg-[#BDBDBD]
                 text-[40px]
                 font-normal
                 text-white
                 transition-colors
+
+                disabled:cursor-default
+
                 dark:bg-white/35
                 dark:text-[#303030]
               "
                         >
-                            {avatar ? (
+                            {avatarUrl ? (
                                 <img
-                                    src={avatar}
+                                    src={avatarUrl}
                                     alt={fullName}
                                     className="h-full w-full object-cover"
                                 />
                             ) : (
                                 firstLetter
                             )}
-                        </div>
+                        </button>
 
                         {canEdit && (
                             <div className="flex w-[252px] flex-col items-start">
-                                <div className="flex items-center gap-4">
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept="image/png,image/jpeg,image/gif"
+                                    className="hidden"
+                                    onChange={handleAvatarChange}
+                                />
+
+                                <button
+                                    type="button"
+                                    onClick={handleOpenFileDialog}
+                                    disabled={isSubmitting}
+                                    className="
+                    flex
+                    items-center
+                    gap-4
+                    border-none
+                    bg-transparent
+                    p-0
+                    text-left
+                    transition-opacity
+
+                    hover:opacity-80
+
+                    disabled:cursor-not-allowed
+                    disabled:opacity-60
+                  "
+                                >
                   <span
                       className="
                       flex
@@ -177,7 +308,9 @@ export const UserProfileForm = ({
                       justify-center
                       text-[#2E2E2E]
                       transition-colors
+
                       dark:text-white/90
+
                       [&_path]:!fill-current
                       [&_path]:!stroke-current
                       [&_svg]:!text-current
@@ -194,12 +327,13 @@ export const UserProfileForm = ({
                       tracking-[0.15px]
                       text-[#2E2E2E]
                       transition-colors
+
                       dark:text-white/90
                     "
                                     >
                     {t.profile.avatar.uploadTitle}
                   </span>
-                                </div>
+                                </button>
 
                                 <p
                                     className="
@@ -210,11 +344,18 @@ export const UserProfileForm = ({
                     tracking-[0.15px]
                     text-[#2E2E2E]/60
                     transition-colors
+
                     dark:text-white/60
                   "
                                 >
                                     {t.profile.avatar.uploadHint}
                                 </p>
+
+                                {avatarError && (
+                                    <span className="mt-2 text-[13px] text-[#D9363E]">
+                    {avatarError}
+                  </span>
+                                )}
                             </div>
                         )}
                     </div>
@@ -228,6 +369,7 @@ export const UserProfileForm = ({
               leading-[32px]
               text-[#2E2E2E]
               transition-colors
+
               dark:text-white/90
             "
                     >
@@ -244,6 +386,7 @@ export const UserProfileForm = ({
               tracking-[0.15px]
               text-black/60
               transition-colors
+
               dark:text-white/60
             "
                     >
@@ -260,6 +403,7 @@ export const UserProfileForm = ({
               tracking-[0.15px]
               text-[#2E2E2E]
               transition-colors
+
               dark:text-white/90
             "
                     >
@@ -275,7 +419,11 @@ export const UserProfileForm = ({
                     <div className="mx-auto mt-[48px] flex w-[852px] justify-end">
                         <button
                             type="submit"
-                            disabled={!isDirty || !isValid || isSubmitting}
+                            disabled={
+                                (!isDirty && !avatarFile) ||
+                                !isValid ||
+                                isSubmitting
+                            }
                             className="
                 h-[48px]
                 w-[410px]

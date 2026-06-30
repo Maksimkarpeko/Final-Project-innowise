@@ -52,7 +52,7 @@ export const en: Translations = {
       title: "Welcome back",
       subtitle: "Welcome! Please sign in to continue.",
       submit: "Login",
-      forgotPassword: "Forgot your password?",
+      forgotPassword: "I dont have an account?",
     },
     signUp: {
       title: "Register now",
@@ -61,7 +61,7 @@ export const en: Translations = {
       hasAccount: "I have an account",
     },
     forgotPassword: {
-      title: "Forgot Password",
+      title: "I dont have an account?",
     },
     form: {
       emailPlaceholder: "Email",

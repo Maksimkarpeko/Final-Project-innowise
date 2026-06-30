@@ -13,7 +13,7 @@ export const LoginPage = () => {
         subtitle={t.auth.login.subtitle}
         primaryButtonText={t.auth.login.submit}
         secondaryButtonText={t.auth.login.forgotPassword}
-        secondaryLinkHref={PATH.AUTH.FORGOT_PASSWORD}
+        secondaryLinkHref={PATH.AUTH.REGISTER}
       />
     </main>
   );

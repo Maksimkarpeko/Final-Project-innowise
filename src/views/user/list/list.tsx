@@ -16,8 +16,11 @@ export const UserListPage = () => {
   });
 
   useEffect(() => {
+    if (isOpen) {
+      return;
+    }
     refetch();
-  }, [refetch, isOpen]);
+  }, [isOpen, refetch]);
 
   const dataWithId = data?.users.filter((user) => user.id === userId) || [];
   const dataWithoutId = data?.users.filter((user) => user.id !== userId) || [];

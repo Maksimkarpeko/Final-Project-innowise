@@ -52,7 +52,7 @@ export const ru: Translations = {
       title: "С возвращением",
       subtitle: "Добро пожаловать! Войдите, чтобы продолжить.",
       submit: "Войти",
-      forgotPassword: "Забыли пароль?",
+      forgotPassword: "У меня еще нет аккаунта",
     },
     signUp: {
       title: "Регистрация",
@@ -61,7 +61,7 @@ export const ru: Translations = {
       hasAccount: "У меня уже есть аккаунт",
     },
     forgotPassword: {
-      title: "Забыли пароль",
+      title: "У меня еще нет аккаунта",
     },
     form: {
       emailPlaceholder: "Почта",

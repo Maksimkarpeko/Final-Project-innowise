@@ -1,0 +1,1 @@
+export { ModalCV } from "./ModalCV";

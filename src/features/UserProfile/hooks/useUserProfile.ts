@@ -7,6 +7,7 @@ import {
     GetUserProfile,
     UpdateProfile,
     UpdateUser,
+    UploadAvatar,
 } from "../api/userProfile.api";
 import {
     UserProfileFormValues,
@@ -81,7 +82,17 @@ export const useUserProfile = (userId: string) => {
         }
         : null;
 
-    const handleUpdateProfile = async (values: UserProfileFormValues) => {
+    const [uploadAvatar] = useMutation(UploadAvatar);
+
+    const handleUpdateProfile = async (
+        values: UserProfileFormValues & {
+            avatarFile?: {
+                base64: string;
+                size: number;
+                type: string;
+            } | null;
+        },
+    ) => {
         if (!user) return;
 
         await updateProfile({
@@ -103,6 +114,19 @@ export const useUserProfile = (userId: string) => {
                 },
             },
         });
+
+        if (values.avatarFile) {
+            await uploadAvatar({
+                variables: {
+                    avatar: {
+                        userId: user.id,
+                        base64: values.avatarFile.base64,
+                        size: values.avatarFile.size,
+                        type: values.avatarFile.type,
+                    },
+                },
+            });
+        }
 
         await refetchUser();
     };

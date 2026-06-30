@@ -57,49 +57,51 @@ export const UserSkillsPage = ({
       {currentCvUserId && <NavHeader items={navCvItems} />}
       <div className="w-full px-6">
         {currentUserId && <NavHeader items={navItems} />}
-        {!!data?.profile.skills.length ? (
-          <SkillsMenu
-            isCanEdit={isCanEdit}
-            isOpenAdd={isOpenAdd}
-            setIsOpenAdd={setIsOpenAdd}
-            isOpenUpdate={isOpenUpdate}
-            setIsOpenUpdate={setIsOpenUpdate}
-            setCurrentSkill={setCurrentSkill}
-          />
-        ) : (
-          <div className="flex justify-center w-full">
-            {isCanEdit && (
-              <Button
-                size="large"
-                type="text"
-                className="bg-white! text-gray-500! hover:text-gray-700! hover:bg-gray-100! font-medium! uppercase! tracking-wider! h-12! px-50! rounded-3xl!"
-                onClick={() => {
-                  setIsOpenAdd(!isOpenAdd);
-                }}
-              >
-                {t.skills.actions.addNew}
-              </Button>
-            )}
-          </div>
-        )}
-        {isOpenAdd && (
-          <ModalSkill
-            version="add"
-            isOpen={isOpenAdd}
-            setIsOpen={setIsOpenAdd}
-            currentSkill={currentSkill}
-            setCurrentSkill={setCurrentSkill}
-          />
-        )}
-        {isOpenUpdate && (
-          <ModalSkill
-            version="update"
-            isOpen={isOpenUpdate}
-            setIsOpen={setIsOpenUpdate}
-            currentSkill={currentSkill}
-            setCurrentSkill={setCurrentSkill}
-          />
-        )}
+        <div className="pt-6">
+          {!!data?.profile.skills.length ? (
+              <SkillsMenu
+                  isCanEdit={isCanEdit}
+                  isOpenAdd={isOpenAdd}
+                  setIsOpenAdd={setIsOpenAdd}
+                  isOpenUpdate={isOpenUpdate}
+                  setIsOpenUpdate={setIsOpenUpdate}
+                  setCurrentSkill={setCurrentSkill}
+              />
+          ) : (
+              <div className="flex justify-center w-full">
+                {isCanEdit && (
+                    <Button
+                        size="large"
+                        type="text"
+                        className="bg-white! text-gray-500! hover:text-gray-700! hover:bg-gray-100! font-medium! uppercase! tracking-wider! h-12! px-50! rounded-3xl!"
+                        onClick={() => {
+                          setIsOpenAdd(!isOpenAdd);
+                        }}
+                    >
+                      {t.skills.actions.addNew}
+                    </Button>
+                )}
+              </div>
+          )}
+          {isOpenAdd && (
+              <ModalSkill
+                  version="add"
+                  isOpen={isOpenAdd}
+                  setIsOpen={setIsOpenAdd}
+                  currentSkill={currentSkill}
+                  setCurrentSkill={setCurrentSkill}
+              />
+          )}
+          {isOpenUpdate && (
+              <ModalSkill
+                  version="update"
+                  isOpen={isOpenUpdate}
+                  setIsOpen={setIsOpenUpdate}
+                  currentSkill={currentSkill}
+                  setCurrentSkill={setCurrentSkill}
+              />
+          )}
+        </div>
       </div>
     </>
   );

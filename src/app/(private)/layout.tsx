@@ -3,6 +3,28 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import { Providers } from "../providers/Providers";
 
+const themeInitScript = `
+(function () {
+  try {
+    var appearance = localStorage.getItem("appearance") || "light";
+    var isDark =
+      appearance === "night" ||
+      (appearance === "systemTheme" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+    document.documentElement.classList.toggle("dark", isDark);
+
+    var locale = localStorage.getItem("locale");
+
+    if (locale === "ru" || locale === "en") {
+      document.documentElement.lang = locale;
+    }
+  } catch (error) {
+    document.documentElement.classList.remove("dark");
+  }
+})();
+`;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,19 +42,23 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
+                                     children,
+                                   }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      suppressHydrationWarning
-    >
-      <body className="min-h-screen" suppressHydrationWarning>
-        <Providers>{children}</Providers>
-      </body>
-    </html>
+      <html
+          lang="en"
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          suppressHydrationWarning
+      >
+        <head>
+          <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        </head>
+
+        <body className="min-h-screen" suppressHydrationWarning>
+          <Providers>{children}</Providers>
+        </body>
+      </html>
   );
 }

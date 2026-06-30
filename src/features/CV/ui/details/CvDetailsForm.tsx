@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import { Alert, Form, Spin } from "antd";
 
+import { useLocale } from "@/src/shared";
+
 import { useCVDetails } from "../../hooks/useCVDetails";
 import type { CVDetails, CVDetailsFormValues } from "../../model/types";
-import { useLocale } from "@/src/shared";
 
 import { CvFormField } from "./CvFormFiled";
 
@@ -71,23 +72,37 @@ const CVDetailsFormContent = ({
                         type="submit"
                         disabled={!isChanged || isUpdating}
                         className="
-                            h-[48px]
-                            w-full
-                            rounded-[40px]
-                            border-none
-                            bg-[#C63031]
-                            text-[14px]
-                            font-medium
-                            uppercase
-                            leading-[24.5px]
-                            tracking-[0.4px]
-                            text-white
-                            disabled:bg-black/12
-                            disabled:text-black/25
-                            sm:w-[410px]
-                        "
+              h-[48px]
+              w-full
+              rounded-[40px]
+              border-none
+              bg-[#C63031]
+              text-[14px]
+              font-medium
+              uppercase
+              leading-[24.5px]
+              tracking-[0.4px]
+              text-white
+              transition-colors
+
+              hover:bg-[#B71C1C]
+
+              disabled:bg-black/12
+              disabled:text-black/25
+              disabled:hover:bg-black/12
+
+              dark:bg-[#D9363E]
+              dark:text-white
+              dark:hover:bg-[#C63031]
+
+              dark:disabled:bg-white/14
+              dark:disabled:text-white/45
+              dark:disabled:hover:bg-white/14
+
+              sm:w-[410px]
+            "
                     >
-                        {t.common.update}
+                        {isUpdating ? t.common.updating : t.common.update}
                     </button>
                 </div>
             </Form>

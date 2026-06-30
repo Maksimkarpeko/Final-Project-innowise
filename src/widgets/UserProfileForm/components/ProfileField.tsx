@@ -27,38 +27,82 @@ type ProfileReadOnlyFieldProps = {
     value?: string | null;
 };
 
-const fieldWrapperClassName =
-    "relative h-[53px] w-[410px] rounded-none border border-black/[0.23] bg-transparent";
+const fieldWrapperClassName = `
+  relative
+  h-[53px]
+  w-[410px]
+  rounded-none
+  border
+  border-black/[0.23]
+  bg-transparent
+  transition-colors
 
-const labelClassName =
-    "absolute -top-[12px] left-[10px] z-10 bg-white px-1 text-[12px] font-normal leading-[23px] tracking-[0.15px] text-black/60";
+  focus-within:border-[#C63031]
 
-const fieldTextClassName =
-    "text-[16px] font-normal leading-[24px] tracking-[0.15px] text-[#2E2E2E]";
+  dark:border-white/20
+  dark:bg-transparent
+  dark:focus-within:border-[#D9363E]
+`;
+
+const labelClassName = `
+  absolute
+  -top-[12px]
+  left-[10px]
+  z-10
+  bg-white
+  px-1
+  text-[12px]
+  font-normal
+  leading-[23px]
+  tracking-[0.15px]
+  text-black/60
+  transition-colors
+
+  dark:bg-[#303030]
+  dark:text-white/60
+`;
+
+const fieldTextClassName = `
+  text-[16px]
+  font-normal
+  leading-[24px]
+  tracking-[0.15px]
+  text-[#2E2E2E]
+  transition-colors
+
+  dark:text-white/90
+`;
 
 const inputClassName = `
-    h-full
-    w-full
-    border-none
-    bg-transparent
-    px-3
-    outline-none
-    ${fieldTextClassName}
+  h-full
+  w-full
+  border-none
+  bg-transparent
+  px-3
+  outline-none
+  placeholder:text-black/40
+  dark:placeholder:text-white/40
+  ${fieldTextClassName}
 `;
 
 const selectClassName = `
-    h-full
-    w-full
-    appearance-none
-    border-none
-    bg-transparent
-    px-3
-    pr-10
-    outline-none
-    ${fieldTextClassName}
+  h-full
+  w-full
+  appearance-none
+  border-none
+  bg-transparent
+  px-3
+  pr-10
+  outline-none
+  ${fieldTextClassName}
+
+  [&>option]:bg-white
+  [&>option]:text-[#2E2E2E]
+  dark:[&>option]:bg-[#303030]
+  dark:[&>option]:text-white
 `;
 
-const errorClassName = "mt-1 block text-xs text-red-500";
+const errorClassName = "mt-1 block text-xs text-red-500 dark:text-[#D9363E]";
 
 export const ProfileTextField = ({
                                      id,
@@ -69,7 +113,12 @@ export const ProfileTextField = ({
     return (
         <div>
             <div className={fieldWrapperClassName}>
-                <label className={labelClassName} htmlFor={id}>
+                <label
+                    className={`${labelClassName} ${
+                        error ? "text-[#C63031] dark:text-[#D9363E]" : ""
+                    }`}
+                    htmlFor={id}
+                >
                     {label}
                 </label>
 
@@ -96,15 +145,16 @@ export const ProfileSelectField = ({
     return (
         <div>
             <div className={fieldWrapperClassName}>
-                <label className={labelClassName} htmlFor={id}>
+                <label
+                    className={`${labelClassName} ${
+                        error ? "text-[#C63031] dark:text-[#D9363E]" : ""
+                    }`}
+                    htmlFor={id}
+                >
                     {label}
                 </label>
 
-                <select
-                    id={id}
-                    className={selectClassName}
-                    {...registration}
-                >
+                <select id={id} className={selectClassName} {...registration}>
                     {options.map((option) => (
                         <option key={option.id} value={option.id}>
                             {option.name}
@@ -112,9 +162,26 @@ export const ProfileSelectField = ({
                     ))}
                 </select>
 
-                <span className="pointer-events-none absolute right-[14px] top-1/2 flex -translate-y-1/2 items-center justify-center">
-                    <SelectArrowIcon />
-                </span>
+                <span
+                    className="
+            pointer-events-none
+            absolute
+            right-[14px]
+            top-1/2
+            flex
+            -translate-y-1/2
+            items-center
+            justify-center
+            text-[#2E2E2E]
+            transition-colors
+            dark:text-white/70
+            [&_path]:!fill-current
+            [&_path]:!stroke-current
+            [&_svg]:!text-current
+          "
+                >
+          <SelectArrowIcon />
+        </span>
             </div>
 
             {error && <span className={errorClassName}>{error}</span>}
@@ -130,9 +197,7 @@ export const ProfileReadOnlyField = ({
         <div className={fieldWrapperClassName}>
             <span className={labelClassName}>{label}</span>
 
-            <div
-                className={`flex h-full w-full items-center px-3 ${fieldTextClassName}`}
-            >
+            <div className={`flex h-full w-full items-center px-3 ${fieldTextClassName}`}>
                 {value || ""}
             </div>
         </div>

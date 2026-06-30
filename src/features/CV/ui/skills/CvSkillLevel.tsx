@@ -15,27 +15,27 @@ const MASTERY_CONFIG: Record<
     Expert: {
         width: "100%",
         color: "#D94646",
-        trackColor: "#F2B8B8",
+        trackColor: "rgba(217, 70, 70, 0.18)",
     },
     Proficient: {
         width: "80%",
         color: "#FFC107",
-        trackColor: "#FFE49E",
+        trackColor: "rgba(255, 193, 7, 0.18)",
     },
     Competent: {
         width: "60%",
         color: "#3F8F46",
-        trackColor: "#B8D8BC",
+        trackColor: "rgba(63, 143, 70, 0.18)",
     },
     Advanced: {
         width: "40%",
         color: "#1FA0DB",
-        trackColor: "#B9E3F5",
+        trackColor: "rgba(31, 160, 219, 0.18)",
     },
     Novice: {
         width: "20%",
         color: "#767676",
-        trackColor: "#D6D6D6",
+        trackColor: "rgba(255, 255, 255, 0.12)",
     },
 };
 

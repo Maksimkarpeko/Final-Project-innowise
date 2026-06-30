@@ -3,6 +3,7 @@ export const PATH = {
     LOGIN: "/login",
     REGISTER: "/sign-up",
     FORGOT_PASSWORD: "/forgot-password",
+    RESET_PASSWORD: "/reset-password",
   },
   ADMIN: {
     PROJECTS: "/projects",

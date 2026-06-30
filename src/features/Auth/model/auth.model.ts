@@ -11,3 +11,53 @@ export const createAuthFormModel = (t: Translations) =>
   });
 
 export type AuthFormValues = z.infer<ReturnType<typeof createAuthFormModel>>;
+
+export type ForgotPasswordFormValues = {
+    email: string;
+};
+
+export type ForgotPasswordVariables = {
+    auth: {
+        email: string;
+    };
+};
+
+export type ForgotPasswordResponse = {
+    forgotPassword: null;
+};
+
+export const forgotPasswordModel = z.object({
+    email: z
+        .string()
+        .min(1, "Email is required")
+        .email("Invalid email address"),
+});
+
+export type ResetPasswordFormValues = {
+    newPassword: string;
+    confirmPassword: string;
+};
+
+export type ResetPasswordVariables = {
+    auth: {
+        newPassword: string;
+    };
+};
+
+export type ResetPasswordResponse = {
+    resetPassword: null;
+};
+
+export const resetPasswordModel = z
+    .object({
+        newPassword: z
+            .string()
+            .min(1, "Password is required")
+            .min(6, "Password must be at least 6 characters"),
+
+        confirmPassword: z.string().min(1, "Confirm password is required"),
+    })
+    .refine((values) => values.newPassword === values.confirmPassword, {
+        message: "Passwords do not match",
+        path: ["confirmPassword"],
+    });

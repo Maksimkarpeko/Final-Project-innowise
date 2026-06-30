@@ -1,77 +1,75 @@
 "use client";
 
 import { UserProfileForm } from "@/src/widgets";
+import { useLocale } from "@/src/shared";
 import { useUserProfile } from "../hooks/useUserProfile";
 
 type UserProfileProps = {
-    userId: string;
-    canEdit: boolean;
-};
-
-const formatMemberSince = (createdAt?: string | number | null) => {
-    if (!createdAt) {
-        return "Unknown date";
-    }
-
-    const value = String(createdAt).trim();
-
-    const date = new Date(Number(value));
-
-    if (Number.isNaN(date.getTime())) {
-        return "Unknown date";
-    }
-
-    return date.toDateString();
+  userId: string;
+  canEdit: boolean;
 };
 
 export const UserProfile = ({ userId, canEdit }: UserProfileProps) => {
-    const {
-        user,
-        initialValues,
-        departments,
-        positions,
-        isLoading,
-        isUpdating,
-        error,
-        handleUpdateProfile,
-    } = useUserProfile(userId);
+  const { t } = useLocale();
+  const {
+    user,
+    initialValues,
+    departments,
+    positions,
+    isLoading,
+    isUpdating,
+    error,
+    handleUpdateProfile,
+  } = useUserProfile(userId);
 
-    if (isLoading) {
-        return <div className="py-8 text-center">Loading...</div>;
+  const formatMemberSince = (createdAt?: string | number | null) => {
+    if (!createdAt) {
+      return t.profile.memberSinceUnknown;
     }
 
-    if (error) {
-        return (
-            <div className="py-8 text-center text-red-500">
-                {error.message}
-            </div>
-        );
+    const value = String(createdAt).trim();
+    const date = new Date(Number(value));
+
+    if (Number.isNaN(date.getTime())) {
+      return t.profile.memberSinceUnknown;
     }
 
-    if (!user || !initialValues) {
-        return <div className="py-8 text-center">User not found</div>;
-    }
+    return date.toDateString();
+  };
 
-    const fullName =
-        user.profile.full_name ||
-        `${user.profile.first_name ?? ""} ${user.profile.last_name ?? ""}`.trim() ||
-        user.email;
+  if (isLoading) {
+    return <div className="py-8 text-center">{t.common.loading}</div>;
+  }
 
-    console.log("created_at from user:", user.created_at);
-    console.log("formatted date:", formatMemberSince(user.created_at));
-
+  if (error) {
     return (
-        <UserProfileForm
-            canEdit={canEdit}
-            isSubmitting={isUpdating}
-            initialValues={initialValues}
-            fullName={fullName}
-            email={user.email}
-            avatar={user.profile.avatar ?? undefined}
-            memberSince={formatMemberSince(user.created_at)}
-            departments={departments}
-            positions={positions}
-            onSubmit={handleUpdateProfile}
-        />
+      <div className="py-8 text-center text-red-500">{error.message}</div>
     );
+  }
+
+  if (!user || !initialValues) {
+    return (
+      <div className="py-8 text-center">{t.profile.errors.notFound}</div>
+    );
+  }
+
+  const fullName =
+    user.profile.full_name ||
+    `${user.profile.first_name ?? ""} ${user.profile.last_name ?? ""}`.trim() ||
+    user.email;
+
+  return (
+    <UserProfileForm
+      canEdit={canEdit}
+      isSubmitting={isUpdating}
+      initialValues={initialValues}
+      fullName={fullName}
+      email={user.email}
+      avatar={user.profile.avatar ?? undefined}
+      memberSince={formatMemberSince(user.created_at)}
+      departments={departments}
+      positions={positions}
+      onSubmit={handleUpdateProfile}
+    />
+  );
 };

@@ -4,6 +4,7 @@ import { ConfigProvider, Select } from "antd";
 interface FloatingSelectProps {
   label: string;
   defaultValue?: string;
+  value?: string;
   disabled?: boolean;
   options: { value: string; label: string; disabled?: boolean }[];
   onChange?: (value: string) => void;
@@ -12,9 +13,11 @@ interface FloatingSelectProps {
 export const FloatingSelect: FC<FloatingSelectProps> = ({
   label,
   defaultValue,
+  value,
   disabled = false,
   options,
   onChange,
+  ...rest
 }) => {
   return (
     <ConfigProvider
@@ -35,10 +38,12 @@ export const FloatingSelect: FC<FloatingSelectProps> = ({
       <div className="relative w-full" style={{ backgroundColor: "#ffffff" }}>
         <Select
           defaultValue={defaultValue}
+          value={value}
           disabled={disabled}
           onChange={onChange}
           options={options}
           style={{ width: "100%", boxShadow: "none" }}
+          {...rest}
         />
 
         <label

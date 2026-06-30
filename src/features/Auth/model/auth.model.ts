@@ -1,10 +1,13 @@
 import z from "zod";
 
-export const authFormModel = z.object({
-  email: z.string().email().optional(),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long" }),
-});
+import { Translations } from "@/src/shared/i18n/types";
 
-export type AuthFormValues = z.infer<typeof authFormModel>;
+export const createAuthFormModel = (t: Translations) =>
+  z.object({
+    email: z.string().email().optional(),
+    password: z
+      .string()
+      .min(8, { message: t.auth.validation.passwordMinLength }),
+  });
+
+export type AuthFormValues = z.infer<ReturnType<typeof createAuthFormModel>>;

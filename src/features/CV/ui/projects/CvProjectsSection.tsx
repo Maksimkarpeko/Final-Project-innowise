@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { Alert, Empty, Spin } from "antd";
 import { Plus } from "lucide-react";
-import { HeaderSearch } from "@/src/shared";
+import { HeaderSearch, useLocale } from "@/src/shared";
 
 import { useCVProjects } from "../../hooks/useCVProjects";
 import type {
@@ -20,6 +20,7 @@ type CvProjectsSectionProps = {
 };
 
 export const CvProjectsSection = ({ cvId }: CvProjectsSectionProps) => {
+  const { t } = useLocale();
   const [search, setSearch] = useState("");
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<"add" | "edit">("add");
@@ -130,7 +131,7 @@ export const CvProjectsSection = ({ cvId }: CvProjectsSectionProps) => {
     return (
       <Alert
         type="error"
-        message="Failed to load CV projects"
+        message={t.cv.projects.errors.loadFailed}
         description={error.message}
         showIcon
       />
@@ -170,21 +171,21 @@ export const CvProjectsSection = ({ cvId }: CvProjectsSectionProps) => {
                         "
           >
             <Plus size={22} />
-            ADD PROJECT
+            {t.cv.projects.actions.add}
           </button>
         </div>
 
         <div className="grid grid-cols-[1.1fr_1.1fr_0.7fr_0.7fr_32px] gap-6 border-b border-[#E0E0E0] pb-[16px] font-roboto text-[14px] font-medium leading-[24px] text-[#2E2E2E]">
-          <span>Name</span>
-          <span>Domain</span>
-          <span>Start Date</span>
-          <span>End Date</span>
+          <span>{t.cv.projects.table.name}</span>
+          <span>{t.cv.projects.table.domain}</span>
+          <span>{t.cv.projects.table.startDate}</span>
+          <span>{t.cv.projects.table.endDate}</span>
           <span />
         </div>
 
         {!filteredProjects.length ? (
           <div className="flex min-h-[320px] items-center justify-center">
-            <Empty description="No projects found" />
+            <Empty description={t.cv.projects.empty.none} />
           </div>
         ) : (
           <div>

@@ -7,6 +7,11 @@ import { Plus, Trash2 } from "lucide-react";
 import { useCVSkills } from "../../hooks/useCVSkills";
 import { groupCVSkillsByCategory } from "../../model/skills/groupCVSkillsByCategory";
 import type { CVSkill, Mastery } from "../../model/skills/types.skills";
+import {
+  getMasteryOptions,
+  translateCategoryName,
+  useLocale,
+} from "@/src/shared";
 
 import { CvSkillItem } from "./CvSkillItem";
 
@@ -19,15 +24,8 @@ type AddSkillFormValues = {
     mastery: Mastery;
 };
 
-const masteryOptions: Mastery[] = [
-    "Novice",
-    "Advanced",
-    "Competent",
-    "Proficient",
-    "Expert",
-];
-
 export const CvSkillsSection = ({ cvId }: CvSkillsSectionProps) => {
+    const { t } = useLocale();
     const [form] = Form.useForm<AddSkillFormValues>();
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -139,7 +137,7 @@ export const CvSkillsSection = ({ cvId }: CvSkillsSectionProps) => {
         return (
             <Alert
                 type="error"
-                message="Failed to load CV skills"
+                message={t.cv.skills.errors.loadFailed}
                 description={error.message}
                 showIcon
             />
@@ -151,14 +149,14 @@ export const CvSkillsSection = ({ cvId }: CvSkillsSectionProps) => {
             <section className="relative mx-auto flex h-auto min-h-[624px] w-full max-w-[900px] flex-col px-4 pb-[96px] pt-8 sm:px-6 lg:h-[624px] lg:px-6 lg:pb-[88px]">
                 {!skills.length ? (
                     <div className="flex flex-1 items-center justify-center">
-                        <Empty description="No skills found" />
+                        <Empty description={t.cv.skills.empty.none} />
                     </div>
                 ) : (
                     <div className="flex flex-col gap-[42px] overflow-y-auto pr-1 lg:max-h-[480px]">
                         {groups.map((group) => (
                             <section key={group.categoryId ?? group.categoryName}>
                                 <h2 className="mb-[24px] font-roboto text-[16px] font-normal leading-[24px] tracking-[0.15px] text-[#2E2E2E]">
-                                    {group.categoryName}
+                                    {translateCategoryName(t, group.categoryName)}
                                 </h2>
 
                                 <div className="grid grid-cols-1 gap-x-[25px] gap-y-[18px] sm:grid-cols-2 lg:grid-cols-3">
@@ -186,7 +184,7 @@ export const CvSkillsSection = ({ cvId }: CvSkillsSectionProps) => {
                             className="flex h-[48px] w-[220px] items-center justify-center gap-[20px] rounded-[40px] border-none bg-transparent font-roboto text-[14px] font-medium uppercase leading-[24.5px] tracking-[0.4px] text-[#767676] transition hover:bg-black/5 disabled:opacity-50"
                         >
                             <Plus size={24} strokeWidth={2} />
-                            ADD SKILL
+                            {t.cv.skills.actions.add}
                         </button>
 
                         <button
@@ -198,20 +196,20 @@ export const CvSkillsSection = ({ cvId }: CvSkillsSectionProps) => {
                             <Trash2 size={24} strokeWidth={2.4} />
                             {isRemoveMode
                                 ? selectedSkillNames.length
-                                    ? "DELETE SELECTED"
-                                    : "CANCEL"
-                                : "REMOVE SKILLS"}
+                                    ? t.cv.skills.actions.deleteSelected
+                                    : t.common.cancel
+                                : t.cv.skills.actions.remove}
                         </button>
                     </div>
                 </div>
             </section>
 
             <Modal
-                title="Add skill"
+                title={t.cv.skills.modal.addTitle}
                 open={isAddModalOpen}
                 onCancel={() => setIsAddModalOpen(false)}
                 onOk={handleAddSkill}
-                okText="Add"
+                okText={t.common.add}
                 confirmLoading={isMutating}
                 destroyOnHidden
             >
@@ -224,17 +222,17 @@ export const CvSkillsSection = ({ cvId }: CvSkillsSectionProps) => {
                 >
                     <Form.Item
                         name="skillId"
-                        label="Skill"
+                        label={t.cv.skills.form.skillLabel}
                         rules={[
                             {
                                 required: true,
-                                message: "Select skill",
+                                message: t.cv.skills.validation.selectSkill,
                             },
                         ]}
                     >
                         <Select
                             showSearch
-                            placeholder="Select skill"
+                            placeholder={t.cv.skills.form.skillPlaceholder}
                             options={skillOptions}
                             optionFilterProp="label"
                         />
@@ -242,20 +240,15 @@ export const CvSkillsSection = ({ cvId }: CvSkillsSectionProps) => {
 
                     <Form.Item
                         name="mastery"
-                        label="Mastery"
+                        label={t.cv.skills.form.masteryLabel}
                         rules={[
                             {
                                 required: true,
-                                message: "Select mastery",
+                                message: t.cv.skills.validation.selectMastery,
                             },
                         ]}
                     >
-                        <Select
-                            options={masteryOptions.map((mastery) => ({
-                                label: mastery,
-                                value: mastery,
-                            }))}
-                        />
+                        <Select options={getMasteryOptions(t)} />
                     </Form.Item>
                 </Form>
             </Modal>

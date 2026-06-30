@@ -1,19 +1,18 @@
 "use client";
 
-import {AuthPanel } from "@/src/widgets";
-import { PATH } from "@/src/shared";
-import { APP_TEXT } from "@/src/shared";
+import { AuthPanel } from "@/src/widgets";
+import { PATH, useLocale } from "@/src/shared";
 
 export const SignUpPage = () => {
-  const { title, subtitle, primaryButtonText, secondaryButtonText } =
-    APP_TEXT.signUp;
+  const { t } = useLocale();
+
   return (
     <main className="min-h-dvh w-full bg-[#f5f5f7]">
       <AuthPanel
-        title={title}
-        subtitle={subtitle}
-        primaryButtonText={primaryButtonText}
-        secondaryButtonText={secondaryButtonText}
+        title={t.auth.signUp.title}
+        subtitle={t.auth.signUp.subtitle}
+        primaryButtonText={t.auth.signUp.submit}
+        secondaryButtonText={t.auth.signUp.hasAccount}
         secondaryLinkHref={PATH.AUTH.LOGIN}
       />
     </main>

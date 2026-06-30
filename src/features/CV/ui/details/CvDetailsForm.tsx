@@ -5,6 +5,7 @@ import { Alert, Form, Spin } from "antd";
 
 import { useCVDetails } from "../../hooks/useCVDetails";
 import type { CVDetails, CVDetailsFormValues } from "../../model/types";
+import { useLocale } from "@/src/shared";
 
 import { CvFormField } from "./CvFormFiled";
 
@@ -29,6 +30,7 @@ const CVDetailsFormContent = ({
                                   isUpdating,
                                   updateCVDetails,
                               }: CVDetailsFormContentProps) => {
+    const { t } = useLocale();
     const [form] = Form.useForm<CVDetailsFormValues>();
     const [isChanged, setIsChanged] = useState(false);
 
@@ -54,12 +56,12 @@ const CVDetailsFormContent = ({
                 onValuesChange={() => setIsChanged(true)}
                 className="flex w-full flex-col gap-[31px]"
             >
-                <CvFormField label="Name" name="name" />
+                <CvFormField label={t.cv.form.name} name="name" />
 
-                <CvFormField label="Education" name="education" />
+                <CvFormField label={t.cv.form.education} name="education" />
 
                 <CvFormField
-                    label="Description"
+                    label={t.cv.form.description}
                     name="description"
                     variant="textarea"
                 />
@@ -85,7 +87,7 @@ const CVDetailsFormContent = ({
                             sm:w-[410px]
                         "
                     >
-                        UPDATE
+                        {t.common.update}
                     </button>
                 </div>
             </Form>
@@ -94,6 +96,7 @@ const CVDetailsFormContent = ({
 };
 
 export const CVDetailsForm = ({ cvId }: CVDetailsFormProps) => {
+    const { t } = useLocale();
     const { cv, isLoading, isUpdating, error, updateCVDetails } = useCVDetails({
         cvId,
     });
@@ -110,7 +113,7 @@ export const CVDetailsForm = ({ cvId }: CVDetailsFormProps) => {
         return (
             <Alert
                 type="error"
-                message="Failed to load CV"
+                message={t.cv.errors.loadFailed}
                 description={error.message}
                 showIcon
             />
@@ -118,7 +121,7 @@ export const CVDetailsForm = ({ cvId }: CVDetailsFormProps) => {
     }
 
     if (!cv) {
-        return <Alert type="warning" message="CV not found" showIcon />;
+        return <Alert type="warning" message={t.cv.errors.notFound} showIcon />;
     }
 
     return (

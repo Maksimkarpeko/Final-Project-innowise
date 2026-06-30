@@ -1,6 +1,6 @@
 "use client";
 import { GET_USER_CVS } from "@/src/entities";
-import { getUserId, UserResponse } from "@/src/shared";
+import { getProficiencyLabel, getUserId, UserResponse, useLocale } from "@/src/shared";
 import { useQuery } from "@apollo/client/react";
 import { FC } from "react";
 import { ExportCV } from "./ExportCV";
@@ -11,22 +11,24 @@ type CVPreviewInfoProps = {
 
 export const CVPreviewInfo: FC<CVPreviewInfoProps> = ({ cvId }) => {
   const userId = getUserId();
+  const { t, locale } = useLocale();
   const { data, loading } = useQuery<UserResponse>(GET_USER_CVS, {
     variables: {
       userId,
     },
     skip: !userId,
   });
+
   if (loading) {
-    return <>Loading...</>;
+    return <>{t.common.loading}</>;
   }
-  console.log(data);
+
   const activeCV = data?.user.cvs.find((cv) => cv.id === cvId);
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
+    return date.toLocaleDateString(locale === "ru" ? "ru-RU" : "en-US", {
       month: "short",
       year: "numeric",
     });
@@ -43,7 +45,7 @@ export const CVPreviewInfo: FC<CVPreviewInfoProps> = ({ cvId }) => {
             {data?.user.profile.full_name}
           </h1>
           <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mt-1">
-            {activeCV?.name || "Software Engineer"}
+            {activeCV?.name || t.cv.preview.defaultRole}
           </p>
         </div>
         <ExportCV elementId="pdf-target-content" />
@@ -54,7 +56,7 @@ export const CVPreviewInfo: FC<CVPreviewInfoProps> = ({ cvId }) => {
           {activeCV?.education && (
             <div>
               <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
-                Education
+                {t.cv.preview.sections.education}
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed">
                 {activeCV?.education}
@@ -65,11 +67,14 @@ export const CVPreviewInfo: FC<CVPreviewInfoProps> = ({ cvId }) => {
           {activeCV?.languages && activeCV?.languages.length > 0 && (
             <div>
               <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
-                Language proficiency
+                {t.cv.preview.sections.languageProficiency}
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed">
                 {activeCV.languages
-                  .map((lang) => `${lang.name} (${lang.proficiency})`)
+                  .map(
+                    (lang) =>
+                      `${lang.name} (${getProficiencyLabel(t, lang.proficiency)})`,
+                  )
                   .join(", ")}
               </p>
             </div>
@@ -78,7 +83,7 @@ export const CVPreviewInfo: FC<CVPreviewInfoProps> = ({ cvId }) => {
           {activeCV?.projects && activeCV?.projects.length > 0 && (
             <div>
               <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-2">
-                Domains
+                {t.cv.preview.sections.domains}
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed">
                 {Array.from(
@@ -97,7 +102,7 @@ export const CVPreviewInfo: FC<CVPreviewInfoProps> = ({ cvId }) => {
           {activeCV?.description && (
             <div className="space-y-2">
               <h2 className="text-base font-bold text-gray-900">
-                {activeCV?.name || "Software Engineer"}
+                {activeCV?.name || t.cv.preview.defaultRole}
               </h2>
               <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
                 {activeCV?.description}
@@ -110,7 +115,7 @@ export const CVPreviewInfo: FC<CVPreviewInfoProps> = ({ cvId }) => {
               <div className="space-y-3">
                 <div>
                   <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
-                    Skills & Technologies
+                    {t.cv.preview.sections.skillsTechnologies}
                   </h3>
                   <p className="text-gray-800 text-sm font-medium">
                     {activeCV?.skills.map((skill) => skill.name).join(", ")}
@@ -125,7 +130,7 @@ export const CVPreviewInfo: FC<CVPreviewInfoProps> = ({ cvId }) => {
       {activeCV?.projects && activeCV?.projects.length > 0 && (
         <div className="border-t border-gray-200 pt-8 ">
           <h2 className="text-2xl font-bold tracking-tight text-gray-950">
-            Projects
+            {t.cv.preview.sections.projects}
           </h2>
 
           <div className="divide-y divide-gray-100">
@@ -149,14 +154,16 @@ export const CVPreviewInfo: FC<CVPreviewInfoProps> = ({ cvId }) => {
                     </h3>
                     <span className="text-sm text-gray-500 font-medium">
                       {formatDate(startDate)} —{" "}
-                      {endDate ? formatDate(endDate) : "Present"}
+                      {endDate
+                        ? formatDate(endDate)
+                        : t.cv.preview.date.present}
                     </span>
                   </div>
 
                   {proj.roles && proj.roles.length > 0 && (
                     <div className="text-sm">
                       <span className="font-semibold text-gray-700">
-                        Role:{" "}
+                        {t.cv.preview.project.role}{" "}
                       </span>
                       <span className="text-gray-600">
                         {proj.roles.join(", ")}
@@ -167,7 +174,7 @@ export const CVPreviewInfo: FC<CVPreviewInfoProps> = ({ cvId }) => {
                   {projectEnvironment && projectEnvironment.length > 0 && (
                     <div className="text-sm">
                       <span className="font-semibold text-gray-700">
-                        Environment:{" "}
+                        {t.cv.preview.project.environment}{" "}
                       </span>
                       <span className="text-gray-600">
                         {projectEnvironment.join(", ")}
@@ -184,7 +191,7 @@ export const CVPreviewInfo: FC<CVPreviewInfoProps> = ({ cvId }) => {
                     proj.responsibilities.length > 0 && (
                       <div className="space-y-1">
                         <span className="text-sm font-semibold text-gray-700">
-                          Responsibilities:
+                          {t.cv.preview.project.responsibilities}
                         </span>
                         <ul className="list-disc list-inside text-gray-600 text-sm space-y-0.5 pl-2">
                           {proj.responsibilities.map((resp, rIdx) => (

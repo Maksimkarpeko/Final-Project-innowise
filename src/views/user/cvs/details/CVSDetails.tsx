@@ -1,6 +1,8 @@
+"use client";
+
 import { CVDetailsForm } from "@/src/features";
+import { useCvNavItems } from "@/src/shared";
 import { NavHeader } from "@/src/widgets";
-import { PATH } from "@/src/shared";
 
 type UserIdPage = {
   userId: string;
@@ -8,24 +10,7 @@ type UserIdPage = {
 };
 
 export const CVSDetailsPage = ({ userId, cvId }: UserIdPage) => {
-  const navItems = [
-    {
-      content: "Details",
-      href: PATH.USER.CV.DETAILS(userId, cvId),
-    },
-    {
-      content: "Skills",
-      href: PATH.USER.CV.SKILLS(userId, cvId),
-    },
-    {
-      content: "Projects",
-      href: PATH.USER.CV.PROJECTS(userId, cvId),
-    },
-    {
-      content: "Preview",
-      href: PATH.USER.CV.PREVIEW(userId, cvId),
-    },
-  ];
+  const navItems = useCvNavItems(userId, cvId);
 
   return (
     <div className="w-full">

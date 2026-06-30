@@ -2,7 +2,7 @@
 import { Table } from "antd";
 import { getColumns } from "./getColumns";
 import { FC } from "react";
-import { User } from "@/src/shared";
+import { User, useLocale } from "@/src/shared";
 
 type UserTableProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,7 +15,8 @@ export const UserTable: FC<UserTableProps> = ({
   userId,
   filterData,
 }) => {
-  const columns = getColumns(setIsOpen, userId);
+  const { t } = useLocale();
+  const columns = getColumns(setIsOpen, userId, t);
 
   return (
     <Table

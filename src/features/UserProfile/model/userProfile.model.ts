@@ -1,15 +1,28 @@
 import z from "zod";
 
-export const userProfileFormModel = z.object({
-    firstName: z.string().min(1, { message: "First name is required" }),
-    lastName: z.string().min(1, { message: "Last name is required" }),
-    departmentId: z.string().min(1, { message: "Department is required" }),
-    positionId: z.string().min(1, { message: "Position is required" }),
-});
+import { Translations } from "@/src/shared/i18n/types";
 
-export type UserProfileFormValues = z.infer<typeof userProfileFormModel>;
+export const createUserProfileFormModel = (t: Translations) =>
+  z.object({
+    firstName: z
+      .string()
+      .min(1, { message: t.profile.validation.firstNameRequired }),
+    lastName: z
+      .string()
+      .min(1, { message: t.profile.validation.lastNameRequired }),
+    departmentId: z
+      .string()
+      .min(1, { message: t.profile.validation.departmentRequired }),
+    positionId: z
+      .string()
+      .min(1, { message: t.profile.validation.positionRequired }),
+  });
+
+export type UserProfileFormValues = z.infer<
+  ReturnType<typeof createUserProfileFormModel>
+>;
 
 export type UserProfileOption = {
-    id: string;
-    name: string;
+  id: string;
+  name: string;
 };

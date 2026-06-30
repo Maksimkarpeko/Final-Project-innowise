@@ -1,11 +1,13 @@
 "use client";
-import { PATH, User } from "@/src/shared";
+import { PATH, Translations, User } from "@/src/shared";
 import { Avatar, Button, Dropdown } from "antd";
 import { ChevronRight, EllipsisVertical, User as UserIcon } from "lucide-react";
 import Link from "next/link";
+
 export const getColumns = (
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
   id: string,
+  t: Translations,
 ) => [
   {
     dataIndex: ["profile", "avatar"],
@@ -23,27 +25,27 @@ export const getColumns = (
     },
   },
   {
-    title: "First Name",
+    title: t.employees.table.firstName,
     dataIndex: ["profile", "first_name"],
     key: "first_name",
   },
   {
-    title: "Last Name",
+    title: t.employees.table.lastName,
     dataIndex: ["profile", "last_name"],
     key: "last_name",
   },
   {
-    title: "Email",
+    title: t.employees.table.email,
     dataIndex: "email",
     key: "email",
   },
   {
-    title: "Department",
+    title: t.employees.table.department,
     dataIndex: "department_name",
     key: "department_name",
   },
   {
-    title: "Position",
+    title: t.employees.table.position,
     dataIndex: "position_name",
     key: "position_name",
   },
@@ -55,14 +57,16 @@ export const getColumns = (
       const menuItems = [
         {
           key: "edit",
-          label: "Update",
+          label: t.employees.actions.update,
           onClick: () => {
             setIsOpen(true);
           },
         },
         {
           key: "profile",
-          label: <Link href={PATH.USER.PROFILE(id)}>Profile</Link>,
+          label: (
+            <Link href={PATH.USER.PROFILE(id)}>{t.employees.actions.profile}</Link>
+          ),
         },
       ];
 

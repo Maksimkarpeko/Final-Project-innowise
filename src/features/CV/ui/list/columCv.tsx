@@ -1,4 +1,4 @@
-import { PATH, User } from "@/src/shared";
+import { PATH, Translations } from "@/src/shared";
 import { Button, Dropdown } from "antd";
 import { EllipsisVertical } from "lucide-react";
 import { CvRowType } from "./CVList";
@@ -10,19 +10,20 @@ export const getColumns = (
   userId: string,
   setIsOpenModal: Dispatch<SetStateAction<boolean>>,
   setActiveCv: Dispatch<SetStateAction<ActiveCv>>,
+  t: Translations,
 ) => [
   {
-    title: "Name",
+    title: t.cv.table.name,
     dataIndex: "name",
     key: "name",
   },
   {
-    title: "Education",
+    title: t.cv.table.education,
     dataIndex: "education",
     key: "education",
   },
   {
-    title: "Employee",
+    title: t.cv.table.employee,
     dataIndex: "email",
     key: "email",
   },
@@ -35,7 +36,9 @@ export const getColumns = (
         {
           key: "details",
           label: (
-            <Link href={PATH.USER.CV.DETAILS(userId, record.id)}>Details</Link>
+            <Link href={PATH.USER.CV.DETAILS(userId, record.id)}>
+              {t.cv.actions.details}
+            </Link>
           ),
         },
         {
@@ -50,7 +53,7 @@ export const getColumns = (
                 setIsOpenModal(true);
               }}
             >
-              Delete CV
+              {t.cv.actions.delete}
             </span>
           ),
           danger: true,
@@ -58,11 +61,9 @@ export const getColumns = (
       ];
 
       return (
-        <>
-          <Dropdown menu={{ items: menuItems }} trigger={["click"]}>
-            <Button type="text" shape="circle" icon={<EllipsisVertical />} />
-          </Dropdown>
-        </>
+        <Dropdown menu={{ items: menuItems }} trigger={["click"]}>
+          <Button type="text" shape="circle" icon={<EllipsisVertical />} />
+        </Dropdown>
       );
     },
   },

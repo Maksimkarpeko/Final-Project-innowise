@@ -1,6 +1,7 @@
 "use client";
 
 import { ConfigProvider } from "antd";
+import { LocaleProvider } from "@/src/shared";
 import { WrapperApollo } from "../apollo/apollo-client";
 import { AppGuard } from "../guard/appGuard";
 import { FC, PropsWithChildren } from "react";
@@ -15,6 +16,7 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
   return (
     <AppGuard>
       <WrapperApollo>
+        <LocaleProvider>
         <ConfigProvider
           theme={{
             components: {
@@ -36,6 +38,7 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
             <main className="flex-1 overflow-auto bg-white">{children}</main>
           </div>
         </ConfigProvider>
+        </LocaleProvider>
       </WrapperApollo>
     </AppGuard>
   );

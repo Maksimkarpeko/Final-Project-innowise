@@ -10,6 +10,7 @@ import {
   ProfileResponse,
   SkillCategories,
   SkillMastery,
+  useLocale,
 } from "@/src/shared";
 import { CurrentSkill } from "@/src/views/user/skills/type";
 import { useMutation, useQuery } from "@apollo/client/react";
@@ -37,6 +38,7 @@ export const SkillsMenu: FC<SkillsMenuProps> = ({
   isCanEdit,
 }) => {
   const userId = getUserId();
+  const { t } = useLocale();
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [deleteItem, setDeleteItem] = useState<Array<string>>([]);
   const counterLengthDeleteItem = deleteItem.length;
@@ -49,7 +51,7 @@ export const SkillsMenu: FC<SkillsMenuProps> = ({
   const [deleteItems, { error }] = useMutation(deleteProfileSkills);
 
   if (loading) {
-    return <>Loading...</>;
+    return <>{t.common.loading}</>;
   }
 
   const skills = profile?.profile.skills || [];
@@ -163,7 +165,7 @@ export const SkillsMenu: FC<SkillsMenuProps> = ({
                     setDeleteItem([]);
                   }}
                 >
-                  CLOSE
+                  {t.common.close}
                 </Button>
                 <Button
                   type="text"
@@ -176,7 +178,7 @@ export const SkillsMenu: FC<SkillsMenuProps> = ({
                   )}
                   onClick={handleDelete}
                 >
-                  REMOVE SKILLS{" "}
+                  {t.skills.actions.removeSkills}{" "}
                   {counterLengthDeleteItem >= 1 && (
                     <span className="bg-white  rounded-full w-10 text-xl text-black">
                       {counterLengthDeleteItem}
@@ -197,7 +199,7 @@ export const SkillsMenu: FC<SkillsMenuProps> = ({
                   className="group! flex! items-center! text-[14px]! md:text-[16px]! text-[#888888]! font-medium! tracking-wide! hover:bg-gray-100! hover:text-black! px-6! md:px-15! py-4! md:py-7! rounded-4xl!"
                   onClick={() => setIsOpenAdd(!isOpenAdd)}
                 >
-                  ADD SKILL
+                  {t.skills.actions.addSkill}
                 </Button>
                 <Button
                   type="text"
@@ -205,7 +207,7 @@ export const SkillsMenu: FC<SkillsMenuProps> = ({
                   className="flex! items-center! text-[14px]! md:text-[16px]! text-[#fd0004]! font-medium! tracking-wide! hover:bg-[#fa2c28]! hover:text-white! px-6! md:px-15! py-4! md:py-7! rounded-4xl!"
                   onClick={() => setIsDelete(!isDelete)}
                 >
-                  REMOVE SKILLS
+                  {t.skills.actions.removeSkills}
                 </Button>
               </>
             )}

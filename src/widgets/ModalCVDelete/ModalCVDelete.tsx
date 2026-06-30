@@ -1,7 +1,7 @@
 "use client";
 import { GET_USER_CVS } from "@/src/entities";
 import { DELETE_CV } from "@/src/entities/cv/api/cv.api";
-import { APP_TEXT, getUserId } from "@/src/shared";
+import { getUserId, useLocale } from "@/src/shared";
 import { ActiveCv } from "@/src/views";
 import { useMutation } from "@apollo/client/react";
 import { Modal } from "antd";
@@ -19,6 +19,7 @@ export const ModalCVDelete: FC<ModalCVDelete> = ({
   activeCv,
 }) => {
   const userId = getUserId();
+  const { t } = useLocale();
   const [deleteCv, { error, loading }] = useMutation(DELETE_CV);
 
   const handleOk = async () => {
@@ -41,13 +42,13 @@ export const ModalCVDelete: FC<ModalCVDelete> = ({
   };
   return (
     <Modal
-      title={"Delete CV"}
+      title={t.cv.modal.deleteTitle}
       closable={{ "aria-label": "Custom Close Button" }}
       open={isOpenModalDelete}
       onCancel={handleCancel}
-      okText={"Submit"}
+      okText={t.common.submit}
       onOk={handleOk}
-      cancelText="Cancel"
+      cancelText={t.common.cancel}
       width={650}
       okButtonProps={{
         loading,
@@ -61,7 +62,7 @@ export const ModalCVDelete: FC<ModalCVDelete> = ({
       }}
     >
       <p>
-        {APP_TEXT.cv.deleteText} {activeCv.name}
+        {t.cv.delete.confirmPrefix} {activeCv.name}
       </p>
       {error && <span className="text-red-500">{error.message}</span>}
     </Modal>

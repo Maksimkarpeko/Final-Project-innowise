@@ -1,4 +1,4 @@
-import { HeaderSearch } from "@/src/shared";
+import { HeaderSearch, useLocale } from "@/src/shared";
 import { Button } from "antd";
 import { Plus } from "lucide-react";
 import { FC, SetStateAction, useState } from "react";
@@ -16,6 +16,8 @@ export const CvsHeader: FC<CvsHeaderProps> = ({
   searchValue,
   setSearchValue,
 }) => {
+  const { t } = useLocale();
+
   return (
     <>
       <div className="flex justify-between w-[95%]">
@@ -30,7 +32,7 @@ export const CvsHeader: FC<CvsHeaderProps> = ({
           className="border-none! text-[16px]! text-red-600! font-medium!"
           onClick={() => setIsOpen(!isOpen)}
         >
-          CREATE CV
+          {t.cv.list.createButton}
         </Button>
       </div>
     </>

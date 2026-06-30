@@ -1,7 +1,8 @@
 "use client";
+
 import { getProfile } from "@/src/entities";
 import { SkillsMenu } from "@/src/features";
-import { getUserId, PATH, ProfileResponse } from "@/src/shared";
+import { getUserId, ProfileResponse, useLocale, useProfileNavItems } from "@/src/shared";
 import { ModalSkill } from "@/src/widgets/ModalSkill";
 import { useQuery } from "@apollo/client/react";
 import { Button } from "antd";
@@ -15,6 +16,7 @@ type UserProfilePageProps = {
 
 export const UserSkillsPage = ({ currentUserId }: UserProfilePageProps) => {
   const userId = getUserId();
+  const { t } = useLocale();
   let isCanEdit;
   if (currentUserId) {
     isCanEdit = userId === currentUserId;
@@ -35,20 +37,7 @@ export const UserSkillsPage = ({ currentUserId }: UserProfilePageProps) => {
     skip: !userId,
   });
 
-  const navItems = [
-    {
-      content: "Profile",
-      href: PATH.USER.PROFILE(currentUserId || userId),
-    },
-    {
-      content: "Skills",
-      href: PATH.USER.SKILLS(currentUserId || userId),
-    },
-    {
-      content: "Languages",
-      href: PATH.USER.LANGUAGES(currentUserId || userId),
-    },
-  ];
+  const navItems = useProfileNavItems(currentUserId || userId);
 
   return (
     <>
@@ -74,7 +63,7 @@ export const UserSkillsPage = ({ currentUserId }: UserProfilePageProps) => {
                   setIsOpenAdd(!isOpenAdd);
                 }}
               >
-                + Add new skill
+                {t.skills.actions.addNew}
               </Button>
             )}
           </div>

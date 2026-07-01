@@ -11,7 +11,7 @@ import {
 } from "@/src/shared";
 import { ModalSkill } from "@/src/widgets/ModalSkill";
 import { useQuery } from "@apollo/client/react";
-import { Button } from "antd";
+import { Button, Spin } from "antd";
 import { useState } from "react";
 import { CurrentSkill } from "./type";
 import { NavHeader } from "@/src/widgets";
@@ -22,87 +22,148 @@ type UserProfilePageProps = {
 };
 
 export const UserSkillsPage = ({
-  currentUserId,
-  currentCvUserId,
-}: UserProfilePageProps) => {
+                                 currentUserId,
+                                 currentCvUserId,
+                               }: UserProfilePageProps) => {
   const userId = getUserId();
   const { t } = useLocale();
-  let isCanEdit;
-  if (currentUserId) {
-    isCanEdit = userId === currentUserId;
-  } else {
-    isCanEdit = true;
-  }
+
+  const profileUserId = currentUserId || userId;
+  const isCanEdit = currentUserId ? userId === currentUserId : true;
+
   const [currentSkill, setCurrentSkill] = useState<CurrentSkill>({
     id: "",
     name: "",
     mastery: "",
   });
+
   const [isOpenAdd, setIsOpenAdd] = useState<boolean>(false);
   const [isOpenUpdate, setIsOpenUpdate] = useState<boolean>(false);
-  const { data } = useQuery<ProfileResponse>(getProfile, {
+
+  const { data, loading } = useQuery<ProfileResponse>(getProfile, {
     variables: {
-      userId,
+      userId: profileUserId,
     },
-    skip: !userId,
+    skip: !profileUserId,
   });
 
-  const navItems = useProfileNavItems(currentUserId || userId);
-  const navCvItems = useCvNavItems(
-    currentUserId || userId,
-    currentCvUserId || "",
-  );
+  const navItems = useProfileNavItems(profileUserId || "");
+  const navCvItems = useCvNavItems(profileUserId || "", currentCvUserId || "");
+
+  const hasSkills = !!data?.profile.skills.length;
+
   return (
-    <>
-      {currentCvUserId && <NavHeader items={navCvItems} />}
-      <div className="w-full px-6">
-        {currentUserId && <NavHeader items={navItems} />}
-        <div className="pt-6">
-          {!!data?.profile.skills.length ? (
-              <SkillsMenu
-                  isCanEdit={isCanEdit}
-                  isOpenAdd={isOpenAdd}
-                  setIsOpenAdd={setIsOpenAdd}
-                  isOpenUpdate={isOpenUpdate}
-                  setIsOpenUpdate={setIsOpenUpdate}
-                  setCurrentSkill={setCurrentSkill}
-              />
-          ) : (
-              <div className="flex justify-center w-full">
-                {isCanEdit && (
-                    <Button
-                        size="large"
-                        type="text"
-                        className="bg-white! text-gray-500! hover:text-gray-700! hover:bg-gray-100! font-medium! uppercase! tracking-wider! h-12! px-50! rounded-3xl!"
-                        onClick={() => {
-                          setIsOpenAdd(!isOpenAdd);
-                        }}
-                    >
-                      {t.skills.actions.addNew}
-                    </Button>
-                )}
-              </div>
-          )}
-          {isOpenAdd && (
-              <ModalSkill
-                  version="add"
-                  isOpen={isOpenAdd}
-                  setIsOpen={setIsOpenAdd}
-                  currentSkill={currentSkill}
-                  setCurrentSkill={setCurrentSkill}
-              />
-          )}
-          {isOpenUpdate && (
-              <ModalSkill
-                  version="update"
-                  isOpen={isOpenUpdate}
-                  setIsOpen={setIsOpenUpdate}
-                  currentSkill={currentSkill}
-                  setCurrentSkill={setCurrentSkill}
-              />
-          )}
+      <>
+        {currentCvUserId && <NavHeader items={navCvItems} />}
+
+        <div className="w-full px-6">
+          {currentUserId && <NavHeader items={navItems} />}
+
+          <div>
+            {loading ? (
+                <div className="flex min-h-[220px] w-full items-center justify-center">
+                  <Spin />
+                </div>
+            ) : hasSkills ? (
+                <SkillsMenu
+                    profileUserId={profileUserId}
+                    isCanEdit={isCanEdit}
+                    isOpenAdd={isOpenAdd}
+                    setIsOpenAdd={setIsOpenAdd}
+                    isOpenUpdate={isOpenUpdate}
+                    setIsOpenUpdate={setIsOpenUpdate}
+                    setCurrentSkill={setCurrentSkill}
+                />
+            ) : (
+                <div
+                    className="
+                flex
+                min-h-[220px]
+                w-full
+                flex-col
+                items-center
+                justify-center
+                px-4
+                text-center
+              "
+                >
+                  <p
+                      className="
+                  text-[16px]
+                  font-normal
+                  leading-[24px]
+                  text-[#8a8a8a]
+                  transition-colors
+
+                  dark:text-white/55
+                "
+                  >
+                    No skills have been added yet
+                  </p>
+
+                  {isCanEdit && (
+                      <Button
+                          type="text"
+                          className="
+                    group!
+                    mt-6
+                    flex!
+                    h-[48px]!
+                    items-center!
+                    justify-center!
+                    rounded-[40px]!
+                    border-none!
+                    bg-transparent!
+                    px-8!
+                    text-[14px]!
+                    font-medium!
+                    uppercase!
+                    leading-[24.5px]!
+                    tracking-[0.4px]!
+                    text-[#888888]!
+                    shadow-none!
+                    transition-colors!
+
+                    hover:bg-gray-100!
+                    hover:text-[#2E2E2E]!
+
+                    dark:bg-transparent!
+                    dark:text-white/45!
+                    dark:hover:bg-white/8!
+                    dark:hover:text-white/70!
+
+                    md:px-15!
+                    md:text-[16px]!
+                  "
+                          onClick={() => setIsOpenAdd(true)}
+                      >
+                        {t.skills.actions.addNew}
+                      </Button>
+                  )}
+                </div>
+            )}
+
+            {isOpenAdd && (
+                <ModalSkill
+                    version="add"
+                    isOpen={isOpenAdd}
+                    setIsOpen={setIsOpenAdd}
+                    currentSkill={currentSkill}
+                    setCurrentSkill={setCurrentSkill}
+                />
+            )}
+
+            {isOpenUpdate && (
+                <ModalSkill
+                    version="update"
+                    isOpen={isOpenUpdate}
+                    setIsOpen={setIsOpenUpdate}
+                    currentSkill={currentSkill}
+                    setCurrentSkill={setCurrentSkill}
+                />
+            )}
+          </div>
         </div>
-      </div>
-    </>
+      </>
   );
 };

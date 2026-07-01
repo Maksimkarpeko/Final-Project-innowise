@@ -30,7 +30,7 @@ type ProfileReadOnlyFieldProps = {
 const fieldWrapperClassName = `
   relative
   h-[53px]
-  w-[410px]
+  w-full
   rounded-none
   border
   border-black/[0.23]
@@ -42,6 +42,8 @@ const fieldWrapperClassName = `
   dark:border-white/20
   dark:bg-transparent
   dark:focus-within:border-[#D9363E]
+
+  lg:w-[410px]
 `;
 
 const labelClassName = `
@@ -111,7 +113,7 @@ export const ProfileTextField = ({
                                      error,
                                  }: ProfileTextFieldProps) => {
     return (
-        <div>
+        <div className="w-full lg:w-[410px]">
             <div className={fieldWrapperClassName}>
                 <label
                     className={`${labelClassName} ${
@@ -143,7 +145,7 @@ export const ProfileSelectField = ({
                                        error,
                                    }: ProfileSelectFieldProps) => {
     return (
-        <div>
+        <div className="w-full lg:w-[410px]">
             <div className={fieldWrapperClassName}>
                 <label
                     className={`${labelClassName} ${

@@ -1,8 +1,12 @@
-import { PATH } from "../config/path.config";
-import { useLocale } from "./LocaleProvider";
+import { useLocale } from "@/src/shared";
+import { PATH } from "../config"
 
-export const useProfileNavItems = (userId: string) => {
+export const useProfileNavItems = (userId?: string) => {
   const { t } = useLocale();
+
+  if (!userId) {
+    return [];
+  }
 
   return [
     {

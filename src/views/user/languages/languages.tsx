@@ -9,15 +9,16 @@ type UserProfilePageProps = {
 };
 
 export const UserLanguagesPage = ({ userId }: UserProfilePageProps) => {
-  if (!userId) {
+
+    const navItems = useProfileNavItems(userId);
+
+    if (!userId) {
     return (
-      <section className="px-6 w-full">
+      <section className="px-6 w-full pt-4">
         <LanguagesPage />
       </section>
     );
   }
-
-  const navItems = useProfileNavItems(userId);
 
   return (
     <div className="w-full px-6">

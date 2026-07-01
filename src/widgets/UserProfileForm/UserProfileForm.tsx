@@ -231,25 +231,58 @@ export const UserProfileForm = ({
     );
 
     return (
-        <div className="mx-auto mt-[84px] min-h-[552px] w-[900px] bg-transparent">
+        <div
+            className="
+        mx-auto
+        mt-8
+        min-h-[552px]
+        w-full
+        max-w-[900px]
+        bg-transparent
+        px-5
+        pb-28
+
+        lg:mt-[84px]
+        lg:w-[900px]
+        lg:px-0
+        lg:pb-0
+      "
+        >
             <form className="w-full" onSubmit={handleSubmit(handleFormSubmit)}>
                 <div className="flex flex-col items-center">
-                    <div className="flex items-center justify-center gap-[52px]">
+                    <div
+                        className="
+              flex
+              w-full
+              flex-col
+              items-center
+              justify-center
+              gap-4
+
+              sm:w-auto
+              sm:flex-row
+              sm:items-center
+              sm:gap-8
+
+              lg:gap-[52px]
+            "
+                    >
                         <button
                             type="button"
                             onClick={handleOpenFileDialog}
                             disabled={!canEdit || isSubmitting}
                             className="
                 flex
-                h-[120px]
-                w-[120px]
+                h-[96px]
+                w-[96px]
+                shrink-0
                 items-center
                 justify-center
                 overflow-hidden
                 rounded-full
                 border-none
                 bg-[#BDBDBD]
-                text-[40px]
+                text-[34px]
                 font-normal
                 text-white
                 transition-colors
@@ -258,6 +291,10 @@ export const UserProfileForm = ({
 
                 dark:bg-white/35
                 dark:text-[#303030]
+
+                lg:h-[120px]
+                lg:w-[120px]
+                lg:text-[40px]
               "
                         >
                             {avatarUrl ? (
@@ -272,7 +309,21 @@ export const UserProfileForm = ({
                         </button>
 
                         {canEdit && (
-                            <div className="flex w-[252px] flex-col items-start">
+                            <div
+                                className="
+                  flex
+                  w-full
+                  max-w-[252px]
+                  flex-col
+                  items-center
+                  text-center
+
+                  sm:items-start
+                  sm:text-left
+
+                  lg:w-[252px]
+                "
+                            >
                                 <input
                                     ref={fileInputRef}
                                     type="file"
@@ -288,7 +339,8 @@ export const UserProfileForm = ({
                                     className="
                     flex
                     items-center
-                    gap-4
+                    justify-center
+                    gap-3
                     border-none
                     bg-transparent
                     p-0
@@ -299,6 +351,9 @@ export const UserProfileForm = ({
 
                     disabled:cursor-not-allowed
                     disabled:opacity-60
+
+                    sm:justify-start
+                    sm:gap-4
                   "
                                 >
                   <span
@@ -321,14 +376,17 @@ export const UserProfileForm = ({
 
                                     <span
                                         className="
-                      text-[20px]
+                      text-[16px]
                       font-medium
-                      leading-[32px]
+                      leading-[24px]
                       tracking-[0.15px]
                       text-[#2E2E2E]
                       transition-colors
 
                       dark:text-white/90
+
+                      lg:text-[20px]
+                      lg:leading-[32px]
                     "
                                     >
                     {t.profile.avatar.uploadTitle}
@@ -338,14 +396,17 @@ export const UserProfileForm = ({
                                 <p
                                     className="
                     mt-[3px]
-                    text-[16px]
+                    text-[12px]
                     font-normal
-                    leading-[28px]
+                    leading-[18px]
                     tracking-[0.15px]
                     text-[#2E2E2E]/60
                     transition-colors
 
                     dark:text-white/60
+
+                    lg:text-[16px]
+                    lg:leading-[28px]
                   "
                                 >
                                     {t.profile.avatar.uploadHint}
@@ -362,15 +423,19 @@ export const UserProfileForm = ({
 
                     <h1
                         className="
-              mt-[32px]
+              mt-6
               text-center
-              text-[24px]
+              text-[22px]
               font-normal
-              leading-[32px]
+              leading-[30px]
               text-[#2E2E2E]
               transition-colors
 
               dark:text-white/90
+
+              lg:mt-[32px]
+              lg:text-[24px]
+              lg:leading-[32px]
             "
                     >
                         {fullName}
@@ -378,16 +443,20 @@ export const UserProfileForm = ({
 
                     <p
                         className="
-              mt-[8px]
+              mt-[6px]
               text-center
-              text-[16px]
+              text-[14px]
               font-normal
-              leading-[24px]
+              leading-[22px]
               tracking-[0.15px]
               text-black/60
               transition-colors
 
               dark:text-white/60
+
+              lg:mt-[8px]
+              lg:text-[16px]
+              lg:leading-[24px]
             "
                     >
                         {email}
@@ -395,38 +464,67 @@ export const UserProfileForm = ({
 
                     <p
                         className="
-              mt-[8px]
+              mt-[6px]
               text-center
-              text-[16px]
+              text-[14px]
               font-normal
-              leading-[24px]
+              leading-[22px]
               tracking-[0.15px]
               text-[#2E2E2E]
               transition-colors
 
               dark:text-white/90
+
+              lg:mt-[8px]
+              lg:text-[16px]
+              lg:leading-[24px]
             "
                     >
                         {t.profile.memberSince} {memberSince}
                     </p>
                 </div>
 
-                <div className="mx-auto mt-[48px] grid w-[852px] grid-cols-[410px_410px] gap-x-[32px] gap-y-[30px]">
+                <div
+                    className="
+            mx-auto
+            mt-8
+            grid
+            w-full
+            max-w-[852px]
+            grid-cols-1
+            gap-y-5
+
+            lg:mt-[48px]
+            lg:w-[852px]
+            lg:grid-cols-[410px_410px]
+            lg:gap-x-[32px]
+            lg:gap-y-[30px]
+          "
+                >
                     {profileFields}
                 </div>
 
                 {canEdit && (
-                    <div className="mx-auto mt-[48px] flex w-[852px] justify-end">
+                    <div
+                        className="
+              mx-auto
+              mt-8
+              flex
+              w-full
+              max-w-[852px]
+              justify-center
+
+              lg:mt-[48px]
+              lg:w-[852px]
+              lg:justify-end
+            "
+                    >
                         <button
                             type="submit"
-                            disabled={
-                                (!isDirty && !avatarFile) ||
-                                !isValid ||
-                                isSubmitting
-                            }
+                            disabled={(!isDirty && !avatarFile) || !isValid || isSubmitting}
                             className="
                 h-[48px]
-                w-[410px]
+                w-full
                 rounded-[40px]
                 border-none
                 bg-[#C63031]
@@ -451,6 +549,8 @@ export const UserProfileForm = ({
                 dark:disabled:bg-white/14
                 dark:disabled:text-white/45
                 dark:disabled:hover:bg-white/14
+
+                lg:w-[410px]
               "
                         >
                             {isSubmitting ? t.common.updating : t.common.update}

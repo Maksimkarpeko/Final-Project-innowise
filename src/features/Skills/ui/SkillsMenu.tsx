@@ -6,7 +6,6 @@ import {
   getSkillCategories,
 } from "@/src/entities/skills/api/skills.api";
 import {
-  getUserId,
   MasteryNumeric,
   ProfileResponse,
   SkillCategories,
@@ -23,6 +22,7 @@ import React, { FC, useState } from "react";
 const { Text } = Typography;
 
 type SkillsMenuProps = {
+  profileUserId: string;
   isOpenAdd: boolean;
   setIsOpenAdd: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenUpdate: boolean;
@@ -32,6 +32,7 @@ type SkillsMenuProps = {
 };
 
 export const SkillsMenu: FC<SkillsMenuProps> = ({
+                                                  profileUserId,
                                                   isOpenAdd,
                                                   setIsOpenAdd,
                                                   isOpenUpdate,
@@ -39,7 +40,6 @@ export const SkillsMenu: FC<SkillsMenuProps> = ({
                                                   setCurrentSkill,
                                                   isCanEdit,
                                                 }) => {
-  const userId = getUserId();
   const { t } = useLocale();
 
   const [isDelete, setIsDelete] = useState<boolean>(false);
@@ -50,10 +50,10 @@ export const SkillsMenu: FC<SkillsMenuProps> = ({
   const { data: categoriesData, loading } =
       useQuery<SkillCategories>(getSkillCategories);
 
-  const { data: profile } = useQuery<ProfileResponse>(getProfile, {
-    variables: { userId },
-    skip: !userId || loading,
-  });
+    const { data: profile } = useQuery<ProfileResponse>(getProfile, {
+        variables: { userId: profileUserId },
+        skip: !profileUserId || loading,
+    });
 
   const [deleteItems, { error }] = useMutation(deleteProfileSkills);
 
@@ -64,37 +64,46 @@ export const SkillsMenu: FC<SkillsMenuProps> = ({
   const skills = profile?.profile.skills || [];
   const categories = categoriesData?.skillCategories || [];
 
-  const handleButtonSkills = (skill: SkillMastery) => {
-    if (isDelete) {
-      if (deleteItem.includes(skill.name)) {
-        setDeleteItem(deleteItem.filter((name) => name !== skill.name));
-      } else {
-        setDeleteItem([...deleteItem, skill.name]);
-      }
+    const handleButtonSkills = (skill: SkillMastery) => {
+        if (!isCanEdit) {
+            return;
+        }
 
-      return;
-    }
+        if (isDelete) {
+            if (deleteItem.includes(skill.name)) {
+                setDeleteItem(deleteItem.filter((name) => name !== skill.name));
+            } else {
+                setDeleteItem([...deleteItem, skill.name]);
+            }
 
-    setCurrentSkill({
-      id: skill.categoryId,
-      name: skill.name,
-      mastery: skill.mastery,
-    });
+            return;
+        }
 
-    setIsOpenUpdate(!isOpenUpdate);
-  };
+        setCurrentSkill({
+            id: skill.categoryId,
+            name: skill.name,
+            mastery: skill.mastery,
+        });
+
+        setIsOpenUpdate(!isOpenUpdate);
+    };
 
   const handleDelete = async () => {
     try {
-      await deleteItems({
-        variables: {
-          skill: {
-            userId,
-            name: deleteItem,
-          },
-        },
-        refetchQueries: [{ query: getProfile, variables: { userId } }],
-      });
+        await deleteItems({
+            variables: {
+                skill: {
+                    userId: profileUserId,
+                    name: deleteItem,
+                },
+            },
+            refetchQueries: [
+                {
+                    query: getProfile,
+                    variables: { userId: profileUserId },
+                },
+            ],
+        });
 
       setDeleteItem([]);
     } catch (error) {

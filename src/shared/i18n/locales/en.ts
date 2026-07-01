@@ -46,7 +46,7 @@ export const en: Translations = {
   auth: {
     header: {
       login: "Log in",
-      register: "Sign in",
+      register: "Sign up",
     },
     login: {
       title: "Welcome back",

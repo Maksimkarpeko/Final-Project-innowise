@@ -71,8 +71,36 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
     const selectedCount = selectedRemoveLanguages.length;
 
     return (
-        <section className="flex w-full flex-col">
-            <div className="min-h-[220px] rounded-[2px] px-6 py-8 md:px-10">
+        <section
+            className="
+                flex
+                w-full
+                flex-col
+                px-6
+                pb-28
+
+                md:ml-[20%]
+                md:w-[80%]
+                md:px-0
+                md:pb-0
+              "
+        >
+            <div className="min-h-[220px] rounded-[2px]">
+                <h3
+                    className="
+                        mb-6
+                        text-[16px]
+                        font-semibold
+                        leading-[24px]
+                        text-[#767676]
+                        transition-colors
+
+                        dark:text-white/90
+                      "
+                >
+                    Languages
+                </h3>
+
                 <LanguageItems
                     languages={userLanguages}
                     canEdit={canEdit}
@@ -83,7 +111,21 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
                 />
 
                 {canEdit && !isRemoveMode && (
-                    <div className="mt-20 flex w-full items-center justify-end gap-3 p-4 md:flex-row md:gap-6">
+                    <div
+                        className="
+              mt-20
+              flex
+              w-full
+              flex-nowrap
+              items-center
+              justify-center
+              gap-2
+
+              md:justify-end
+              md:gap-6
+              md:p-4
+            "
+                    >
                         <Button
                             type="text"
                             icon={
@@ -100,16 +142,20 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
                             className="
                 group!
                 flex!
+                min-w-0!
+                shrink-0!
                 items-center!
+                justify-center!
                 rounded-4xl!
-                px-6!
+                px-3!
                 py-4!
-                text-[14px]!
+                text-[13px]!
                 font-medium!
                 uppercase!
                 tracking-wide!
                 text-[#888888]!
                 transition-colors!
+                whitespace-nowrap!
 
                 hover:bg-gray-100!
                 hover:text-[#2E2E2E]!
@@ -119,6 +165,9 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
                 dark:hover:text-white/70!
 
                 dark:hover:[&_.lucide]:text-white/70!
+
+                sm:px-5!
+                sm:text-[14px]!
 
                 md:px-15!
                 md:py-7!
@@ -135,16 +184,20 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
                             onClick={() => setIsRemoveMode(true)}
                             className="
                 flex!
+                min-w-0!
+                shrink-0!
                 items-center!
+                justify-center!
                 rounded-4xl!
-                px-6!
+                px-3!
                 py-4!
-                text-[14px]!
+                text-[13px]!
                 font-medium!
                 uppercase!
                 tracking-wide!
                 text-[#fd0004]!
                 transition-colors!
+                whitespace-nowrap!
 
                 hover:bg-[#fa2c28]!
                 hover:text-white!
@@ -158,6 +211,9 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
                 dark:disabled:text-white/25!
                 dark:disabled:hover:bg-transparent!
 
+                sm:px-5!
+                sm:text-[14px]!
+
                 md:px-15!
                 md:py-7!
                 md:text-[16px]!
@@ -169,24 +225,42 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
                 )}
 
                 {canEdit && isRemoveMode && (
-                    <div className="mt-20 flex w-full items-center justify-end gap-3 p-4 md:flex-row md:gap-6">
+                    <div
+                        className="
+              mt-20
+              flex
+              w-full
+              flex-nowrap
+              items-center
+              justify-center
+              gap-2
+
+              md:justify-end
+              md:gap-6
+              md:p-4
+            "
+                    >
                         <Button
                             type="text"
                             onClick={cancelRemoveMode}
                             className="
                 flex!
+                min-w-0!
+                shrink-0!
                 items-center!
+                justify-center!
                 rounded-4xl!
                 border!
                 border-[#D9D9D9]!
-                px-6!
+                px-3!
                 py-4!
-                text-[14px]!
+                text-[13px]!
                 font-medium!
                 uppercase!
                 tracking-wide!
                 text-[#888888]!
                 transition-colors!
+                whitespace-nowrap!
 
                 hover:border-[#BDBDBD]!
                 hover:bg-gray-100!
@@ -198,6 +272,9 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
                 dark:hover:border-white/25!
                 dark:hover:bg-white/8!
                 dark:hover:text-white/75!
+
+                sm:px-5!
+                sm:text-[14px]!
 
                 md:px-15!
                 md:py-7!
@@ -215,15 +292,22 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
                             onClick={removeSelectedLanguages}
                             className={`
                 flex!
+                min-w-0!
+                shrink-0!
                 items-center!
+                justify-center!
                 rounded-4xl!
-                px-6!
+                px-3!
                 py-4!
-                text-[14px]!
+                text-[13px]!
                 font-medium!
                 uppercase!
                 tracking-wide!
                 transition-colors!
+                whitespace-nowrap!
+
+                sm:px-5!
+                sm:text-[14px]!
 
                 md:px-15!
                 md:py-7!
@@ -308,8 +392,7 @@ export const LanguagesPage = ({ userId }: LanguagesPageProps) => {
                 proficiencyValue={updatingProficiency}
                 confirmLoading={isUpdateLoading}
                 confirmDisabled={
-                    !updatingLanguage ||
-                    updatingLanguage.proficiency === updatingProficiency
+                    !updatingLanguage || updatingLanguage.proficiency === updatingProficiency
                 }
                 onCancel={() => setIsUpdateModalOpen(false)}
                 onConfirm={updateSelectedLanguage}

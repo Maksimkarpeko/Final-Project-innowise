@@ -48,7 +48,24 @@ export const LanguageItems = ({
     }
 
     return (
-        <div className="grid grid-cols-1 gap-x-16 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div
+            className="
+        flex
+        w-full
+        flex-col
+        items-start
+        gap-3
+
+        sm:flex-row
+        sm:flex-wrap
+        sm:gap-4
+
+        lg:grid
+        lg:grid-cols-3
+        lg:gap-x-16
+        lg:gap-y-8
+      "
+        >
             {languages.map((language) => {
                 const isSelectedForRemove = selectedRemoveLanguages.includes(
                     language.name,
@@ -66,15 +83,18 @@ export const LanguageItems = ({
                         className={`
               grid
               min-h-10
+              max-w-full
               grid-cols-[80px_1fr]
               items-center
-              gap-6
+              gap-4
               rounded-md
               border
               px-3
               py-2
               text-left
               transition-colors
+
+              sm:gap-6
 
               ${canEdit ? "cursor-pointer" : "cursor-default"}
 
@@ -112,6 +132,7 @@ export const LanguageItems = ({
 
                         <span
                             className={`
+                truncate
                 text-[18px]
                 font-medium
                 transition-colors

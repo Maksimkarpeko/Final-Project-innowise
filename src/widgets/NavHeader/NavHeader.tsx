@@ -22,9 +22,16 @@ export const NavHeader = ({ items }: NavHeaderProps) => {
         h-[48px]
         w-full
         items-center
+        overflow-x-auto
         bg-white
         transition-colors
+
+        [-ms-overflow-style:none]
+        [scrollbar-width:none]
+        [&::-webkit-scrollbar]:hidden
+
         dark:bg-[#303030]
+        sm:overflow-visible
       "
         >
             {items.map((item) => (
